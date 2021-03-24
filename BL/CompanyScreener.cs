@@ -21,7 +21,10 @@ namespace BL
             foreach (var ticker in allTickers)
             {
                 if (bgw.CancellationPending)
+                {
+                    currentTicker = "";
                     break;
+                }
 
                 try
                 {

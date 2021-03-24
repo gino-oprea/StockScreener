@@ -281,6 +281,7 @@ namespace StockScreener
             }
             if (e.Cancelled)
             {
+                lblTickerInProcess.Text = "";
                 lblErrorMessage.Text = "Cancelled";
             }
             else
@@ -304,6 +305,7 @@ namespace StockScreener
             tmrCompanies.Stop();
             isSearchInProgress = false;
             pbLoadingCompanies.Visible = false;
+            lblTickerInProcess.Text = "";
         }
 
         private void tmrCompanies_Tick(object sender, EventArgs e)
