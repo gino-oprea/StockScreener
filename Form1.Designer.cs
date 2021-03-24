@@ -70,6 +70,7 @@ namespace StockScreener
             this.label1 = new System.Windows.Forms.Label();
             this.txtTicker = new System.Windows.Forms.TextBox();
             this.tabSearchCompanies = new System.Windows.Forms.TabPage();
+            this.cbFilterValue = new System.Windows.Forms.ComboBox();
             this.btnStop = new System.Windows.Forms.Button();
             this.rbUnevenGrowth = new System.Windows.Forms.RadioButton();
             this.rbAllGrowthPositive = new System.Windows.Forms.RadioButton();
@@ -93,7 +94,7 @@ namespace StockScreener
             this.bgwCheckCompany = new System.ComponentModel.BackgroundWorker();
             this.bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
-            this.cbFilterValue = new System.Windows.Forms.ComboBox();
+            this.tmrTicker = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -504,6 +505,18 @@ namespace StockScreener
             this.tabSearchCompanies.Text = "Search Companies";
             this.tabSearchCompanies.UseVisualStyleBackColor = true;
             // 
+            // cbFilterValue
+            // 
+            this.cbFilterValue.FormattingEnabled = true;
+            this.cbFilterValue.Items.AddRange(new object[] {
+            "Intrinsic Value",
+            "MOS 30%",
+            "MOS 50%"});
+            this.cbFilterValue.Location = new System.Drawing.Point(838, 114);
+            this.cbFilterValue.Name = "cbFilterValue";
+            this.cbFilterValue.Size = new System.Drawing.Size(151, 28);
+            this.cbFilterValue.TabIndex = 19;
+            // 
             // btnStop
             // 
             this.btnStop.Location = new System.Drawing.Point(847, 63);
@@ -700,20 +713,13 @@ namespace StockScreener
             // 
             // tmrCompanies
             // 
-            this.tmrCompanies.Interval = 500;
+            this.tmrCompanies.Interval = 5000;
             this.tmrCompanies.Tick += new System.EventHandler(this.tmrCompanies_Tick);
             // 
-            // cbFilterValue
+            // tmrTicker
             // 
-            this.cbFilterValue.FormattingEnabled = true;
-            this.cbFilterValue.Items.AddRange(new object[] {
-            "Intrinsic Value",
-            "MOS 30%",
-            "MOS 50%"});
-            this.cbFilterValue.Location = new System.Drawing.Point(838, 114);
-            this.cbFilterValue.Name = "cbFilterValue";
-            this.cbFilterValue.Size = new System.Drawing.Size(151, 28);
-            this.cbFilterValue.TabIndex = 19;
+            this.tmrTicker.Interval = 500;
+            this.tmrTicker.Tick += new System.EventHandler(this.tmrTicker_Tick);
             // 
             // Form1
             // 
@@ -804,6 +810,7 @@ namespace StockScreener
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.ComboBox cbFilterValue;
+        private System.Windows.Forms.Timer tmrTicker;
     }
 }
 

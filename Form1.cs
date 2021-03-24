@@ -126,6 +126,7 @@ namespace StockScreener
 
                 try
                 {
+                    tmrTicker.Start();
                     tmrCompanies.Start();
                     pbLoadingCompanies.Visible = true;
                     isSearchInProgress = true;
@@ -291,6 +292,7 @@ namespace StockScreener
                     {
                         col.DisplayIndex = col.Index;
                     }
+                    gvCompanies.FirstDisplayedScrollingRowIndex = gvCompanies.RowCount - 1;
                 }
                 catch (Exception ex)
                 {
@@ -298,6 +300,7 @@ namespace StockScreener
                 }
             }
 
+            tmrTicker.Stop();
             tmrCompanies.Stop();
             isSearchInProgress = false;
             pbLoadingCompanies.Visible = false;
@@ -307,8 +310,6 @@ namespace StockScreener
         {
             if(isSearchInProgress)
             {
-                lblTickerInProcess.Text = CompanyScreener.currentTicker;
-
                 if (CompanyScreener.currentfilteredCompanies != null && CompanyScreener.currentfilteredCompanies.Count > 0)
                 {
                     DataTable dtFilteredCompanies = BuildFilteredCompaniesDataTable(CompanyScreener.currentfilteredCompanies);
@@ -320,10 +321,17 @@ namespace StockScreener
                     {
                         col.DisplayIndex = col.Index;
                     }
+                    gvCompanies.FirstDisplayedScrollingRowIndex = gvCompanies.RowCount - 1;
                 }
             }
         }
 
-        
+        private void tmrTicker_Tick(object sender, EventArgs e)
+        {
+            if (isSearchInProgress)
+            {
+                lblTickerInProcess.Text = CompanyScreener.currentTicker;
+            }
+        }
     }
 }
