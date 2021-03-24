@@ -713,7 +713,7 @@ namespace StockScreener
             // 
             // tmrCompanies
             // 
-            this.tmrCompanies.Interval = 5000;
+            this.tmrCompanies.Interval = 30000;
             this.tmrCompanies.Tick += new System.EventHandler(this.tmrCompanies_Tick);
             // 
             // tmrTicker
