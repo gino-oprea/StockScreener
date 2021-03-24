@@ -16,6 +16,10 @@ namespace StockScreener
     {
 
         Company company;
+
+        CompanyFilter companyFilter;
+        string Url;
+
         BindingSource bindingSourceKeyValues;
         BindingSource bindingSourceIntrinsicValues;
 
@@ -29,7 +33,7 @@ namespace StockScreener
         {
             InitializeComponent();
 
-            
+            cbFilterValue.SelectedIndex = 0;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -114,11 +118,46 @@ namespace StockScreener
         {
             if (txtURL.Text.Trim() != "")
             {
-                tmrCompanies.Start();
-                pbLoadingCompanies.Visible = true;
-                isSearchInProgress = true;
-                bgwSearchCompanies.RunWorkerAsync();
+                lblErrorMessage.Text = "";
+                lblTickerInProcess.Text = "";
+
+                Url = txtURL.Text;
+                companyFilter = GetFilter();
+
+                try
+                {
+                    tmrCompanies.Start();
+                    pbLoadingCompanies.Visible = true;
+                    isSearchInProgress = true;
+                    bgwSearchCompanies.RunWorkerAsync();
+                }
+                catch(Exception ex)
+                {
+                    lblErrorMessage.Text = ex.Message;
+                }
             }
+        }
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            bgwSearchCompanies.CancelAsync();
+        }
+
+        private CompanyFilter GetFilter()
+        {
+            CompanyFilter filter = new CompanyFilter();
+
+            filter.PriceFilter = (PriceFilter)cbFilterValue.SelectedIndex;
+
+            filter.DiscountRate = Convert.ToInt32(txtFilterRateOfReturn.Text);
+
+            filter.MinAvgRevenueGrowth = Convert.ToInt32(txtFilterAvgRevGrowth.Text);
+            filter.MinAvgEqGrowth = Convert.ToInt32(txtFilterAvgEqGrowth.Text);
+            filter.MinAvgEPSGrowth = Convert.ToInt32(txtFilterAvgEPSGrowth.Text);
+            filter.MinAvgFreeCashFlowGrowth = Convert.ToInt32(txtFilterAvgFcfGrowth.Text);
+
+            filter.IsAllGrowthPositive = rbAllGrowthPositive.Checked;
+
+            return filter;
         }
 
         private DataTable BuildFilteredCompaniesDataTable(List<Company> companies)
@@ -223,11 +262,14 @@ namespace StockScreener
 
         private void bgwSearchCompanies_DoWork(object sender, DoWorkEventArgs e)
         {
-            filteredCompanies = CompanyScreener.GetFilteredCompanies(txtURL.Text);
+            filteredCompanies = CompanyScreener.GetFilteredCompanies(Url, companyFilter, bgwSearchCompanies);
 
             DataTable dtFilteredCompanies = BuildFilteredCompaniesDataTable(filteredCompanies);
             bindingSourcefilteredCompanies = new BindingSource();
             bindingSourcefilteredCompanies.DataSource = dtFilteredCompanies;
+
+            if (bgwSearchCompanies.CancellationPending)
+                e.Cancel = true;
         }
 
         private void bgwSearchCompanies_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -235,6 +277,10 @@ namespace StockScreener
             if (e.Error != null)
             {
                 lblErrorMessage.Text = e.Error.ToString();
+            }
+            if (e.Cancelled)
+            {
+                lblErrorMessage.Text = "Cancelled";
             }
             else
             {
@@ -277,5 +323,7 @@ namespace StockScreener
                 }
             }
         }
+
+        
     }
 }

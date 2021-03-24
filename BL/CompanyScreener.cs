@@ -1,6 +1,7 @@
 ﻿using BL.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace BL
     {
         public static string currentTicker;
         public static List<Company> currentfilteredCompanies;
-        public static List<Company> GetFilteredCompanies(string Url)
+        public static List<Company> GetFilteredCompanies(string Url, CompanyFilter filter, BackgroundWorker bgw)
         {
             List<Company> filteredCompanies = new List<Company>();
 
@@ -19,13 +20,16 @@ namespace BL
 
             foreach (var ticker in allTickers)
             {
+                if (bgw.CancellationPending)
+                    break;
+
                 try
                 {
                     Company company = DataAggregator.GetCompanyData(ticker);
 
                     currentTicker = company.Ticker;
 
-                    List<decimal> values = company.CalculateIntrinsicAndDiscountedValues();
+                    List<decimal> values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: filter.DiscountRate);
 
                     company.IntrinsicValue = values[0];
                     company.IntrinsicValue_Discounted30 = values[1];
@@ -34,18 +38,54 @@ namespace BL
                     if (company.Financials.Count > 0)
                     {
                         if (company.Financials[0].FreeCashFlow.Count > 3
-                            && company.AverageEquityGrowth >= 10
-                            && company.AverageRevenueGrowth >= 10
-                            && company.AverageEPSGrowth >= 10
-                            && company.AverageFreeCashFlowGrowth >= 10)
+                            && company.AverageEquityGrowth >= filter.MinAvgEqGrowth
+                            && company.AverageRevenueGrowth >= filter.MinAvgRevenueGrowth
+                            && company.AverageEPSGrowth >= filter.MinAvgEPSGrowth
+                            && company.AverageFreeCashFlowGrowth >= filter.MinAvgFreeCashFlowGrowth)
                         {
-                            if (company.Financials[0].Equity.Find(v => v.Growth < 0) == null
+                            if (!filter.IsAllGrowthPositive ||
+
+                                (company.Financials[0].Equity.Find(v => v.Growth < 0) == null
                                 && company.Financials[0].EPS.Find(v => v.Growth < 0) == null
-                                && company.Financials[0].NetIncome.Find(v => v.Growth < 0) == null
                                 && company.Financials[0].Revenue.Find(v => v.Growth < 0) == null
                                 && company.Financials[0].FreeCashFlow.Find(v => v.Growth < 0) == null)
-                                if ((decimal)company.CurrentPrice < company.IntrinsicValue && company.IntrinsicValue > 0)
-                                    filteredCompanies.Add(company);
+
+                                )
+                            {
+                                //check if growth exists over the period
+                                var eqLastIndex = company.Financials[0].Equity.Count - 1;
+                                var revLastIndex = company.Financials[0].Revenue.Count - 1;
+                                var epsLastIndex = company.Financials[0].EPS.Count - 1;
+                                var fcfLastIndex = company.Financials[0].FreeCashFlow.Count - 1;
+
+                                if (
+                                    company.Financials[0].Equity[0].Value < company.Financials[0].Equity[eqLastIndex].Value
+                                    && company.Financials[0].Revenue[0].Value < company.Financials[0].Revenue[revLastIndex].Value
+                                    && company.Financials[0].EPS[0].Value < company.Financials[0].EPS[epsLastIndex].Value
+                                    && company.Financials[0].FreeCashFlow[0].Value < company.Financials[0].FreeCashFlow[fcfLastIndex].Value
+                                    )
+                                {
+                                    var refPrice = company.IntrinsicValue;
+                                    switch (filter.PriceFilter)
+                                    {
+                                        case PriceFilter.IntrinsicValue:
+                                            refPrice = company.IntrinsicValue;
+                                            break;
+                                        case PriceFilter.MOS30:
+                                            refPrice = company.IntrinsicValue_Discounted30;
+                                            break;
+                                        case PriceFilter.MOS50:
+                                            refPrice = company.IntrinsicValue_Discounted50;
+                                            break;
+                                        default:
+                                            refPrice = company.IntrinsicValue;
+                                            break;
+                                    }
+
+                                    if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
+                                        filteredCompanies.Add(company);
+                                }
+                            }
                         }
                     }
 

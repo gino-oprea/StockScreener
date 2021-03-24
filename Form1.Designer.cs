@@ -70,6 +70,19 @@ namespace StockScreener
             this.label1 = new System.Windows.Forms.Label();
             this.txtTicker = new System.Windows.Forms.TextBox();
             this.tabSearchCompanies = new System.Windows.Forms.TabPage();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.rbUnevenGrowth = new System.Windows.Forms.RadioButton();
+            this.rbAllGrowthPositive = new System.Windows.Forms.RadioButton();
+            this.txtFilterRateOfReturn = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.txtFilterAvgFcfGrowth = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.txtFilterAvgEPSGrowth = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.txtFilterAvgRevGrowth = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.txtFilterAvgEqGrowth = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.lblTickerInProcess = new System.Windows.Forms.Label();
             this.pbLoadingCompanies = new System.Windows.Forms.PictureBox();
             this.gvCompanies = new System.Windows.Forms.DataGridView();
@@ -80,6 +93,7 @@ namespace StockScreener
             this.bgwCheckCompany = new System.ComponentModel.BackgroundWorker();
             this.bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
+            this.cbFilterValue = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -94,7 +108,7 @@ namespace StockScreener
             // 
             this.tabControl1.Controls.Add(this.tabCheckCompany);
             this.tabControl1.Controls.Add(this.tabSearchCompanies);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Location = new System.Drawing.Point(4, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1059, 739);
@@ -416,9 +430,9 @@ namespace StockScreener
             // pbLoading
             // 
             this.pbLoading.Image = ((System.Drawing.Image)(resources.GetObject("pbLoading.Image")));
-            this.pbLoading.Location = new System.Drawing.Point(506, 22);
+            this.pbLoading.Location = new System.Drawing.Point(469, 23);
             this.pbLoading.Name = "pbLoading";
-            this.pbLoading.Size = new System.Drawing.Size(29, 26);
+            this.pbLoading.Size = new System.Drawing.Size(22, 20);
             this.pbLoading.TabIndex = 4;
             this.pbLoading.TabStop = false;
             this.pbLoading.Visible = false;
@@ -436,7 +450,7 @@ namespace StockScreener
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(378, 19);
+            this.btnSearch.Location = new System.Drawing.Point(351, 19);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(112, 29);
             this.btnSearch.TabIndex = 2;
@@ -462,6 +476,20 @@ namespace StockScreener
             // 
             // tabSearchCompanies
             // 
+            this.tabSearchCompanies.Controls.Add(this.cbFilterValue);
+            this.tabSearchCompanies.Controls.Add(this.btnStop);
+            this.tabSearchCompanies.Controls.Add(this.rbUnevenGrowth);
+            this.tabSearchCompanies.Controls.Add(this.rbAllGrowthPositive);
+            this.tabSearchCompanies.Controls.Add(this.txtFilterRateOfReturn);
+            this.tabSearchCompanies.Controls.Add(this.label25);
+            this.tabSearchCompanies.Controls.Add(this.txtFilterAvgFcfGrowth);
+            this.tabSearchCompanies.Controls.Add(this.label24);
+            this.tabSearchCompanies.Controls.Add(this.txtFilterAvgEPSGrowth);
+            this.tabSearchCompanies.Controls.Add(this.label23);
+            this.tabSearchCompanies.Controls.Add(this.txtFilterAvgRevGrowth);
+            this.tabSearchCompanies.Controls.Add(this.label22);
+            this.tabSearchCompanies.Controls.Add(this.txtFilterAvgEqGrowth);
+            this.tabSearchCompanies.Controls.Add(this.label21);
             this.tabSearchCompanies.Controls.Add(this.lblTickerInProcess);
             this.tabSearchCompanies.Controls.Add(this.pbLoadingCompanies);
             this.tabSearchCompanies.Controls.Add(this.gvCompanies);
@@ -476,11 +504,128 @@ namespace StockScreener
             this.tabSearchCompanies.Text = "Search Companies";
             this.tabSearchCompanies.UseVisualStyleBackColor = true;
             // 
+            // btnStop
+            // 
+            this.btnStop.Location = new System.Drawing.Point(847, 63);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(57, 29);
+            this.btnStop.TabIndex = 18;
+            this.btnStop.Text = "Stop";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // rbUnevenGrowth
+            // 
+            this.rbUnevenGrowth.AutoSize = true;
+            this.rbUnevenGrowth.Checked = true;
+            this.rbUnevenGrowth.Location = new System.Drawing.Point(670, 117);
+            this.rbUnevenGrowth.Name = "rbUnevenGrowth";
+            this.rbUnevenGrowth.Size = new System.Drawing.Size(130, 24);
+            this.rbUnevenGrowth.TabIndex = 17;
+            this.rbUnevenGrowth.TabStop = true;
+            this.rbUnevenGrowth.Text = "Uneven growth";
+            this.rbUnevenGrowth.UseVisualStyleBackColor = true;
+            // 
+            // rbAllGrowthPositive
+            // 
+            this.rbAllGrowthPositive.AutoSize = true;
+            this.rbAllGrowthPositive.Location = new System.Drawing.Point(509, 116);
+            this.rbAllGrowthPositive.Name = "rbAllGrowthPositive";
+            this.rbAllGrowthPositive.Size = new System.Drawing.Size(155, 24);
+            this.rbAllGrowthPositive.TabIndex = 16;
+            this.rbAllGrowthPositive.Text = "All growth positive";
+            this.rbAllGrowthPositive.UseVisualStyleBackColor = true;
+            // 
+            // txtFilterRateOfReturn
+            // 
+            this.txtFilterRateOfReturn.Location = new System.Drawing.Point(640, 72);
+            this.txtFilterRateOfReturn.Name = "txtFilterRateOfReturn";
+            this.txtFilterRateOfReturn.Size = new System.Drawing.Size(32, 27);
+            this.txtFilterRateOfReturn.TabIndex = 15;
+            this.txtFilterRateOfReturn.Text = "10";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(509, 75);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(125, 20);
+            this.label25.TabIndex = 14;
+            this.label25.Text = "Rate of return(%):";
+            // 
+            // txtFilterAvgFcfGrowth
+            // 
+            this.txtFilterAvgFcfGrowth.Location = new System.Drawing.Point(448, 114);
+            this.txtFilterAvgFcfGrowth.Name = "txtFilterAvgFcfGrowth";
+            this.txtFilterAvgFcfGrowth.Size = new System.Drawing.Size(34, 27);
+            this.txtFilterAvgFcfGrowth.TabIndex = 13;
+            this.txtFilterAvgFcfGrowth.Text = "10";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(276, 117);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(165, 20);
+            this.label24.TabIndex = 12;
+            this.label24.Text = "Min avg FCF growth(%):";
+            // 
+            // txtFilterAvgEPSGrowth
+            // 
+            this.txtFilterAvgEPSGrowth.Location = new System.Drawing.Point(448, 72);
+            this.txtFilterAvgEPSGrowth.Name = "txtFilterAvgEPSGrowth";
+            this.txtFilterAvgEPSGrowth.Size = new System.Drawing.Size(34, 27);
+            this.txtFilterAvgEPSGrowth.TabIndex = 11;
+            this.txtFilterAvgEPSGrowth.Text = "10";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(276, 75);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(166, 20);
+            this.label23.TabIndex = 10;
+            this.label23.Text = "Min avg EPS growth(%):";
+            // 
+            // txtFilterAvgRevGrowth
+            // 
+            this.txtFilterAvgRevGrowth.Location = new System.Drawing.Point(213, 114);
+            this.txtFilterAvgRevGrowth.Name = "txtFilterAvgRevGrowth";
+            this.txtFilterAvgRevGrowth.Size = new System.Drawing.Size(37, 27);
+            this.txtFilterAvgRevGrowth.TabIndex = 9;
+            this.txtFilterAvgRevGrowth.Text = "10";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(18, 116);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(194, 20);
+            this.label22.TabIndex = 8;
+            this.label22.Text = "Min avg revenue growth(%):";
+            // 
+            // txtFilterAvgEqGrowth
+            // 
+            this.txtFilterAvgEqGrowth.Location = new System.Drawing.Point(213, 72);
+            this.txtFilterAvgEqGrowth.Name = "txtFilterAvgEqGrowth";
+            this.txtFilterAvgEqGrowth.Size = new System.Drawing.Size(37, 27);
+            this.txtFilterAvgEqGrowth.TabIndex = 7;
+            this.txtFilterAvgEqGrowth.Text = "10";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(24, 75);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(183, 20);
+            this.label21.TabIndex = 6;
+            this.label21.Text = "Min avg equity growth(%):";
+            // 
             // lblTickerInProcess
             // 
             this.lblTickerInProcess.AutoSize = true;
             this.lblTickerInProcess.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTickerInProcess.Location = new System.Drawing.Point(968, 34);
+            this.lblTickerInProcess.Location = new System.Drawing.Point(938, 30);
             this.lblTickerInProcess.Name = "lblTickerInProcess";
             this.lblTickerInProcess.Size = new System.Drawing.Size(51, 20);
             this.lblTickerInProcess.TabIndex = 5;
@@ -489,9 +634,9 @@ namespace StockScreener
             // pbLoadingCompanies
             // 
             this.pbLoadingCompanies.Image = ((System.Drawing.Image)(resources.GetObject("pbLoadingCompanies.Image")));
-            this.pbLoadingCompanies.Location = new System.Drawing.Point(920, 30);
+            this.pbLoadingCompanies.Location = new System.Drawing.Point(910, 30);
             this.pbLoadingCompanies.Name = "pbLoadingCompanies";
-            this.pbLoadingCompanies.Size = new System.Drawing.Size(31, 26);
+            this.pbLoadingCompanies.Size = new System.Drawing.Size(22, 20);
             this.pbLoadingCompanies.TabIndex = 4;
             this.pbLoadingCompanies.TabStop = false;
             this.pbLoadingCompanies.Visible = false;
@@ -500,10 +645,10 @@ namespace StockScreener
             // 
             this.gvCompanies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvCompanies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvCompanies.Location = new System.Drawing.Point(16, 142);
+            this.gvCompanies.Location = new System.Drawing.Point(16, 157);
             this.gvCompanies.Name = "gvCompanies";
             this.gvCompanies.RowHeadersWidth = 51;
-            this.gvCompanies.Size = new System.Drawing.Size(1016, 552);
+            this.gvCompanies.Size = new System.Drawing.Size(1016, 537);
             this.gvCompanies.TabIndex = 3;
             // 
             // btnGo
@@ -549,6 +694,7 @@ namespace StockScreener
             // 
             // bgwSearchCompanies
             // 
+            this.bgwSearchCompanies.WorkerSupportsCancellation = true;
             this.bgwSearchCompanies.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwSearchCompanies_DoWork);
             this.bgwSearchCompanies.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwSearchCompanies_RunWorkerCompleted);
             // 
@@ -557,11 +703,23 @@ namespace StockScreener
             this.tmrCompanies.Interval = 500;
             this.tmrCompanies.Tick += new System.EventHandler(this.tmrCompanies_Tick);
             // 
+            // cbFilterValue
+            // 
+            this.cbFilterValue.FormattingEnabled = true;
+            this.cbFilterValue.Items.AddRange(new object[] {
+            "Intrinsic Value",
+            "MOS 30%",
+            "MOS 50%"});
+            this.cbFilterValue.Location = new System.Drawing.Point(838, 114);
+            this.cbFilterValue.Name = "cbFilterValue";
+            this.cbFilterValue.Size = new System.Drawing.Size(151, 28);
+            this.cbFilterValue.TabIndex = 19;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1075, 781);
+            this.ClientSize = new System.Drawing.Size(1064, 781);
             this.Controls.Add(this.lblErrorMessage);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
@@ -632,6 +790,20 @@ namespace StockScreener
         private System.ComponentModel.BackgroundWorker bgwSearchCompanies;
         private System.Windows.Forms.Label lblTickerInProcess;
         private System.Windows.Forms.Timer tmrCompanies;
+        private System.Windows.Forms.RadioButton rbUnevenGrowth;
+        private System.Windows.Forms.RadioButton rbAllGrowthPositive;
+        private System.Windows.Forms.TextBox txtFilterRateOfReturn;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.TextBox txtFilterAvgFcfGrowth;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox txtFilterAvgEPSGrowth;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox txtFilterAvgRevGrowth;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox txtFilterAvgEqGrowth;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.ComboBox cbFilterValue;
     }
 }
 
