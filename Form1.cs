@@ -118,6 +118,9 @@ namespace StockScreener
         {
             if (txtURL.Text.Trim() != "")
             {
+                gvCompanies.DataSource = null;
+                gvCompanies.Rows.Clear();
+
                 lblErrorMessage.Text = "";
                 lblTickerInProcess.Text = "";
                 lblProgress.Text = "";
