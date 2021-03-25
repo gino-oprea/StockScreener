@@ -111,6 +111,9 @@ namespace BL
                 }
             }
 
+            currentTicker = "";
+            progress = "";
+
             return filteredCompanies;
         }
         public static List<string> GetCompaniesTickers(string Url)
