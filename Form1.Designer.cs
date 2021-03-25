@@ -95,6 +95,7 @@ namespace StockScreener
             this.bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
+            this.lblProgress = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -477,6 +478,7 @@ namespace StockScreener
             // 
             // tabSearchCompanies
             // 
+            this.tabSearchCompanies.Controls.Add(this.lblProgress);
             this.tabSearchCompanies.Controls.Add(this.cbFilterValue);
             this.tabSearchCompanies.Controls.Add(this.btnStop);
             this.tabSearchCompanies.Controls.Add(this.rbUnevenGrowth);
@@ -721,6 +723,16 @@ namespace StockScreener
             this.tmrTicker.Interval = 500;
             this.tmrTicker.Tick += new System.EventHandler(this.tmrTicker_Tick);
             // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblProgress.Location = new System.Drawing.Point(919, 67);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(70, 20);
+            this.lblProgress.TabIndex = 20;
+            this.lblProgress.Text = "Progress";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -811,6 +823,7 @@ namespace StockScreener
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.ComboBox cbFilterValue;
         private System.Windows.Forms.Timer tmrTicker;
+        private System.Windows.Forms.Label lblProgress;
     }
 }
 

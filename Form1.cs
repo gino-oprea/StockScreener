@@ -120,6 +120,7 @@ namespace StockScreener
             {
                 lblErrorMessage.Text = "";
                 lblTickerInProcess.Text = "";
+                lblProgress.Text = "";
 
                 Url = txtURL.Text;
                 companyFilter = GetFilter();
@@ -282,6 +283,7 @@ namespace StockScreener
             if (e.Cancelled)
             {
                 lblTickerInProcess.Text = "";
+                lblProgress.Text = "";
                 lblErrorMessage.Text = "Cancelled";
             }
             else
@@ -306,6 +308,7 @@ namespace StockScreener
             isSearchInProgress = false;
             pbLoadingCompanies.Visible = false;
             lblTickerInProcess.Text = "";
+            lblProgress.Text = "";
         }
 
         private void tmrCompanies_Tick(object sender, EventArgs e)
@@ -333,6 +336,7 @@ namespace StockScreener
             if (isSearchInProgress)
             {
                 lblTickerInProcess.Text = CompanyScreener.currentTicker;
+                lblProgress.Text = CompanyScreener.progress;
             }
         }
     }

@@ -12,17 +12,27 @@ namespace BL
     {
         public static string currentTicker;
         public static List<Company> currentfilteredCompanies;
+        public static string progress;
+        
         public static List<Company> GetFilteredCompanies(string Url, CompanyFilter filter, BackgroundWorker bgw)
         {
             List<Company> filteredCompanies = new List<Company>();
 
             List<string> allTickers = GetCompaniesTickers(Url);
 
-            foreach (var ticker in allTickers)
+            progress = "0 of " + allTickers.Count.ToString();
+            
+
+            for (int i = 0; i < allTickers.Count; i++)
             {
+                var ticker = allTickers[i];
+
+                progress = (i + 1).ToString() + " of " + allTickers.Count.ToString();                
+
                 if (bgw.CancellationPending)
                 {
                     currentTicker = "";
+                    progress = "";
                     break;
                 }
 
@@ -95,7 +105,7 @@ namespace BL
                     currentfilteredCompanies = filteredCompanies;
                     Thread.Sleep(200);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     //log
                 }
