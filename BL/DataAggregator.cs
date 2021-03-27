@@ -38,18 +38,16 @@ namespace BL
                 {
                     GetCompanyFinancials_MarketWatch(financials_incomeStatement, financials_balanceSheet, financials_cashFlow, company);
 
-                    company.AverageRevenueGrowth = company.Financials[0].Revenue.Count > 0 ? company.Financials[0].Revenue.Average(r => r.Growth) : null;
-                    company.AverageEPSGrowth = company.Financials[0].EPS.Count > 0 ? company.Financials[0].EPS.Average(r => r.Growth) : null;
-
-                    company.AverageEquityGrowth = company.Financials[0].Equity.Count > 0 ? company.Financials[0].Equity.Average(r => r.Growth) : null;
+                    company.AverageRevenueGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Revenue);//company.Financials[0].Revenue.Count > 0 ? company.Financials[0].Revenue.Average(r => r.Growth) : null;
+                    company.AverageEPSGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].EPS);// company.Financials[0].EPS.Count > 0 ? company.Financials[0].EPS.Average(r => r.Growth) : null;
+                    company.AverageEquityGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Equity);//company.Financials[0].Equity.Count > 0 ? company.Financials[0].Equity.Average(r => r.Growth) : null;
+                    company.AverageNetIncomeGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].NetIncome);//company.Financials[0].NetIncome.Count > 0 ? company.Financials[0].NetIncome.Average(r => r.Growth) : null;
+                    company.AverageFreeCashFlowGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].FreeCashFlow);//company.Financials[0].FreeCashFlow.Count > 0 ? company.Financials[0].FreeCashFlow.Average(r => r.Growth) : null;
 
                     if (company.AverageEquityGrowth != null)
                         company.Growth = Math.Min(20, (decimal)company.AverageEquityGrowth);
                     else
                         company.Growth = null;
-
-                    company.AverageNetIncomeGrowth = company.Financials[0].NetIncome.Count > 0 ? company.Financials[0].NetIncome.Average(r => r.Growth) : null;
-                    company.AverageFreeCashFlowGrowth = company.Financials[0].FreeCashFlow.Count > 0 ? company.Financials[0].FreeCashFlow.Average(r => r.Growth) : null;
                 }
                 catch (Exception ex)
                 {
@@ -58,6 +56,18 @@ namespace BL
             }
 
             return company;
+        }
+
+        public static decimal? CalculateCompoundAnualGrowthRate(List<YearVal> FinancialIndicator)
+        {
+            decimal? growth = null;
+
+            if(FinancialIndicator.Count > 0)
+            {
+                growth = ((decimal)Math.Pow(((double)FinancialIndicator[FinancialIndicator.Count - 1].Value / (double)FinancialIndicator[0].Value), (1 / (double)FinancialIndicator.Count)) - 1) * 100;
+            }
+
+            return growth;
         }
 
         public static void GetCompanyGeneralInfo_MarketWatch(string html, Company company)

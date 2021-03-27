@@ -165,7 +165,7 @@ namespace StockScreener
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(406, 631);
+            this.label19.Location = new System.Drawing.Point(1002, 598);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(21, 20);
             this.label19.TabIndex = 35;
@@ -173,15 +173,15 @@ namespace StockScreener
             // 
             // txtGrowth
             // 
-            this.txtGrowth.Location = new System.Drawing.Point(204, 628);
+            this.txtGrowth.Location = new System.Drawing.Point(931, 595);
             this.txtGrowth.Name = "txtGrowth";
-            this.txtGrowth.Size = new System.Drawing.Size(196, 27);
+            this.txtGrowth.Size = new System.Drawing.Size(65, 27);
             this.txtGrowth.TabIndex = 34;
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(24, 631);
+            this.label18.Location = new System.Drawing.Point(751, 598);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(168, 20);
             this.label18.TabIndex = 33;
@@ -189,15 +189,15 @@ namespace StockScreener
             // 
             // txtLastFreeCashFlow
             // 
-            this.txtLastFreeCashFlow.Location = new System.Drawing.Point(204, 661);
+            this.txtLastFreeCashFlow.Location = new System.Drawing.Point(931, 628);
             this.txtLastFreeCashFlow.Name = "txtLastFreeCashFlow";
-            this.txtLastFreeCashFlow.Size = new System.Drawing.Size(196, 27);
+            this.txtLastFreeCashFlow.Size = new System.Drawing.Size(65, 27);
             this.txtLastFreeCashFlow.TabIndex = 32;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(32, 664);
+            this.label17.Location = new System.Drawing.Point(759, 631);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(160, 20);
             this.label17.TabIndex = 31;
@@ -206,7 +206,7 @@ namespace StockScreener
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(406, 598);
+            this.label16.Location = new System.Drawing.Point(1002, 565);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(21, 20);
             this.label16.TabIndex = 30;
@@ -214,16 +214,16 @@ namespace StockScreener
             // 
             // txtDiscountInterestRate
             // 
-            this.txtDiscountInterestRate.Location = new System.Drawing.Point(204, 595);
+            this.txtDiscountInterestRate.Location = new System.Drawing.Point(931, 562);
             this.txtDiscountInterestRate.Name = "txtDiscountInterestRate";
-            this.txtDiscountInterestRate.Size = new System.Drawing.Size(196, 27);
+            this.txtDiscountInterestRate.Size = new System.Drawing.Size(65, 27);
             this.txtDiscountInterestRate.TabIndex = 29;
             this.txtDiscountInterestRate.Text = "10";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(38, 598);
+            this.label15.Location = new System.Drawing.Point(765, 565);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(154, 20);
             this.label15.TabIndex = 28;
@@ -233,7 +233,7 @@ namespace StockScreener
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label14.Location = new System.Drawing.Point(579, 401);
+            this.label14.Location = new System.Drawing.Point(579, 378);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(159, 30);
             this.label14.TabIndex = 27;
@@ -243,16 +243,16 @@ namespace StockScreener
             // 
             this.gvIntrinsicVal.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvIntrinsicVal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvIntrinsicVal.Location = new System.Drawing.Point(579, 434);
+            this.gvIntrinsicVal.Location = new System.Drawing.Point(579, 411);
             this.gvIntrinsicVal.Name = "gvIntrinsicVal";
             this.gvIntrinsicVal.RowHeadersWidth = 51;
             this.gvIntrinsicVal.RowTemplate.Height = 29;
-            this.gvIntrinsicVal.Size = new System.Drawing.Size(449, 188);
+            this.gvIntrinsicVal.Size = new System.Drawing.Size(449, 135);
             this.gvIntrinsicVal.TabIndex = 26;
             // 
             // btnCalculateIntrinsicValue
             // 
-            this.btnCalculateIntrinsicValue.Location = new System.Drawing.Point(579, 628);
+            this.btnCalculateIntrinsicValue.Location = new System.Drawing.Point(726, 661);
             this.btnCalculateIntrinsicValue.Name = "btnCalculateIntrinsicValue";
             this.btnCalculateIntrinsicValue.Size = new System.Drawing.Size(302, 29);
             this.btnCalculateIntrinsicValue.TabIndex = 25;
@@ -282,7 +282,7 @@ namespace StockScreener
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(406, 543);
+            this.label12.Location = new System.Drawing.Point(375, 546);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(21, 20);
             this.label12.TabIndex = 22;
@@ -291,7 +291,7 @@ namespace StockScreener
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(406, 510);
+            this.label11.Location = new System.Drawing.Point(375, 513);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(21, 20);
             this.label11.TabIndex = 21;
@@ -300,7 +300,7 @@ namespace StockScreener
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(406, 477);
+            this.label10.Location = new System.Drawing.Point(375, 480);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(21, 20);
             this.label10.TabIndex = 20;
@@ -309,7 +309,7 @@ namespace StockScreener
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(406, 444);
+            this.label9.Location = new System.Drawing.Point(375, 447);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(21, 20);
             this.label9.TabIndex = 19;
@@ -318,7 +318,7 @@ namespace StockScreener
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(406, 411);
+            this.label8.Location = new System.Drawing.Point(375, 414);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(21, 20);
             this.label8.TabIndex = 18;
@@ -326,15 +326,15 @@ namespace StockScreener
             // 
             // txtAvgFreeCashFlowGrowth
             // 
-            this.txtAvgFreeCashFlowGrowth.Location = new System.Drawing.Point(204, 540);
+            this.txtAvgFreeCashFlowGrowth.Location = new System.Drawing.Point(304, 543);
             this.txtAvgFreeCashFlowGrowth.Name = "txtAvgFreeCashFlowGrowth";
-            this.txtAvgFreeCashFlowGrowth.Size = new System.Drawing.Size(196, 27);
+            this.txtAvgFreeCashFlowGrowth.Size = new System.Drawing.Size(65, 27);
             this.txtAvgFreeCashFlowGrowth.TabIndex = 17;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(38, 543);
+            this.label7.Location = new System.Drawing.Point(138, 546);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(154, 20);
             this.label7.TabIndex = 16;
@@ -342,15 +342,15 @@ namespace StockScreener
             // 
             // txtAvgNetIncomeGrowth
             // 
-            this.txtAvgNetIncomeGrowth.Location = new System.Drawing.Point(204, 507);
+            this.txtAvgNetIncomeGrowth.Location = new System.Drawing.Point(304, 510);
             this.txtAvgNetIncomeGrowth.Name = "txtAvgNetIncomeGrowth";
-            this.txtAvgNetIncomeGrowth.Size = new System.Drawing.Size(196, 27);
+            this.txtAvgNetIncomeGrowth.Size = new System.Drawing.Size(65, 27);
             this.txtAvgNetIncomeGrowth.TabIndex = 15;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(24, 510);
+            this.label6.Location = new System.Drawing.Point(124, 513);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(168, 20);
             this.label6.TabIndex = 14;
@@ -358,15 +358,15 @@ namespace StockScreener
             // 
             // txtAvgEPSGrowth
             // 
-            this.txtAvgEPSGrowth.Location = new System.Drawing.Point(204, 474);
+            this.txtAvgEPSGrowth.Location = new System.Drawing.Point(304, 477);
             this.txtAvgEPSGrowth.Name = "txtAvgEPSGrowth";
-            this.txtAvgEPSGrowth.Size = new System.Drawing.Size(196, 27);
+            this.txtAvgEPSGrowth.Size = new System.Drawing.Size(65, 27);
             this.txtAvgEPSGrowth.TabIndex = 13;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(77, 477);
+            this.label5.Location = new System.Drawing.Point(177, 480);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(115, 20);
             this.label5.TabIndex = 12;
@@ -374,15 +374,15 @@ namespace StockScreener
             // 
             // txtAvgRevenueGrowth
             // 
-            this.txtAvgRevenueGrowth.Location = new System.Drawing.Point(204, 441);
+            this.txtAvgRevenueGrowth.Location = new System.Drawing.Point(304, 444);
             this.txtAvgRevenueGrowth.Name = "txtAvgRevenueGrowth";
-            this.txtAvgRevenueGrowth.Size = new System.Drawing.Size(196, 27);
+            this.txtAvgRevenueGrowth.Size = new System.Drawing.Size(65, 27);
             this.txtAvgRevenueGrowth.TabIndex = 11;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(45, 444);
+            this.label4.Location = new System.Drawing.Point(145, 447);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(147, 20);
             this.label4.TabIndex = 10;
@@ -406,15 +406,15 @@ namespace StockScreener
             // 
             // txtAvgEquityGrowth
             // 
-            this.txtAvgEquityGrowth.Location = new System.Drawing.Point(204, 408);
+            this.txtAvgEquityGrowth.Location = new System.Drawing.Point(304, 411);
             this.txtAvgEquityGrowth.Name = "txtAvgEquityGrowth";
-            this.txtAvgEquityGrowth.Size = new System.Drawing.Size(196, 27);
+            this.txtAvgEquityGrowth.Size = new System.Drawing.Size(65, 27);
             this.txtAvgEquityGrowth.TabIndex = 7;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(60, 411);
+            this.label2.Location = new System.Drawing.Point(160, 414);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(132, 20);
             this.label2.TabIndex = 6;
@@ -447,7 +447,7 @@ namespace StockScreener
             this.gvFinancials.Name = "gvFinancials";
             this.gvFinancials.RowHeadersWidth = 51;
             this.gvFinancials.RowTemplate.Height = 29;
-            this.gvFinancials.Size = new System.Drawing.Size(996, 291);
+            this.gvFinancials.Size = new System.Drawing.Size(996, 265);
             this.gvFinancials.TabIndex = 3;
             // 
             // btnSearch
