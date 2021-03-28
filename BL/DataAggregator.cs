@@ -62,9 +62,12 @@ namespace BL
         {
             decimal? growth = null;
 
-            if(FinancialIndicator.Count > 0)
+            if (FinancialIndicator.Count > 0)
             {
-                growth = ((decimal)Math.Pow(((double)FinancialIndicator[FinancialIndicator.Count - 1].Value / (double)FinancialIndicator[0].Value), (1 / (double)FinancialIndicator.Count)) - 1) * 100;
+                if (FinancialIndicator[FinancialIndicator.Count - 1].Value >= 0 && FinancialIndicator[0].Value > 0)
+                    growth = ((decimal)Math.Pow(((double)FinancialIndicator[FinancialIndicator.Count - 1].Value / (double)FinancialIndicator[0].Value), (1 / (double)FinancialIndicator.Count)) - 1) * 100;
+                else
+                    growth = FinancialIndicator.Average(r => r.Growth);
             }
 
             return growth;
