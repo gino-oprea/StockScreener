@@ -18,7 +18,7 @@ namespace BL
         {
             List<Company> filteredCompanies = new List<Company>();
 
-            List<string> allTickers = GetCompaniesTickers(Url);
+            List<string> allTickers = GetCompaniesTickers(Url, bgw);
 
             progress = "0 of " + allTickers.Count.ToString();
             
@@ -116,12 +116,19 @@ namespace BL
 
             return filteredCompanies;
         }
-        public static List<string> GetCompaniesTickers(string Url)
+        public static List<string> GetCompaniesTickers(string Url, BackgroundWorker bgw)
         {
             List<string> allTickers = new List<string>();
             string nextPageUrlLine = "";
             do
             {
+                if (bgw.CancellationPending)
+                {
+                    currentTicker = "";
+                    progress = "";
+                    break;
+                }
+
                 nextPageUrlLine = "";
 
                 string htmlCompanies = BL.HttpReq.GetUrlHttpWebRequest(Url, "GET", null, false);
