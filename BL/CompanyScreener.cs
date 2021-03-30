@@ -31,6 +31,8 @@ namespace BL
 
                 if (bgw.CancellationPending)
                 {
+                    filteredCompanies = new List<Company>();
+                    currentfilteredCompanies = new List<Company>();
                     currentTicker = "";
                     progress = "";
                     break;
@@ -123,7 +125,7 @@ namespace BL
             do
             {
                 if (bgw.CancellationPending)
-                {
+                {                    
                     currentTicker = "";
                     progress = "";
                     break;
