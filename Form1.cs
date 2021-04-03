@@ -82,6 +82,7 @@ namespace StockScreener
                 AddRow("Net Income", company.Financials[0].NetIncome, dt);
                 AddRow("Free Cash Flow", company.Financials[0].FreeCashFlow, dt);
                 AddRow("Long Term Debt", company.Financials[0].LongTermDebt, dt);
+                AddRow("ROE(%)", company.Financials[0].ROE, dt);
             }
             return dt;
         }
@@ -95,7 +96,7 @@ namespace StockScreener
                 for (int i = 0; i < values.Count; i++)
                 {
                     if (dt.Columns[i + 1].ColumnName.Trim() == values[i].Year.ToString())
-                        dr[i + 1] = values[i].Value.ToString() + (values[i].Growth != null ? "   (" + String.Format("{0:0.00}", values[i].Growth) + "%)" : "");
+                        dr[i + 1] = String.Format("{0:0.00}", values[i].Value) + (values[i].Growth != null ? "   (" + String.Format("{0:0.00}", values[i].Growth) + "%)" : "");
                 }
                 dt.Rows.Add(dr);
             }
@@ -159,6 +160,7 @@ namespace StockScreener
             filter.MinAvgEqGrowth = Convert.ToInt32(txtFilterAvgEqGrowth.Text);
             filter.MinAvgEPSGrowth = Convert.ToInt32(txtFilterAvgEPSGrowth.Text);
             filter.MinAvgFreeCashFlowGrowth = Convert.ToInt32(txtFilterAvgFcfGrowth.Text);
+            filter.MinAvgROE = Convert.ToInt32(txtFilterAvgROE.Text);
 
             filter.IsAllGrowthPositive = rbAllGrowthPositive.Checked;
 
@@ -236,6 +238,8 @@ namespace StockScreener
                     txtAvgEPSGrowth.Text = String.Format("{0:0.00}", company.AverageEPSGrowth);
                     txtAvgNetIncomeGrowth.Text = String.Format("{0:0.00}", company.AverageNetIncomeGrowth);
                     txtAvgFreeCashFlowGrowth.Text = String.Format("{0:0.00}", company.AverageFreeCashFlowGrowth);
+
+                    txtAvgROE.Text = String.Format("{0:0.00}", company.AverageROE);
 
                     var lastCf = company.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
                     if (lastCf != null)

@@ -19,6 +19,8 @@ namespace BL.Models
         public decimal? AverageNetIncomeGrowth { get; set; }
         public decimal? AverageFreeCashFlowGrowth { get; set; }
 
+        public decimal? AverageROE { get; set; }
+
         public decimal? Growth { get; set; }
 
         public decimal? IntrinsicValue { get; set; }

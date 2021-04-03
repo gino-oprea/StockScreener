@@ -13,7 +13,7 @@ namespace BL
         public static string currentTicker;
         public static List<Company> currentfilteredCompanies;
         public static string progress;
-        
+
         public static List<Company> GetFilteredCompanies(string Url, CompanyFilter filter, BackgroundWorker bgw)
         {
             List<Company> filteredCompanies = new List<Company>();
@@ -21,13 +21,13 @@ namespace BL
             List<string> allTickers = GetCompaniesTickers(Url, bgw);
 
             progress = "0 of " + allTickers.Count.ToString();
-            
+
 
             for (int i = 0; i < allTickers.Count; i++)
             {
                 var ticker = allTickers[i];
 
-                progress = (i + 1).ToString() + " of " + allTickers.Count.ToString();                
+                progress = (i + 1).ToString() + " of " + allTickers.Count.ToString();
 
                 if (bgw.CancellationPending)
                 {
@@ -52,20 +52,21 @@ namespace BL
 
                     if (company.Financials.Count > 0)
                     {
-                        if (company.Financials[0].FreeCashFlow.Count > 3
+                        if (company.Financials[0].FreeCashFlow.Count > 2
                             && company.AverageEquityGrowth >= filter.MinAvgEqGrowth
                             && company.AverageRevenueGrowth >= filter.MinAvgRevenueGrowth
                             && company.AverageEPSGrowth >= filter.MinAvgEPSGrowth
-                            && company.AverageFreeCashFlowGrowth >= filter.MinAvgFreeCashFlowGrowth)
+                            && company.AverageFreeCashFlowGrowth >= filter.MinAvgFreeCashFlowGrowth
+                            && company.AverageROE >= filter.MinAvgROE)
                         {
-                            if (!filter.IsAllGrowthPositive ||
+                            if (!filter.IsAllGrowthPositive)
+                            {
+                                var refPrice = GetRefPrice(company, filter);
 
-                                (company.Financials[0].Equity.Find(v => v.Growth < 0) == null
-                                && company.Financials[0].EPS.Find(v => v.Growth < 0) == null
-                                && company.Financials[0].Revenue.Find(v => v.Growth < 0) == null
-                                && company.Financials[0].FreeCashFlow.Find(v => v.Growth < 0) == null)
-
-                                )
+                                if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
+                                    filteredCompanies.Add(company);
+                            }
+                            else
                             {
                                 //check if growth exists over the period
                                 var eqLastIndex = company.Financials[0].Equity.Count - 1;
@@ -80,22 +81,7 @@ namespace BL
                                     && company.Financials[0].FreeCashFlow[0].Value < company.Financials[0].FreeCashFlow[fcfLastIndex].Value
                                     )
                                 {
-                                    var refPrice = company.IntrinsicValue;
-                                    switch (filter.PriceFilter)
-                                    {
-                                        case PriceFilter.IntrinsicValue:
-                                            refPrice = company.IntrinsicValue;
-                                            break;
-                                        case PriceFilter.MOS30:
-                                            refPrice = company.IntrinsicValue_Discounted30;
-                                            break;
-                                        case PriceFilter.MOS50:
-                                            refPrice = company.IntrinsicValue_Discounted50;
-                                            break;
-                                        default:
-                                            refPrice = company.IntrinsicValue;
-                                            break;
-                                    }
+                                    var refPrice = GetRefPrice(company, filter);
 
                                     if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
                                         filteredCompanies.Add(company);
@@ -117,6 +103,27 @@ namespace BL
             progress = "";
 
             return filteredCompanies;
+        }
+        public static decimal GetRefPrice(Company company, CompanyFilter filter)
+        {
+            var refPrice = company.IntrinsicValue;
+            switch (filter.PriceFilter)
+            {
+                case PriceFilter.IntrinsicValue:
+                    refPrice = company.IntrinsicValue;
+                    break;
+                case PriceFilter.MOS30:
+                    refPrice = company.IntrinsicValue_Discounted30;
+                    break;
+                case PriceFilter.MOS50:
+                    refPrice = company.IntrinsicValue_Discounted50;
+                    break;
+                default:
+                    refPrice = company.IntrinsicValue;
+                    break;
+            }
+
+            return (decimal)refPrice;
         }
         public static List<string> GetCompaniesTickers(string Url, BackgroundWorker bgw)
         {

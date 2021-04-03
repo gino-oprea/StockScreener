@@ -44,6 +44,12 @@ namespace BL
                     company.AverageNetIncomeGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].NetIncome);//company.Financials[0].NetIncome.Count > 0 ? company.Financials[0].NetIncome.Average(r => r.Growth) : null;
                     company.AverageFreeCashFlowGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].FreeCashFlow);//company.Financials[0].FreeCashFlow.Count > 0 ? company.Financials[0].FreeCashFlow.Average(r => r.Growth) : null;
 
+                    if (company.Financials[0].ROE.Count > 0)
+                    {
+                        var avgROE = (decimal)company.Financials[0].ROE.Average(r => r.Value);
+                        company.AverageROE = avgROE;
+                    }
+
                     if (company.AverageEquityGrowth != null)
                         company.Growth = Math.Min(20, (decimal)company.AverageEquityGrowth);
                     else
@@ -144,7 +150,7 @@ namespace BL
             financials.LongTermDebt = GetFinancialData(rawLines_balanceSheet, ">Long-Term Debt</div>", "</tr>");
             financials.Equity = GetFinancialData(rawLines_balanceSheet, "<div class=\"cell__content \">Total Equity</div>", "</tr>");
             financials.FreeCashFlow = GetFinancialData(rawLines_cashFlow, "<div class=\"cell__content \">Free Cash Flow</div>", "</tr>");
-
+            financials.ROE = GetROE(financials);
 
 
 
@@ -220,6 +226,24 @@ namespace BL
             return financialData;
         }
 
+        public static List<YearVal> GetROE(Financials financials)
+        {
+            List<YearVal> roe = new List<YearVal>();
+
+            for (int i = 0; i < financials.NetIncome.Count; i++)
+            {
+                var year = financials.NetIncome[i].Year;
+                var val = financials.NetIncome[i].Value / financials.Equity[i].Value * 100;
+
+                YearVal roe_item = new YearVal();
+                roe_item.Value = val;
+                roe_item.Year = year;
+
+                roe.Add(roe_item);
+            }
+
+            return roe;
+        }
 
         public static float? ConvertStringToBillions(string value)
         {
