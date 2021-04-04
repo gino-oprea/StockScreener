@@ -68,23 +68,31 @@ namespace BL
                             }
                             else
                             {
-                                //check if growth exists over the period
-                                var eqLastIndex = company.Financials[0].Equity.Count - 1;
-                                var revLastIndex = company.Financials[0].Revenue.Count - 1;
-                                var epsLastIndex = company.Financials[0].EPS.Count - 1;
-                                var fcfLastIndex = company.Financials[0].FreeCashFlow.Count - 1;
-
-                                if (
-                                    company.Financials[0].Equity[0].Value < company.Financials[0].Equity[eqLastIndex].Value
-                                    && company.Financials[0].Revenue[0].Value < company.Financials[0].Revenue[revLastIndex].Value
-                                    && company.Financials[0].EPS[0].Value < company.Financials[0].EPS[epsLastIndex].Value
-                                    && company.Financials[0].FreeCashFlow[0].Value < company.Financials[0].FreeCashFlow[fcfLastIndex].Value
-                                    )
+                                //all growth positive
+                                if (company.Financials[0].Equity.Find(v => v.Growth < 0) == null
+                                && company.Financials[0].EPS.Find(v => v.Growth < 0) == null
+                                && company.Financials[0].Revenue.Find(v => v.Growth < 0) == null
+                                && company.Financials[0].FreeCashFlow.Find(v => v.Growth < 0) == null)
                                 {
+
+                                    ////check if growth exists over the period
+                                    //var eqLastIndex = company.Financials[0].Equity.Count - 1;
+                                    //var revLastIndex = company.Financials[0].Revenue.Count - 1;
+                                    //var epsLastIndex = company.Financials[0].EPS.Count - 1;
+                                    //var fcfLastIndex = company.Financials[0].FreeCashFlow.Count - 1;
+
+                                    //if (
+                                    //    company.Financials[0].Equity[0].Value < company.Financials[0].Equity[eqLastIndex].Value
+                                    //    && company.Financials[0].Revenue[0].Value < company.Financials[0].Revenue[revLastIndex].Value
+                                    //    && company.Financials[0].EPS[0].Value < company.Financials[0].EPS[epsLastIndex].Value
+                                    //    && company.Financials[0].FreeCashFlow[0].Value < company.Financials[0].FreeCashFlow[fcfLastIndex].Value
+                                    //    )
+                                    //{
                                     var refPrice = GetRefPrice(company, filter);
 
                                     if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
                                         filteredCompanies.Add(company);
+                                    //}
                                 }
                             }
                         }

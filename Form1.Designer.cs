@@ -33,6 +33,9 @@ namespace StockScreener
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCheckCompany = new System.Windows.Forms.TabPage();
+            this.label27 = new System.Windows.Forms.Label();
+            this.txtAvgROE = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.txtGrowth = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -70,6 +73,8 @@ namespace StockScreener
             this.label1 = new System.Windows.Forms.Label();
             this.txtTicker = new System.Windows.Forms.TextBox();
             this.tabSearchCompanies = new System.Windows.Forms.TabPage();
+            this.txtFilterAvgROE = new System.Windows.Forms.TextBox();
+            this.label28 = new System.Windows.Forms.Label();
             this.lblProgress = new System.Windows.Forms.Label();
             this.cbFilterValue = new System.Windows.Forms.ComboBox();
             this.btnStop = new System.Windows.Forms.Button();
@@ -96,11 +101,6 @@ namespace StockScreener
             this.bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
-            this.label26 = new System.Windows.Forms.Label();
-            this.txtAvgROE = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.txtFilterAvgROE = new System.Windows.Forms.TextBox();
-            this.label28 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -169,6 +169,31 @@ namespace StockScreener
             this.tabCheckCompany.TabIndex = 0;
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(376, 552);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(21, 20);
+            this.label27.TabIndex = 38;
+            this.label27.Text = "%";
+            // 
+            // txtAvgROE
+            // 
+            this.txtAvgROE.Location = new System.Drawing.Point(305, 549);
+            this.txtAvgROE.Name = "txtAvgROE";
+            this.txtAvgROE.Size = new System.Drawing.Size(65, 27);
+            this.txtAvgROE.TabIndex = 37;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(226, 552);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(67, 20);
+            this.label26.TabIndex = 36;
+            this.label26.Text = "Avg ROE";
             // 
             // label19
             // 
@@ -517,6 +542,23 @@ namespace StockScreener
             this.tabSearchCompanies.Text = "Search Companies";
             this.tabSearchCompanies.UseVisualStyleBackColor = true;
             // 
+            // txtFilterAvgROE
+            // 
+            this.txtFilterAvgROE.Location = new System.Drawing.Point(619, 113);
+            this.txtFilterAvgROE.Name = "txtFilterAvgROE";
+            this.txtFilterAvgROE.Size = new System.Drawing.Size(32, 27);
+            this.txtFilterAvgROE.TabIndex = 22;
+            this.txtFilterAvgROE.Text = "10";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(494, 117);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(119, 20);
+            this.label28.TabIndex = 21;
+            this.label28.Text = "Min avg ROE(%):";
+            // 
             // lblProgress
             // 
             this.lblProgress.AutoSize = true;
@@ -742,48 +784,6 @@ namespace StockScreener
             // 
             this.tmrTicker.Interval = 500;
             this.tmrTicker.Tick += new System.EventHandler(this.tmrTicker_Tick);
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(226, 552);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(67, 20);
-            this.label26.TabIndex = 36;
-            this.label26.Text = "Avg ROE";
-            // 
-            // txtAvgROE
-            // 
-            this.txtAvgROE.Location = new System.Drawing.Point(305, 549);
-            this.txtAvgROE.Name = "txtAvgROE";
-            this.txtAvgROE.Size = new System.Drawing.Size(65, 27);
-            this.txtAvgROE.TabIndex = 37;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(376, 552);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(21, 20);
-            this.label27.TabIndex = 38;
-            this.label27.Text = "%";
-            // 
-            // txtFilterAvgROE
-            // 
-            this.txtFilterAvgROE.Location = new System.Drawing.Point(619, 113);
-            this.txtFilterAvgROE.Name = "txtFilterAvgROE";
-            this.txtFilterAvgROE.Size = new System.Drawing.Size(32, 27);
-            this.txtFilterAvgROE.TabIndex = 22;
-            this.txtFilterAvgROE.Text = "7";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(494, 117);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(119, 20);
-            this.label28.TabIndex = 21;
-            this.label28.Text = "Min avg ROE(%):";
             // 
             // Form1
             // 
