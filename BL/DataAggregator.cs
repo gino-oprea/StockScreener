@@ -50,8 +50,13 @@ namespace BL
                         company.AverageROE = avgROE;
                     }
 
+
                     if (company.AverageEquityGrowth != null)
-                        company.Growth = Math.Min(20, (decimal)company.AverageEquityGrowth);
+                    {
+                        var avgGrowth = (decimal)(company.AverageRevenueGrowth + company.AverageEPSGrowth + company.AverageEquityGrowth + company.AverageNetIncomeGrowth + company.AverageFreeCashFlowGrowth) / 5;
+                        company.Growth = Math.Min(20, avgGrowth);
+                        //Math.Min(20, (decimal)company.AverageEquityGrowth);
+                    }
                     else
                         company.Growth = null;
                 }
