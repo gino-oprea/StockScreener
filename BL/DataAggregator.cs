@@ -117,7 +117,7 @@ namespace BL
 
                 company.Name = name;
                 company.CurrentPrice = float.Parse(currentPrice);
-                company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : null;
+                company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : 1;
                 if (pe_ratio != "N/A")
                     company.PE_Ratio = float.Parse(pe_ratio);
             }
