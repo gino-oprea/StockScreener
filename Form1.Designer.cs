@@ -575,7 +575,9 @@ namespace StockScreener
             this.cbFilterValue.Items.AddRange(new object[] {
             "Intrinsic Value",
             "MOS 30%",
-            "MOS 50%"});
+            "MOS 50%",
+            "Premium 10%",
+            "Premium 20%"});
             this.cbFilterValue.Location = new System.Drawing.Point(847, 109);
             this.cbFilterValue.Name = "cbFilterValue";
             this.cbFilterValue.Size = new System.Drawing.Size(151, 28);

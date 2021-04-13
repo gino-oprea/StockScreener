@@ -8,7 +8,9 @@ namespace BL.Models
     {
         IntrinsicValue = 0,
         MOS30 = 1,
-        MOS50 = 2
+        MOS50 = 2,
+        IntrinsicValuePremium10 = 3,
+        IntrinsicValuePremum20 = 4
     }
 
     public class CompanyFilter

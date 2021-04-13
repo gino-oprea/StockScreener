@@ -126,6 +126,12 @@ namespace BL
                 case PriceFilter.MOS50:
                     refPrice = company.IntrinsicValue_Discounted50;
                     break;
+                case PriceFilter.IntrinsicValuePremium10:
+                    refPrice = company.IntrinsicValue * (decimal)1.1;
+                    break;
+                case PriceFilter.IntrinsicValuePremum20:
+                    refPrice = company.IntrinsicValue * (decimal)1.2;
+                    break;
                 default:
                     refPrice = company.IntrinsicValue;
                     break;
