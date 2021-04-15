@@ -69,10 +69,13 @@ namespace BL
                             else
                             {
                                 //all growth positive
-                                if (company.Financials[0].Equity.Find(v => v.Growth < 0) == null
-                                && company.Financials[0].EPS.Find(v => v.Growth < 0) == null
-                                && company.Financials[0].Revenue.Find(v => v.Growth < 0) == null
-                                && company.Financials[0].FreeCashFlow.Find(v => v.Growth < 0) == null)
+                                int negativeYearsNo = 0;
+                                if (filter.AllowOneNegativeYear) negativeYearsNo = 1;
+
+                                if (company.Financials[0].Equity.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
+                                && company.Financials[0].EPS.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
+                                && company.Financials[0].Revenue.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
+                                && company.Financials[0].FreeCashFlow.FindAll(v => v.Growth < 0).Count <= negativeYearsNo)
                                 {
 
                                     ////check if growth exists over the period

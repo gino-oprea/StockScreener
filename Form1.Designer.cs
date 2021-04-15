@@ -101,6 +101,7 @@ namespace StockScreener
             this.bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
+            this.chkOneYearNegative = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -511,6 +512,7 @@ namespace StockScreener
             // 
             // tabSearchCompanies
             // 
+            this.tabSearchCompanies.Controls.Add(this.chkOneYearNegative);
             this.tabSearchCompanies.Controls.Add(this.txtFilterAvgROE);
             this.tabSearchCompanies.Controls.Add(this.label28);
             this.tabSearchCompanies.Controls.Add(this.lblProgress);
@@ -578,7 +580,7 @@ namespace StockScreener
             "MOS 50%",
             "Premium 10%",
             "Premium 20%"});
-            this.cbFilterValue.Location = new System.Drawing.Point(847, 109);
+            this.cbFilterValue.Location = new System.Drawing.Point(881, 123);
             this.cbFilterValue.Name = "cbFilterValue";
             this.cbFilterValue.Size = new System.Drawing.Size(151, 28);
             this.cbFilterValue.TabIndex = 19;
@@ -787,6 +789,16 @@ namespace StockScreener
             this.tmrTicker.Interval = 500;
             this.tmrTicker.Tick += new System.EventHandler(this.tmrTicker_Tick);
             // 
+            // chkOneYearNegative
+            // 
+            this.chkOneYearNegative.AutoSize = true;
+            this.chkOneYearNegative.Location = new System.Drawing.Point(678, 128);
+            this.chkOneYearNegative.Name = "chkOneYearNegative";
+            this.chkOneYearNegative.Size = new System.Drawing.Size(174, 24);
+            this.chkOneYearNegative.TabIndex = 23;
+            this.chkOneYearNegative.Text = "Allow 1 negative year";
+            this.chkOneYearNegative.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -884,6 +896,7 @@ namespace StockScreener
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TextBox txtFilterAvgROE;
         private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.CheckBox chkOneYearNegative;
     }
 }
 

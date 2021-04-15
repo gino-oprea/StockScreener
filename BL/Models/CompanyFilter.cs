@@ -25,5 +25,7 @@ namespace BL.Models
         public int DiscountRate { get; set; }
         public bool IsAllGrowthPositive { get; set; }
 
+        public bool AllowOneNegativeYear { get; set; }
+
     }
 }

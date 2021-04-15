@@ -163,6 +163,7 @@ namespace StockScreener
             filter.MinAvgROE = Convert.ToInt32(txtFilterAvgROE.Text);
 
             filter.IsAllGrowthPositive = rbAllGrowthPositive.Checked;
+            filter.AllowOneNegativeYear = chkOneYearNegative.Checked;
 
             return filter;
         }
