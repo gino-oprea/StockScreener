@@ -132,8 +132,11 @@ namespace BL
                 case PriceFilter.IntrinsicValuePremium10:
                     refPrice = company.IntrinsicValue * (decimal)1.1;
                     break;
-                case PriceFilter.IntrinsicValuePremum20:
+                case PriceFilter.IntrinsicValuePremium20:
                     refPrice = company.IntrinsicValue * (decimal)1.2;
+                    break;
+                case PriceFilter.Unlimited:
+                    refPrice = decimal.MaxValue;
                     break;
                 default:
                     refPrice = company.IntrinsicValue;
