@@ -75,10 +75,20 @@ namespace BL
 
             if (FinancialIndicator.Count > 0)
             {
-                if (FinancialIndicator[FinancialIndicator.Count - 1].Value >= 0 && FinancialIndicator[0].Value > 0)
+                //se poate calcula cresterea compusa(pentru ca sunt pozitive)
+                if (FinancialIndicator[FinancialIndicator.Count - 1].Value >= 0
+                    && FinancialIndicator[0].Value > 0
+                    && FinancialIndicator[FinancialIndicator.Count - 1].Value >= FinancialIndicator[0].Value)
                     growth = ((decimal)Math.Pow(((double)FinancialIndicator[FinancialIndicator.Count - 1].Value / (double)FinancialIndicator[0].Value), (1 / (double)FinancialIndicator.Count)) - 1) * 100;
                 else
-                    growth = FinancialIndicator.Average(r => r.Growth);
+                {                     
+                    //nu se poate calcula cresterea compusa dar exista crestere si se face media
+                    if (FinancialIndicator[FinancialIndicator.Count - 1].Value >= FinancialIndicator[0].Value)
+                        growth = FinancialIndicator.Average(r => r.Growth);
+                    else
+                        //nu exista crestere
+                        growth = 0;
+                }
             }
 
             return growth;
