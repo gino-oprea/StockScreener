@@ -161,33 +161,36 @@ namespace BL
                 nextPageUrlLine = "";
 
                 string htmlCompanies = BL.HttpReq.GetUrlHttpWebRequest(Url, "GET", null, false);
-                var rawLines = HtmlHelper.GetRawLinesFromHtml(htmlCompanies);
-
-                List<string> companyLines = new List<string>();
-
-                for (int i = 0; i < rawLines.Count; i++)
+                if (htmlCompanies != null)
                 {
-                    if (rawLines[i].Contains("<td class=\"aleft\"><a href=\"/investing/stock"))
-                        companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "<td class=\"aleft\"><a href=", "</a>", false));
+                    var rawLines = HtmlHelper.GetRawLinesFromHtml(htmlCompanies);
 
-                    if (rawLines[i].Contains("<a href=\"/tools/stockresearch/screener/results.asp") && rawLines[i].Contains("Next"))
-                        nextPageUrlLine = rawLines[i];
+                    List<string> companyLines = new List<string>();
+
+                    for (int i = 0; i < rawLines.Count; i++)
+                    {
+                        if (rawLines[i].Contains("<td class=\"aleft\"><a href=\"/investing/stock"))
+                            companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "<td class=\"aleft\"><a href=", "</a>", false));
+
+                        if (rawLines[i].Contains("<a href=\"/tools/stockresearch/screener/results.asp") && rawLines[i].Contains("Next"))
+                            nextPageUrlLine = rawLines[i];
+                    }
+
+
+                    for (int i = 0; i < companyLines.Count; i++)
+                    {
+                        var ticker = companyLines[i].Substring(companyLines[i].IndexOf(">") + 1);
+                        allTickers.Add(ticker);
+                    }
+
+                    if (nextPageUrlLine != "")
+                    {
+                        string nextPageUrl = WebUtility.HtmlDecode("https://www.marketwatch.com" + HtmlHelper.ExtractString(nextPageUrlLine, "href=\"", "\">Next", false));
+                        Url = nextPageUrl;
+                    }
                 }
 
-
-                for (int i = 0; i < companyLines.Count; i++)
-                {
-                    var ticker = companyLines[i].Substring(companyLines[i].IndexOf(">") + 1);
-                    allTickers.Add(ticker);
-                }
-
-                if (nextPageUrlLine != "")
-                {
-                    string nextPageUrl = WebUtility.HtmlDecode("https://www.marketwatch.com" + HtmlHelper.ExtractString(nextPageUrlLine, "href=\"", "\">Next", false));
-                    Url = nextPageUrl;
-                }
-
-                Thread.Sleep(200);
+                Thread.Sleep(250);
 
             }
             while (nextPageUrlLine != "");

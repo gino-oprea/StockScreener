@@ -242,11 +242,21 @@ namespace StockScreener
 
                     txtAvgROE.Text = String.Format("{0:0.00}", company.AverageROE);
 
-                    var lastCf = company.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
-                    if (lastCf != null)
-                        txtLastFreeCashFlow.Text = String.Format("{0:0.00}", (decimal)lastCf.Value);
+                    var avgCf = company.Financials[0].FreeCashFlow.Average(c => c.Value);
+
+                    //var lastCf = company.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
+
+                    if (avgCf > 0)
+                        txtLastFreeCashFlow.Text = String.Format("{0:0.00}", (decimal)avgCf);
                     else
-                        throw new Exception("No positive cashflow found!");
+                    {
+                        var lastCf = company.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
+                        if (lastCf != null)
+                            txtLastFreeCashFlow.Text = String.Format("{0:0.00}", (decimal)lastCf.Value);
+                        else
+                            throw new Exception("No positive cashflow found!");
+                    }
+                    
 
 
                     gvFinancials.DataSource = bindingSourceKeyValues;

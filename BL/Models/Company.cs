@@ -40,11 +40,24 @@ namespace BL.Models
 
             if (lastCashFlow == null)
             {
-                var lastCf = this.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
-                if (lastCf != null)
-                    lastCashFlow = (decimal)lastCf.Value;
+                var avgCf = this.Financials[0].FreeCashFlow.Average(c => c.Value);
+
+                if (avgCf > 0)
+                    lastCashFlow = (decimal)avgCf;
                 else
-                    return new List<decimal>() { 0, 0, 0 };
+                {
+                    var lastCf = this.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
+                    if (lastCf != null)
+                        lastCashFlow = (decimal)lastCf.Value;
+                    else
+                        return new List<decimal>() { 0, 0, 0 };
+                }
+
+                //var lastCf = this.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
+                //if (lastCf != null)
+                //    lastCashFlow = (decimal)lastCf.Value;
+                //else
+                //    return new List<decimal>() { 0, 0, 0 };
             }            
 
             if (growth == null)

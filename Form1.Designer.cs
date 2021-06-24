@@ -235,7 +235,7 @@ namespace StockScreener
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(160, 20);
             this.label17.TabIndex = 31;
-            this.label17.Text = "Last Free Cash Flow (B)";
+            this.label17.Text = "Avg Free Cash Flow (B)";
             // 
             // label16
             // 
