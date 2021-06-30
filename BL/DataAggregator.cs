@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 
@@ -31,12 +32,15 @@ namespace BL
             string financials_balanceSheet = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/balance-sheet", "GET", null, false);
             Thread.Sleep(250);
             string financials_cashFlow = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/cash-flow", "GET", null, false);
+            Thread.Sleep(250);            
+            string financials_quickFS = BL.HttpReq.GetUrlHttpWebRequest("https://api.quickfs.net/stocks/" + TickerSymbol + "/ovr/Annual/?sortOrder=ASC" , "GET", null, false);
 
             if (financials_incomeStatement != null)
             {
                 try
                 {
                     GetCompanyFinancials_MarketWatch(financials_incomeStatement, financials_balanceSheet, financials_cashFlow, company);
+                    GetCompanyFinancials_QuickFS(financials_quickFS, company);
 
                     company.AverageRevenueGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Revenue);//company.Financials[0].Revenue.Count > 0 ? company.Financials[0].Revenue.Average(r => r.Growth) : null;
                     company.AverageEPSGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].EPS);// company.Financials[0].EPS.Count > 0 ? company.Financials[0].EPS.Average(r => r.Growth) : null;
@@ -50,15 +54,22 @@ namespace BL
                         company.AverageROE = avgROE;
                     }
 
-
+                    //if (company.AverageROIC != null)
+                    //    company.Growth = company.AverageROIC;
+                    //else
+                    //{
                     if (company.AverageEquityGrowth != null)
                     {
-                        var avgGrowth = (decimal)(company.AverageRevenueGrowth + company.AverageEPSGrowth + company.AverageEquityGrowth + company.AverageNetIncomeGrowth + company.AverageFreeCashFlowGrowth) / 5;
-                        company.Growth = Math.Min(20, avgGrowth);
-                        //Math.Min(20, (decimal)company.AverageEquityGrowth);
+                        var avgGrowth = (decimal)(company.AverageRevenueGrowth + company.AverageEPSGrowth +
+                            company.AverageEquityGrowth + company.AverageNetIncomeGrowth +
+                            company.AverageFreeCashFlowGrowth + company.AverageROIC) / 6;
+                        company.Growth = avgGrowth;
+                        //company.Growth = Math.Min(20, avgGrowth);
+
                     }
                     else
-                        company.Growth = null;
+                        company.Growth = 0;
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -142,22 +153,7 @@ namespace BL
             List<string> rawLines_balanceSheet = HtmlHelper.GetRawLinesFromHtml(html_balanceSheet);
             List<string> rawLines_cashFlow = HtmlHelper.GetRawLinesFromHtml(html_cashFlow);
 
-            List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines_incomeStatement, "thead class=\"table__header\"", "/thead");
-
-            //years
-            //List<int> years = new List<int>();
-            //for (int i = 0; i < selectedLines.Count; i++)
-            //{
-            //    string selectedLine = selectedLines[i];
-            //    int year;
-            //    if (selectedLines[i].Contains("class=\"cell__content\">") && selectedLines[i].IndexOf("class=\"cell__content\">") < selectedLines[i].IndexOf("</"))
-            //    {
-            //        bool isYear = int.TryParse(HtmlHelper.ExtractString(selectedLines[i], "class=\"cell__content\">", "</", false), out year);
-
-            //        if (isYear)
-            //            years.Add(year);
-            //    }
-            //}
+            List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines_incomeStatement, "thead class=\"table__header\"", "/thead");           
 
             financials.Revenue = GetFinancialData(rawLines_incomeStatement, "<div class=\"cell__content \">Sales/Revenue</div>", "</tr>");
             financials.NetIncome = GetFinancialData(rawLines_incomeStatement, "<div class=\"cell__content \">Net Income</div>", "</tr>");
@@ -167,10 +163,16 @@ namespace BL
             financials.FreeCashFlow = GetFinancialData(rawLines_cashFlow, "<div class=\"cell__content \">Free Cash Flow</div>", "</tr>");
             financials.ROE = GetROE(financials);
 
-
-
-
             company.Financials.Add(financials);
+        }
+        public static void GetCompanyFinancials_QuickFS(string html_quickFS, Company company)
+        {           
+
+            if (html_quickFS!=null && html_quickFS.Trim()!=string.Empty)
+            {
+                var avgRoicString = HtmlHelper.ExtractString(html_quickFS, "<td class='lt'>ROIC<\\/td><td class='rt'>", "%<\\/td>", false);
+                company.AverageROIC = Convert.ToDecimal(avgRoicString);
+            }
         }
 
         public static List<int> GetAvailableYears(List<string> rawLines)

@@ -33,6 +33,9 @@ namespace StockScreener
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCheckCompany = new System.Windows.Forms.TabPage();
+            this.label29 = new System.Windows.Forms.Label();
+            this.txtAvgROIC = new System.Windows.Forms.TextBox();
+            this.label30 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.txtAvgROE = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
@@ -74,7 +77,7 @@ namespace StockScreener
             this.txtTicker = new System.Windows.Forms.TextBox();
             this.tabSearchCompanies = new System.Windows.Forms.TabPage();
             this.chkOneYearNegative = new System.Windows.Forms.CheckBox();
-            this.txtFilterAvgROE = new System.Windows.Forms.TextBox();
+            this.txtFilterAvgROIC = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.lblProgress = new System.Windows.Forms.Label();
             this.cbFilterValue = new System.Windows.Forms.ComboBox();
@@ -124,6 +127,9 @@ namespace StockScreener
             // 
             // tabCheckCompany
             // 
+            this.tabCheckCompany.Controls.Add(this.label29);
+            this.tabCheckCompany.Controls.Add(this.txtAvgROIC);
+            this.tabCheckCompany.Controls.Add(this.label30);
             this.tabCheckCompany.Controls.Add(this.label27);
             this.tabCheckCompany.Controls.Add(this.txtAvgROE);
             this.tabCheckCompany.Controls.Add(this.label26);
@@ -171,6 +177,31 @@ namespace StockScreener
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
             // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(376, 586);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(21, 20);
+            this.label29.TabIndex = 41;
+            this.label29.Text = "%";
+            // 
+            // txtAvgROIC
+            // 
+            this.txtAvgROIC.Location = new System.Drawing.Point(305, 583);
+            this.txtAvgROIC.Name = "txtAvgROIC";
+            this.txtAvgROIC.Size = new System.Drawing.Size(65, 27);
+            this.txtAvgROIC.TabIndex = 40;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(226, 586);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(72, 20);
+            this.label30.TabIndex = 39;
+            this.label30.Text = "Avg ROIC";
+            // 
             // label27
             // 
             this.label27.AutoSize = true;
@@ -215,11 +246,11 @@ namespace StockScreener
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(751, 598);
+            this.label18.Location = new System.Drawing.Point(862, 598);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(168, 20);
+            this.label18.Size = new System.Drawing.Size(57, 20);
             this.label18.TabIndex = 33;
-            this.label18.Text = "Growth (limited to 20%)";
+            this.label18.Text = "Growth";
             // 
             // txtLastFreeCashFlow
             // 
@@ -513,7 +544,7 @@ namespace StockScreener
             // tabSearchCompanies
             // 
             this.tabSearchCompanies.Controls.Add(this.chkOneYearNegative);
-            this.tabSearchCompanies.Controls.Add(this.txtFilterAvgROE);
+            this.tabSearchCompanies.Controls.Add(this.txtFilterAvgROIC);
             this.tabSearchCompanies.Controls.Add(this.label28);
             this.tabSearchCompanies.Controls.Add(this.lblProgress);
             this.tabSearchCompanies.Controls.Add(this.cbFilterValue);
@@ -554,22 +585,22 @@ namespace StockScreener
             this.chkOneYearNegative.Text = "Allow 1 negative year";
             this.chkOneYearNegative.UseVisualStyleBackColor = true;
             // 
-            // txtFilterAvgROE
+            // txtFilterAvgROIC
             // 
-            this.txtFilterAvgROE.Location = new System.Drawing.Point(619, 113);
-            this.txtFilterAvgROE.Name = "txtFilterAvgROE";
-            this.txtFilterAvgROE.Size = new System.Drawing.Size(32, 27);
-            this.txtFilterAvgROE.TabIndex = 22;
-            this.txtFilterAvgROE.Text = "10";
+            this.txtFilterAvgROIC.Location = new System.Drawing.Point(619, 113);
+            this.txtFilterAvgROIC.Name = "txtFilterAvgROIC";
+            this.txtFilterAvgROIC.Size = new System.Drawing.Size(32, 27);
+            this.txtFilterAvgROIC.TabIndex = 22;
+            this.txtFilterAvgROIC.Text = "7";
             // 
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(494, 117);
+            this.label28.Location = new System.Drawing.Point(488, 117);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(119, 20);
+            this.label28.Size = new System.Drawing.Size(124, 20);
             this.label28.TabIndex = 21;
-            this.label28.Text = "Min avg ROE(%):";
+            this.label28.Text = "Min avg ROIC(%):";
             // 
             // lblProgress
             // 
@@ -826,7 +857,7 @@ namespace StockScreener
         }
 
         #endregion
-
+        
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabCheckCompany;
         private System.Windows.Forms.DataGridView gvFinancials;
@@ -895,9 +926,12 @@ namespace StockScreener
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox txtAvgROE;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.TextBox txtFilterAvgROE;
+        private System.Windows.Forms.TextBox txtFilterAvgROIC;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.CheckBox chkOneYearNegative;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox txtAvgROIC;
+        private System.Windows.Forms.Label label30;
     }
 }
 

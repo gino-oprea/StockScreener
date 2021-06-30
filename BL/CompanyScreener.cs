@@ -57,7 +57,7 @@ namespace BL
                             && company.AverageRevenueGrowth >= filter.MinAvgRevenueGrowth
                             && company.AverageEPSGrowth >= filter.MinAvgEPSGrowth
                             && company.AverageFreeCashFlowGrowth >= filter.MinAvgFreeCashFlowGrowth
-                            && company.AverageROE >= filter.MinAvgROE)
+                            && company.AverageROIC >= filter.MinAvgROIC)
                         {
                             if (!filter.IsAllGrowthPositive)
                             {
@@ -76,26 +76,11 @@ namespace BL
                                 && company.Financials[0].EPS.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
                                 && company.Financials[0].Revenue.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
                                 && company.Financials[0].FreeCashFlow.FindAll(v => v.Growth < 0).Count <= negativeYearsNo)
-                                {
-
-                                    ////check if growth exists over the period
-                                    //var eqLastIndex = company.Financials[0].Equity.Count - 1;
-                                    //var revLastIndex = company.Financials[0].Revenue.Count - 1;
-                                    //var epsLastIndex = company.Financials[0].EPS.Count - 1;
-                                    //var fcfLastIndex = company.Financials[0].FreeCashFlow.Count - 1;
-
-                                    //if (
-                                    //    company.Financials[0].Equity[0].Value < company.Financials[0].Equity[eqLastIndex].Value
-                                    //    && company.Financials[0].Revenue[0].Value < company.Financials[0].Revenue[revLastIndex].Value
-                                    //    && company.Financials[0].EPS[0].Value < company.Financials[0].EPS[epsLastIndex].Value
-                                    //    && company.Financials[0].FreeCashFlow[0].Value < company.Financials[0].FreeCashFlow[fcfLastIndex].Value
-                                    //    )
-                                    //{
+                                {                                   
                                     var refPrice = GetRefPrice(company, filter);
 
                                     if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
-                                        filteredCompanies.Add(company);
-                                    //}
+                                        filteredCompanies.Add(company);                                 
                                 }
                             }
                         }

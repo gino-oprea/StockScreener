@@ -160,7 +160,7 @@ namespace StockScreener
             filter.MinAvgEqGrowth = Convert.ToInt32(txtFilterAvgEqGrowth.Text);
             filter.MinAvgEPSGrowth = Convert.ToInt32(txtFilterAvgEPSGrowth.Text);
             filter.MinAvgFreeCashFlowGrowth = Convert.ToInt32(txtFilterAvgFcfGrowth.Text);
-            filter.MinAvgROE = Convert.ToInt32(txtFilterAvgROE.Text);
+            filter.MinAvgROIC = Convert.ToInt32(txtFilterAvgROIC.Text);
 
             filter.IsAllGrowthPositive = rbAllGrowthPositive.Checked;
             filter.AllowOneNegativeYear = chkOneYearNegative.Checked;
@@ -181,7 +181,7 @@ namespace StockScreener
             dt.Columns.Add("Intrinsic Value (-30%)");
             dt.Columns.Add("Intrinsic Value (-50%)");
 
-            dt.Columns.Add("Growth");
+            dt.Columns.Add("ROIC");
 
             foreach (var company in companies)
             {
@@ -196,7 +196,7 @@ namespace StockScreener
                 dr[5] = String.Format("{0:0.00}", company.IntrinsicValue_Discounted30);
                 dr[6] = String.Format("{0:0.00}", company.IntrinsicValue_Discounted50);
 
-                dr[7] = String.Format("{0:0.00}", company.Growth);
+                dr[7] = String.Format("{0:0.00}", company.AverageROIC);
                 dt.Rows.Add(dr);
             }           
 
@@ -241,6 +241,7 @@ namespace StockScreener
                     txtAvgFreeCashFlowGrowth.Text = String.Format("{0:0.00}", company.AverageFreeCashFlowGrowth);
 
                     txtAvgROE.Text = String.Format("{0:0.00}", company.AverageROE);
+                    txtAvgROIC.Text = String.Format("{0:0.00}", company.AverageROIC);
 
                     var avgCf = company.Financials[0].FreeCashFlow.Average(c => c.Value);
 

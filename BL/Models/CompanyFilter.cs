@@ -22,7 +22,7 @@ namespace BL.Models
         public int MinAvgRevenueGrowth { get; set; }
         public int MinAvgEPSGrowth { get; set; }
         public int MinAvgFreeCashFlowGrowth { get; set; }
-        public int MinAvgROE { get; set; }
+        public int MinAvgROIC { get; set; }
         public int DiscountRate { get; set; }
         public bool IsAllGrowthPositive { get; set; }
 
