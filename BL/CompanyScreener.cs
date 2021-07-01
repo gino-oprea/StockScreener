@@ -18,7 +18,7 @@ namespace BL
         {
             List<Company> filteredCompanies = new List<Company>();
 
-            List<string> allTickers = GetCompaniesTickers(Url, bgw);
+            List<string> allTickers = GetCompaniesTickers_FinvizScreener(Url, bgw);
 
             progress = "0 of " + allTickers.Count.ToString();
 
@@ -130,7 +130,7 @@ namespace BL
 
             return (decimal)refPrice;
         }
-        public static List<string> GetCompaniesTickers(string Url, BackgroundWorker bgw)
+        public static List<string> GetCompaniesTickers_MarketwatchScreener(string Url, BackgroundWorker bgw)
         {
             List<string> allTickers = new List<string>();
             string nextPageUrlLine = "";
@@ -176,6 +176,60 @@ namespace BL
                 }
 
                 Thread.Sleep(250);
+
+            }
+            while (nextPageUrlLine != "");
+
+            return allTickers;
+        }
+
+        public static List<string> GetCompaniesTickers_FinvizScreener(string Url, BackgroundWorker bgw)
+        {
+            List<string> allTickers = new List<string>();
+            string nextPageUrlLine = "";
+            do
+            {
+                if (bgw.CancellationPending)
+                {
+                    currentTicker = "";
+                    progress = "";
+                    break;
+                }
+
+                nextPageUrlLine = "";
+
+                string htmlCompanies = BL.HttpReq.GetUrlHttpWebRequest(Url, "GET", null, false);
+                if (htmlCompanies != null)
+                {
+                    var rawLines = HtmlHelper.GetRawLinesFromHtml(htmlCompanies);
+
+                    List<string> companyLines = new List<string>();
+
+                    for (int i = 0; i < rawLines.Count; i++)
+                    {
+                        if (rawLines[i].Contains("class=\"screener-link-primary\""))
+                            companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "class=\"screener-link-primary\">", "</a>", false));
+
+                        if (rawLines[i].Contains("<b>next</b>"))
+                            nextPageUrlLine = rawLines[i];
+                    }
+
+
+                    for (int i = 0; i < companyLines.Count; i++)
+                    {                        
+                        allTickers.Add(companyLines[i]);
+                    }
+
+                    if (nextPageUrlLine != "")
+                    {
+                        string[] splits = nextPageUrlLine.Split("<a href=", StringSplitOptions.RemoveEmptyEntries);
+                        
+                        string nextPageUrl = WebUtility.HtmlDecode("https://finviz.com/" + HtmlHelper.ExtractString(splits[splits.Length-1], "\"", "\" class", false));
+                        Url = nextPageUrl;
+                    }
+                }
+
+                Thread.Sleep(100);
 
             }
             while (nextPageUrlLine != "");

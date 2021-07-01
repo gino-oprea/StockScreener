@@ -90,9 +90,6 @@
         kAAAOwAAAAAAAAAAAA==
 </value>
   </data>
-  <data name="txtURL.Text" xml:space="preserve">
-    <value>https://www.marketwatch.com/tools/stockresearch/screener/results.asp?submit=Screen&amp;Symbol=true&amp;Symbol=false&amp;ChangePct=true&amp;ChangePct=false&amp;FiftyTwoWeekLow=false&amp;CompanyName=true&amp;CompanyName=false&amp;Volume=true&amp;Volume=false&amp;PERatio=false&amp;Price=true&amp;Price=false&amp;LastTradeTime=false&amp;MarketCap=false&amp;Change=true&amp;Change=false&amp;FiftyTwoWeekHigh=false&amp;MoreInfo=true&amp;MoreInfo=false&amp;SortyBy=Symbol&amp;SortDirection=Ascending&amp;ResultsPerPage=OneHundred&amp;TradesShareEnable=false&amp;TradesShareMin=&amp;TradesShareMax=&amp;PriceDirEnable=false&amp;PriceDir=Up&amp;PriceDirPct=&amp;LastYearEnable=false&amp;LastYearAboveHigh=&amp;TradeVolEnable=false&amp;TradeVolMin=&amp;TradeVolMax=&amp;BlockEnable=false&amp;BlockAmt=&amp;BlockTime=&amp;PERatioEnable=false&amp;PERatioMin=&amp;PERatioMax=&amp;MktCapEnable=true&amp;MktCapMin=1000&amp;MktCapMax=&amp;MovAvgEnable=false&amp;MovAvgType=Outperform&amp;MovAvgTime=FiftyDay&amp;MktIdxEnable=false&amp;MktIdxType=Outperform&amp;MktIdxPct=&amp;MktIdxExchange=&amp;Exchange=All&amp;IndustryEnable=false&amp;Industry=Accounting</value>
-  </data>
   <metadata name="bgwCheckCompany.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

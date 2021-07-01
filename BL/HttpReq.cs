@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 
 namespace BL
@@ -17,9 +18,16 @@ namespace BL
 
 
             webclient.Method = method;
+            
             webclient.ContentType = "application/x-www-form-urlencoded";
+            //webclient.Accept = "*/*";
+            //webclient.Headers["Accept-Encoding"] = "gszip, deflate, br";
+            //webclient.Headers["Accept-Language"] = "en-US,en;q=0.9,ro;q=0.8";
+            webclient.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
 
             webclient.AllowAutoRedirect = allowRedirect;
+
+            
 
 
 
@@ -48,5 +56,6 @@ namespace BL
 
             return result;
         }
+        
     }
 }

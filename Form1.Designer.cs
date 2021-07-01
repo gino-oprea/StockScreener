@@ -790,7 +790,7 @@ namespace StockScreener
             this.txtURL.Name = "txtURL";
             this.txtURL.Size = new System.Drawing.Size(771, 27);
             this.txtURL.TabIndex = 1;
-            this.txtURL.Text = resources.GetString("txtURL.Text");
+            this.txtURL.Text = "https://finviz.com/screener.ashx?v=111&f=cap_smallover";
             // 
             // label20
             // 
