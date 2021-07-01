@@ -60,11 +60,22 @@ namespace BL
                     //{
                     if (company.AverageEquityGrowth != null)
                     {
-                        var avgGrowth = (decimal)(company.AverageRevenueGrowth + company.AverageEPSGrowth +
-                            company.AverageEquityGrowth + company.AverageNetIncomeGrowth +
-                            company.AverageFreeCashFlowGrowth + company.AverageROIC) / 6;
-                        company.Growth = avgGrowth;
-                        //company.Growth = Math.Min(20, avgGrowth);
+                        var avgGrowth = (decimal)(company.AverageRevenueGrowth +
+                            company.AverageEPSGrowth +
+                            company.AverageEquityGrowth +
+                            company.AverageNetIncomeGrowth +
+                            company.AverageFreeCashFlowGrowth) / 5;
+
+                        if (company.AverageROIC != null)
+                            avgGrowth = (decimal)(company.AverageRevenueGrowth +
+                               company.AverageEPSGrowth +
+                               company.AverageEquityGrowth +
+                               company.AverageNetIncomeGrowth +
+                               company.AverageFreeCashFlowGrowth +
+                               company.AverageROIC) / 6;
+
+                        
+                        company.Growth = Math.Min(25, avgGrowth);
 
                     }
                     else
