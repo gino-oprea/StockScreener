@@ -178,10 +178,12 @@ namespace StockScreener
             dt.Columns.Add("Price");
 
             dt.Columns.Add("Intrinsic Value");
-            dt.Columns.Add("Intrinsic Value (-30%)");
+            //dt.Columns.Add("Intrinsic Value (-30%)");
             dt.Columns.Add("Intrinsic Value (-50%)");
+            dt.Columns.Add("Price-Value Delta %");
 
             dt.Columns.Add("ROIC");
+            dt.Columns.Add("Growth");
 
             foreach (var company in companies)
             {
@@ -193,10 +195,13 @@ namespace StockScreener
                 dr[3] = String.Format("{0:0.00}", company.CurrentPrice);
 
                 dr[4] = String.Format("{0:0.00}", company.IntrinsicValue);
-                dr[5] = String.Format("{0:0.00}", company.IntrinsicValue_Discounted30);
-                dr[6] = String.Format("{0:0.00}", company.IntrinsicValue_Discounted50);
+                //dr[5] = String.Format("{0:0.00}", company.IntrinsicValue_Discounted30);
+                dr[5] = String.Format("{0:0.00}", company.IntrinsicValue_Discounted50);
 
-                dr[7] = String.Format("{0:0.00}", company.AverageROIC);
+                dr[6] = String.Format("{0:0.00}", ((decimal)company.CurrentPrice/company.IntrinsicValue - 1) * 100) + "%";
+
+                dr[7] = String.Format("{0:0.00}", company.AverageROIC) + "%";
+                dr[8] = String.Format("{0:0.00}", company.Growth) + "%";
                 dt.Rows.Add(dr);
             }           
 
