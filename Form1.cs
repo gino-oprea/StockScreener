@@ -82,7 +82,7 @@ namespace StockScreener
                 AddRow("Net Income", company.Financials[0].NetIncome, dt);
                 AddRow("Free Cash Flow", company.Financials[0].FreeCashFlow, dt);
                 AddRow("Long Term Debt", company.Financials[0].LongTermDebt, dt);
-                AddRow("ROE(%)", company.Financials[0].ROE, dt);
+                //AddRow("ROE(%)", company.Financials[0].ROE, dt);
             }
             return dt;
         }
@@ -240,7 +240,7 @@ namespace StockScreener
                     txtAvgNetIncomeGrowth.Text = String.Format("{0:0.00}", company.AverageNetIncomeGrowth);
                     txtAvgFreeCashFlowGrowth.Text = String.Format("{0:0.00}", company.AverageFreeCashFlowGrowth);
 
-                    txtAvgROE.Text = String.Format("{0:0.00}", company.AverageROE);
+                    //txtAvgROE.Text = String.Format("{0:0.00}", company.AverageROE);
                     txtAvgROIC.Text = String.Format("{0:0.00}", company.AverageROIC);
 
                     var avgCf = company.Financials[0].FreeCashFlow.Average(c => c.Value);

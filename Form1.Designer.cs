@@ -36,9 +36,6 @@ namespace StockScreener
             this.label29 = new System.Windows.Forms.Label();
             this.txtAvgROIC = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.txtAvgROE = new System.Windows.Forms.TextBox();
-            this.label26 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.txtGrowth = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -130,9 +127,6 @@ namespace StockScreener
             this.tabCheckCompany.Controls.Add(this.label29);
             this.tabCheckCompany.Controls.Add(this.txtAvgROIC);
             this.tabCheckCompany.Controls.Add(this.label30);
-            this.tabCheckCompany.Controls.Add(this.label27);
-            this.tabCheckCompany.Controls.Add(this.txtAvgROE);
-            this.tabCheckCompany.Controls.Add(this.label26);
             this.tabCheckCompany.Controls.Add(this.label19);
             this.tabCheckCompany.Controls.Add(this.txtGrowth);
             this.tabCheckCompany.Controls.Add(this.label18);
@@ -180,7 +174,7 @@ namespace StockScreener
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(376, 586);
+            this.label29.Location = new System.Drawing.Point(376, 551);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(21, 20);
             this.label29.TabIndex = 41;
@@ -188,7 +182,7 @@ namespace StockScreener
             // 
             // txtAvgROIC
             // 
-            this.txtAvgROIC.Location = new System.Drawing.Point(305, 583);
+            this.txtAvgROIC.Location = new System.Drawing.Point(305, 548);
             this.txtAvgROIC.Name = "txtAvgROIC";
             this.txtAvgROIC.Size = new System.Drawing.Size(65, 27);
             this.txtAvgROIC.TabIndex = 40;
@@ -196,36 +190,11 @@ namespace StockScreener
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(226, 586);
+            this.label30.Location = new System.Drawing.Point(226, 551);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(72, 20);
             this.label30.TabIndex = 39;
             this.label30.Text = "Avg ROIC";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(376, 552);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(21, 20);
-            this.label27.TabIndex = 38;
-            this.label27.Text = "%";
-            // 
-            // txtAvgROE
-            // 
-            this.txtAvgROE.Location = new System.Drawing.Point(305, 549);
-            this.txtAvgROE.Name = "txtAvgROE";
-            this.txtAvgROE.Size = new System.Drawing.Size(65, 27);
-            this.txtAvgROE.TabIndex = 37;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(226, 552);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(67, 20);
-            this.label26.TabIndex = 36;
-            this.label26.Text = "Avg ROE";
             // 
             // label19
             // 
@@ -923,9 +892,6 @@ namespace StockScreener
         private System.Windows.Forms.ComboBox cbFilterValue;
         private System.Windows.Forms.Timer tmrTicker;
         private System.Windows.Forms.Label lblProgress;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.TextBox txtAvgROE;
-        private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TextBox txtFilterAvgROIC;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.CheckBox chkOneYearNegative;

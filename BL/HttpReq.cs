@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -8,7 +9,7 @@ namespace BL
 {
     public class HttpReq
     {
-        public static string GetUrlHttpWebRequest(string Url, string method, string postData, bool allowRedirect)
+        public static string GetUrlHttpWebRequest(string Url, string method, string postData, bool allowRedirect, Hashtable headers = null)
         {
             HttpWebRequest webclient = (HttpWebRequest)WebRequest.Create(Url);
 
@@ -23,6 +24,16 @@ namespace BL
             //webclient.Accept = "*/*";
             //webclient.Headers["Accept-Encoding"] = "gszip, deflate, br";
             //webclient.Headers["Accept-Language"] = "en-US,en;q=0.9,ro;q=0.8";
+
+            if(headers!=null)
+            {
+                foreach (DictionaryEntry de in headers)
+                {
+                    string key = de.Key as string;
+                    webclient.Headers[key] = de.Value.ToString();
+                }
+            }
+
             webclient.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
 
             webclient.AllowAutoRedirect = allowRedirect;

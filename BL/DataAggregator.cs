@@ -1,4 +1,5 @@
 ﻿using BL.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,14 +34,15 @@ namespace BL
             Thread.Sleep(250);
             string financials_cashFlow = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/cash-flow", "GET", null, false);
             Thread.Sleep(250);            
-            string financials_quickFS = BL.HttpReq.GetUrlHttpWebRequest("https://api.quickfs.net/stocks/" + TickerSymbol + "/ovr/Annual/?sortOrder=ASC" , "GET", null, false);
+            //string financials_quickFS = BL.HttpReq.GetUrlHttpWebRequest("https://api.quickfs.net/stocks/" + TickerSymbol + "/ovr/Annual/?sortOrder=ASC" , "GET", null, false);
 
             if (financials_incomeStatement != null)
             {
                 try
                 {
                     GetCompanyFinancials_MarketWatch(financials_incomeStatement, financials_balanceSheet, financials_cashFlow, company);
-                    GetCompanyFinancials_QuickFS(financials_quickFS, company);
+                    //GetCompanyFinancials_QuickFS(financials_quickFS, company);
+                    GetCompanyFinancials_Morningstar(TickerSymbol, company);
 
                     company.AverageRevenueGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Revenue);//company.Financials[0].Revenue.Count > 0 ? company.Financials[0].Revenue.Average(r => r.Growth) : null;
                     company.AverageEPSGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].EPS);// company.Financials[0].EPS.Count > 0 ? company.Financials[0].EPS.Average(r => r.Growth) : null;
@@ -48,11 +50,11 @@ namespace BL
                     company.AverageNetIncomeGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].NetIncome);//company.Financials[0].NetIncome.Count > 0 ? company.Financials[0].NetIncome.Average(r => r.Growth) : null;
                     company.AverageFreeCashFlowGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].FreeCashFlow);//company.Financials[0].FreeCashFlow.Count > 0 ? company.Financials[0].FreeCashFlow.Average(r => r.Growth) : null;
 
-                    if (company.Financials[0].ROE.Count > 0)
-                    {
-                        var avgROE = (decimal)company.Financials[0].ROE.Average(r => r.Value);
-                        company.AverageROE = avgROE;
-                    }
+                    //if (company.Financials[0].ROE.Count > 0)
+                    //{
+                    //    var avgROE = (decimal)company.Financials[0].ROE.Average(r => r.Value);
+                    //    company.AverageROE = avgROE;
+                    //}
 
                     //if (company.AverageROIC != null)
                     //    company.Growth = company.AverageROIC;
@@ -172,18 +174,51 @@ namespace BL
             financials.LongTermDebt = GetFinancialData(rawLines_balanceSheet, ">Long-Term Debt</div>", "</tr>");
             financials.Equity = GetFinancialData(rawLines_balanceSheet, "<div class=\"cell__content \">Total Equity</div>", "</tr>");
             financials.FreeCashFlow = GetFinancialData(rawLines_cashFlow, "<div class=\"cell__content \">Free Cash Flow</div>", "</tr>");
-            financials.ROE = GetROE(financials);
+            //financials.ROE = GetROE(financials);
 
             company.Financials.Add(financials);
         }
-        public static void GetCompanyFinancials_QuickFS(string html_quickFS, Company company)
-        {           
+        //public static void GetCompanyFinancials_QuickFS(string html_quickFS, Company company)
+        //{           
 
-            if (html_quickFS!=null && html_quickFS.Trim()!=string.Empty)
+        //    if (html_quickFS!=null && html_quickFS.Trim()!=string.Empty)
+        //    {
+        //        var avgRoicString = HtmlHelper.ExtractString(html_quickFS, "<td class='lt'>ROIC<\\/td><td class='rt'>", "%<\\/td>", false);
+        //        company.AverageROIC = Convert.ToDecimal(avgRoicString);
+        //    }
+        //}
+
+        public static void GetCompanyFinancials_Morningstar(string ticker, Company company)
+        {
+            string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/gamma/assets/8b9e7ff2e51e33cc6303.js", "GET", null, false);
+            string api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
+            Thread.Sleep(50);
+            Hashtable headers = new Hashtable();
+            headers.Add("x-api-key", api_key);
+            string raw_searchResults = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/api/v1/search/entities?q=" + ticker + "&limit=6&autocomplete=true", "GET", null, false, headers);
+            MorningstarAutocomplete searchResults = JsonConvert.DeserializeObject<MorningstarAutocomplete>(raw_searchResults);
+            string keyRatiosUrl = "https://financials.morningstar.com/finan/financials/getKeyStatPart.html?&t=" + searchResults.results[0].performanceId + "&region=usa&culture=en-US&cur=&order=asc";
+            Thread.Sleep(50);
+            string morningstar_keyratios_html = BL.HttpReq.GetUrlHttpWebRequest(keyRatiosUrl, "GET", null, false);
+
+            List<string> rawLines_keyRatios = morningstar_keyratios_html.Split("<", StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines_keyRatios, "Return on Invested Capital", "Interest Coverage");
+
+            List<decimal> ROIC_values = new List<decimal>();
+            foreach (string line in selectedLines)
             {
-                var avgRoicString = HtmlHelper.ExtractString(html_quickFS, "<td class='lt'>ROIC<\\/td><td class='rt'>", "%<\\/td>", false);
-                company.AverageROIC = Convert.ToDecimal(avgRoicString);
+                if (line.Contains("pr-profit"))
+                {
+                    string rawVal = HtmlHelper.ExtractString(line, "\\\">", "", false);
+                    decimal RoicVal;
+                    bool converted = Decimal.TryParse(rawVal, out RoicVal);
+
+                    if (converted)
+                        ROIC_values.Add(RoicVal);
+                }
             }
+
+            company.AverageROIC = ROIC_values.Average();
         }
 
         public static List<int> GetAvailableYears(List<string> rawLines)
@@ -254,24 +289,24 @@ namespace BL
             return financialData;
         }
 
-        public static List<YearVal> GetROE(Financials financials)
-        {
-            List<YearVal> roe = new List<YearVal>();
+        //public static List<YearVal> GetROE(Financials financials)
+        //{
+        //    List<YearVal> roe = new List<YearVal>();
 
-            for (int i = 0; i < financials.NetIncome.Count; i++)
-            {
-                var year = financials.NetIncome[i].Year;
-                var val = financials.NetIncome[i].Value / financials.Equity[i].Value * 100;
+        //    for (int i = 0; i < financials.NetIncome.Count; i++)
+        //    {
+        //        var year = financials.NetIncome[i].Year;
+        //        var val = financials.NetIncome[i].Value / financials.Equity[i].Value * 100;
 
-                YearVal roe_item = new YearVal();
-                roe_item.Value = val;
-                roe_item.Year = year;
+        //        YearVal roe_item = new YearVal();
+        //        roe_item.Value = val;
+        //        roe_item.Year = year;
 
-                roe.Add(roe_item);
-            }
+        //        roe.Add(roe_item);
+        //    }
 
-            return roe;
-        }
+        //    return roe;
+        //}
 
         public static float? ConvertStringToBillions(string value)
         {

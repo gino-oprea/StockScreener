@@ -11,7 +11,7 @@ namespace BL.Models
         public List<YearVal> Equity { get; set; }
         public List<YearVal> EPS { get; set; }
         public List<YearVal> FreeCashFlow { get; set; }        
-        public List<YearVal> ROE { get; set; }
+        //public List<YearVal> ROE { get; set; }
 
 
         public List<YearVal> NetIncome { get; set; }
