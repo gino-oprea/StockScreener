@@ -10,6 +10,7 @@ namespace BL.Models
         public string Name { get; set; }
         public string Ticker { get; set; }
         public float? CurrentPrice { get; set; }
+        public float? MarketCap { get; set; }
         public float? SharesOutstanding { get; set; }
         public float? PE_Ratio { get; set; }
 

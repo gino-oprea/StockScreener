@@ -138,19 +138,23 @@ namespace BL
                 if (i > 1 && rawLines[i].Contains("bg-quote class=\"value\"") && rawLines[i - 2].Contains("h3 class=\"intraday__price"))
                     selectedLines.Add(rawLines[i]);
 
-                if (i > 0 && rawLines[i].Contains("span class=\"primary") && (rawLines[i - 1].Contains("Shares Outstanding") || rawLines[i - 1].Contains("P/E Ratio")))
+                if (i > 0 && rawLines[i].Contains("span class=\"primary") && 
+                    (rawLines[i - 1].Contains("Shares Outstanding") || rawLines[i - 1].Contains("P/E Ratio") || rawLines[i - 1].Contains("Market Cap")))
                     selectedLines.Add(rawLines[i]);
+               
             }
 
-            if (selectedLines.Count == 4)
+            if (selectedLines.Count == 5)
             {
                 string name = HtmlHelper.ExtractString(selectedLines[0], ">", "</", false);
                 string currentPrice = HtmlHelper.ExtractString(selectedLines[1], ">", "</", false);
-                string sharesOutstanding = HtmlHelper.ExtractString(selectedLines[2], ">", "</", false);
-                string pe_ratio = HtmlHelper.ExtractString(selectedLines[3], ">", "</", false);
+                string marketCap = HtmlHelper.ExtractString(selectedLines[2], ">$", "</", false);
+                string sharesOutstanding = HtmlHelper.ExtractString(selectedLines[3], ">", "</", false);
+                string pe_ratio = HtmlHelper.ExtractString(selectedLines[4], ">", "</", false);
 
                 company.Name = name;
                 company.CurrentPrice = float.Parse(currentPrice);
+                company.MarketCap = marketCap != "N/A" ? ConvertStringToBillions(marketCap) : null;
                 company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : 1;
                 if (pe_ratio != "N/A")
                     company.PE_Ratio = float.Parse(pe_ratio);

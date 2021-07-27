@@ -235,6 +235,7 @@ namespace StockScreener
                     lblCompanyName.Text = company.Name;
                     txtSharesOutstanding.Text = company.SharesOutstanding.ToString();
                     lblCurrentSharePrice.Text = company.CurrentPrice.ToString();
+                    lblMarketCap.Text = company.MarketCap.ToString();
 
                     txtAvgRevenueGrowth.Text = String.Format("{0:0.00}", company.AverageRevenueGrowth);
 
