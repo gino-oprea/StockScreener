@@ -135,7 +135,7 @@ namespace BL
                 if (rawLines[i].Contains("h1 class=\"company__name\""))
                     selectedLines.Add(rawLines[i]);
 
-                if (i > 1 && rawLines[i].Contains("bg-quote class=\"value\"") && rawLines[i - 2].Contains("h3 class=\"intraday__price"))
+                if (i > 1 && rawLines[i].Contains("bg-quote class=\"value\"") && rawLines[i - 2].Contains("h2 class=\"intraday__price"))
                     selectedLines.Add(rawLines[i]);
 
                 if (i > 0 && rawLines[i].Contains("span class=\"primary") && 
