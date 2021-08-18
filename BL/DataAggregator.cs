@@ -222,7 +222,8 @@ namespace BL
                 }
             }
 
-            company.AverageROIC = ROIC_values.Average();
+            if (ROIC_values.Count > 0)
+                company.AverageROIC = ROIC_values.Average();
         }
 
         public static List<int> GetAvailableYears(List<string> rawLines)
