@@ -35,7 +35,7 @@ namespace BL.Models
 
 
         public List<decimal> CalculateIntrinsicAndDiscountedValues(decimal? lastCashFlow = null, int discountedInterestRate = 10,
-            decimal? growth = null, float? sharesOutstanding = null)
+            decimal? growth = null, float? sharesOutstanding = null, int terminalMultiple = 10)
         {
             if (this.Financials[0].FreeCashFlow.Count < 4)
                 return new List<decimal>() { 0, 0, 0 };
@@ -90,7 +90,7 @@ namespace BL.Models
                 discountedfutureCashFlows.Add((decimal)((double)futureCashFlows[i] / Math.Pow(1 + (discountedInterestRate / 100.0), (i + 1))));
             }
 
-            decimal intrinsicValue = (10 * discountedfutureCashFlows[9] + discountedfutureCashFlows.Sum(cf => cf)) / (decimal)sharesOutstanding;
+            decimal intrinsicValue = (terminalMultiple * discountedfutureCashFlows[9] + discountedfutureCashFlows.Sum(cf => cf)) / (decimal)sharesOutstanding;
 
             decimal intrinsicValueDiscounted30 = intrinsicValue * (decimal)0.7;
             decimal intrinsicValueDiscounted50 = intrinsicValue * (decimal)0.5;

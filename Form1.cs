@@ -104,9 +104,9 @@ namespace StockScreener
 
         private void btnCalculateIntrinsicValue_Click(object sender, EventArgs e)
         {
-            var values = company.CalculateIntrinsicAndDiscountedValues(Convert.ToDecimal(txtLastFreeCashFlow.Text),Convert.ToInt32(txtDiscountInterestRate.Text),
+            var values = company.CalculateIntrinsicAndDiscountedValues(Convert.ToDecimal(txtLastFreeCashFlow.Text), Convert.ToInt32(txtDiscountInterestRate.Text),
                 Convert.ToDecimal(txtGrowth.Text),
-                float.Parse(txtSharesOutstanding.Text));
+                float.Parse(txtSharesOutstanding.Text), Convert.ToInt32(txtTerminalMultiple.Text));
 
 
             DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(values);

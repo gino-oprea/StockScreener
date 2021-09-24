@@ -104,6 +104,8 @@ namespace StockScreener
             this.bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
+            this.label26 = new System.Windows.Forms.Label();
+            this.txtTerminalMultiple = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -121,11 +123,13 @@ namespace StockScreener
             this.tabControl1.Location = new System.Drawing.Point(4, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1059, 739);
+            this.tabControl1.Size = new System.Drawing.Size(1059, 771);
             this.tabControl1.TabIndex = 0;
             // 
             // tabCheckCompany
             // 
+            this.tabCheckCompany.Controls.Add(this.txtTerminalMultiple);
+            this.tabCheckCompany.Controls.Add(this.label26);
             this.tabCheckCompany.Controls.Add(this.lblMarketCap);
             this.tabCheckCompany.Controls.Add(this.label27);
             this.tabCheckCompany.Controls.Add(this.label29);
@@ -170,7 +174,7 @@ namespace StockScreener
             this.tabCheckCompany.Location = new System.Drawing.Point(4, 29);
             this.tabCheckCompany.Name = "tabCheckCompany";
             this.tabCheckCompany.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCheckCompany.Size = new System.Drawing.Size(1051, 706);
+            this.tabCheckCompany.Size = new System.Drawing.Size(1051, 738);
             this.tabCheckCompany.TabIndex = 0;
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
@@ -309,7 +313,7 @@ namespace StockScreener
             // 
             // btnCalculateIntrinsicValue
             // 
-            this.btnCalculateIntrinsicValue.Location = new System.Drawing.Point(726, 661);
+            this.btnCalculateIntrinsicValue.Location = new System.Drawing.Point(721, 699);
             this.btnCalculateIntrinsicValue.Name = "btnCalculateIntrinsicValue";
             this.btnCalculateIntrinsicValue.Size = new System.Drawing.Size(302, 29);
             this.btnCalculateIntrinsicValue.TabIndex = 25;
@@ -823,6 +827,23 @@ namespace StockScreener
             this.tmrTicker.Interval = 500;
             this.tmrTicker.Tick += new System.EventHandler(this.tmrTicker_Tick);
             // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(794, 665);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(125, 20);
+            this.label26.TabIndex = 44;
+            this.label26.Text = "Terminal Multiple";
+            // 
+            // txtTerminalMultiple
+            // 
+            this.txtTerminalMultiple.Location = new System.Drawing.Point(931, 661);
+            this.txtTerminalMultiple.Name = "txtTerminalMultiple";
+            this.txtTerminalMultiple.Size = new System.Drawing.Size(65, 27);
+            this.txtTerminalMultiple.TabIndex = 45;
+            this.txtTerminalMultiple.Text = "10";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -923,6 +944,8 @@ namespace StockScreener
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label lblMarketCap;
         private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox txtTerminalMultiple;
+        private System.Windows.Forms.Label label26;
     }
 }
 
