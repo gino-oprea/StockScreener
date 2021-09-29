@@ -33,6 +33,8 @@ namespace StockScreener
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCheckCompany = new System.Windows.Forms.TabPage();
+            this.txtTerminalMultiple = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
             this.lblMarketCap = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
@@ -104,8 +106,8 @@ namespace StockScreener
             this.bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
-            this.label26 = new System.Windows.Forms.Label();
-            this.txtTerminalMultiple = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.txtFilterTerminalMultiple = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -178,6 +180,23 @@ namespace StockScreener
             this.tabCheckCompany.TabIndex = 0;
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
+            // 
+            // txtTerminalMultiple
+            // 
+            this.txtTerminalMultiple.Location = new System.Drawing.Point(931, 661);
+            this.txtTerminalMultiple.Name = "txtTerminalMultiple";
+            this.txtTerminalMultiple.Size = new System.Drawing.Size(65, 27);
+            this.txtTerminalMultiple.TabIndex = 45;
+            this.txtTerminalMultiple.Text = "10";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(794, 665);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(125, 20);
+            this.label26.TabIndex = 44;
+            this.label26.Text = "Terminal Multiple";
             // 
             // lblMarketCap
             // 
@@ -539,6 +558,8 @@ namespace StockScreener
             // 
             // tabSearchCompanies
             // 
+            this.tabSearchCompanies.Controls.Add(this.txtFilterTerminalMultiple);
+            this.tabSearchCompanies.Controls.Add(this.label31);
             this.tabSearchCompanies.Controls.Add(this.chkOneYearNegative);
             this.tabSearchCompanies.Controls.Add(this.txtFilterAvgROIC);
             this.tabSearchCompanies.Controls.Add(this.label28);
@@ -566,7 +587,7 @@ namespace StockScreener
             this.tabSearchCompanies.Location = new System.Drawing.Point(4, 29);
             this.tabSearchCompanies.Name = "tabSearchCompanies";
             this.tabSearchCompanies.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSearchCompanies.Size = new System.Drawing.Size(1051, 706);
+            this.tabSearchCompanies.Size = new System.Drawing.Size(1051, 738);
             this.tabSearchCompanies.TabIndex = 1;
             this.tabSearchCompanies.Text = "Search Companies";
             this.tabSearchCompanies.UseVisualStyleBackColor = true;
@@ -717,7 +738,7 @@ namespace StockScreener
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(18, 116);
+            this.label22.Location = new System.Drawing.Point(13, 116);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(194, 20);
             this.label22.TabIndex = 8;
@@ -764,10 +785,10 @@ namespace StockScreener
             // 
             this.gvCompanies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvCompanies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvCompanies.Location = new System.Drawing.Point(16, 157);
+            this.gvCompanies.Location = new System.Drawing.Point(16, 188);
             this.gvCompanies.Name = "gvCompanies";
             this.gvCompanies.RowHeadersWidth = 51;
-            this.gvCompanies.Size = new System.Drawing.Size(1016, 537);
+            this.gvCompanies.Size = new System.Drawing.Size(1016, 506);
             this.gvCompanies.TabIndex = 3;
             // 
             // btnGo
@@ -827,22 +848,22 @@ namespace StockScreener
             this.tmrTicker.Interval = 500;
             this.tmrTicker.Tick += new System.EventHandler(this.tmrTicker_Tick);
             // 
-            // label26
+            // label31
             // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(794, 665);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(125, 20);
-            this.label26.TabIndex = 44;
-            this.label26.Text = "Terminal Multiple";
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(79, 156);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(128, 20);
+            this.label31.TabIndex = 24;
+            this.label31.Text = "Terminal multiple:";
             // 
-            // txtTerminalMultiple
+            // txtFilterTerminalMultiple
             // 
-            this.txtTerminalMultiple.Location = new System.Drawing.Point(931, 661);
-            this.txtTerminalMultiple.Name = "txtTerminalMultiple";
-            this.txtTerminalMultiple.Size = new System.Drawing.Size(65, 27);
-            this.txtTerminalMultiple.TabIndex = 45;
-            this.txtTerminalMultiple.Text = "10";
+            this.txtFilterTerminalMultiple.Location = new System.Drawing.Point(213, 153);
+            this.txtFilterTerminalMultiple.Name = "txtFilterTerminalMultiple";
+            this.txtFilterTerminalMultiple.Size = new System.Drawing.Size(37, 27);
+            this.txtFilterTerminalMultiple.TabIndex = 25;
+            this.txtFilterTerminalMultiple.Text = "10";
             // 
             // Form1
             // 
@@ -946,6 +967,8 @@ namespace StockScreener
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox txtTerminalMultiple;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox txtFilterTerminalMultiple;
+        private System.Windows.Forms.Label label31;
     }
 }
 

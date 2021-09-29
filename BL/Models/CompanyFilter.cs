@@ -28,5 +28,7 @@ namespace BL.Models
 
         public bool AllowOneNegativeYear { get; set; }
 
+        public int TerminalMultiple { get; set; }
+
     }
 }

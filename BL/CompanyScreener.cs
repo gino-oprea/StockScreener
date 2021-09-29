@@ -44,7 +44,7 @@ namespace BL
 
                     currentTicker = company.Ticker;
 
-                    List<decimal> values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: filter.DiscountRate);
+                    List<decimal> values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: filter.DiscountRate, terminalMultiple: filter.TerminalMultiple);
 
                     company.IntrinsicValue = values[0];
                     company.IntrinsicValue_Discounted30 = values[1];
