@@ -43,6 +43,7 @@ namespace BL
                     GetCompanyFinancials_MarketWatch(financials_incomeStatement, financials_balanceSheet, financials_cashFlow, company);
                     //GetCompanyFinancials_QuickFS(financials_quickFS, company);
                     GetCompanyFinancials_Morningstar(TickerSymbol, company);
+                    GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company);
 
                     company.AverageRevenueGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Revenue);//company.Financials[0].Revenue.Count > 0 ? company.Financials[0].Revenue.Average(r => r.Growth) : null;
                     company.AverageEPSGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].EPS);// company.Financials[0].EPS.Count > 0 ? company.Financials[0].EPS.Average(r => r.Growth) : null;
@@ -157,7 +158,7 @@ namespace BL
                 company.Name = name;
                 company.CurrentPrice = float.Parse(currentPrice);
                 company.MarketCap = marketCap != "N/A" ? ConvertStringToBillions(marketCap) : null;
-                company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : 1;
+                //company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : 1;
                 if (pe_ratio != "N/A")
                     company.PE_Ratio = float.Parse(pe_ratio);
             }
@@ -204,11 +205,16 @@ namespace BL
             string raw_searchResults = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/api/v1/search/entities?q=" + ticker + "&limit=6&autocomplete=true", "GET", null, false, headers);
             MorningstarAutocomplete searchResults = JsonConvert.DeserializeObject<MorningstarAutocomplete>(raw_searchResults);
             string keyRatiosUrl = "https://financials.morningstar.com/finan/financials/getKeyStatPart.html?&t=" + searchResults.results[0].performanceId + "&region=usa&culture=en-US&cur=&order=asc";
+            string financialsUrl = "https://financials.morningstar.com/finan/financials/getFinancePart.html?&t=" + searchResults.results[0].performanceId + "&region=usa&culture=en-US&cur=&order=asc";
             Thread.Sleep(50);
             string morningstar_keyratios_html = BL.HttpReq.GetUrlHttpWebRequest(keyRatiosUrl, "GET", null, false);
+            Thread.Sleep(50);
+            string morningstar_financials_html= BL.HttpReq.GetUrlHttpWebRequest(financialsUrl, "GET", null, false);
 
             List<string> rawLines_keyRatios = morningstar_keyratios_html.Split("<", StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> rawLines_financials = morningstar_financials_html.Split("<", StringSplitOptions.RemoveEmptyEntries).ToList();
             List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines_keyRatios, "Return on Invested Capital", "Interest Coverage");
+            selectedLines.AddRange(HtmlHelper.GetImportantLines(rawLines_financials, "Shares", "Book Value Per Share"));
 
             List<decimal> ROIC_values = new List<decimal>();
             foreach (string line in selectedLines)
@@ -222,12 +228,48 @@ namespace BL
                     if (converted)
                         ROIC_values.Add(RoicVal);
                 }
+
+                if (line.Contains("Y10 i7"))
+                {
+                    string rawVal = HtmlHelper.ExtractString(line, "\\\">", "", false).Replace(",", "");
+                    int sharesOutstanding;
+                    bool converted = Int32.TryParse(rawVal, out sharesOutstanding);
+
+                    if (converted)
+                        company.SharesOutstanding = sharesOutstanding / 1000f;//convert to billions float
+                    else
+                        company.SharesOutstanding = 1;
+                }
             }
 
             if (ROIC_values.Count > 0)
                 company.AverageROIC = ROIC_values.Average();
         }
 
+        public static void GetCompanyAveragePriceToFCFMultiple(string ticker, Company company)
+        {
+            string historicalDataHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/fundamental_iframe.php?t="+ticker+"&type=price-fcf&statement=price-ratios&freq=Q", "GET", null, false);
+
+            List<string> rawLines = historicalDataHtml.Split("\r\n", StringSplitOptions.RemoveEmptyEntries).ToList();
+            string selectedLine = rawLines.Find(l => l.Contains("chartData"));
+            if(selectedLine!=null)
+            {
+                string json = HtmlHelper.ExtractString(selectedLine, "var chartData = ", "", false);
+
+                List<HistoricalPriceToFreeCashflowData> histData = JsonConvert.DeserializeObject<List<HistoricalPriceToFreeCashflowData>>(json);
+
+                if (histData.Count > 40)//keep just the last 10 years
+                    for (int i = histData.Count-1; i >= 0; i--)
+                    {
+                        if (i < histData.Count - 40)
+                            histData.RemoveAt(i);
+                    }
+
+                var avgPriceToFCF = histData.Average(h => h.v3);
+
+                company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 20);//terminal multiple maximum 20
+            }
+        }
         public static List<int> GetAvailableYears(List<string> rawLines)
         {
             List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines, "thead class=\"table__header\"", "/thead");
@@ -320,7 +362,7 @@ namespace BL
 
 
 
-            if (value != "-")
+            if (value != "-" && value != "—")
             {
                 //try
                 //{

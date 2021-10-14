@@ -164,7 +164,7 @@ namespace StockScreener
 
             filter.IsAllGrowthPositive = rbAllGrowthPositive.Checked;
             filter.AllowOneNegativeYear = chkOneYearNegative.Checked;
-            filter.TerminalMultiple = Convert.ToInt32(txtFilterTerminalMultiple.Text);
+            //filter.TerminalMultiple = Convert.ToInt32(txtFilterTerminalMultiple.Text);
 
             return filter;
         }
@@ -217,7 +217,7 @@ namespace StockScreener
             bindingSourceKeyValues = new BindingSource();
             bindingSourceKeyValues.DataSource = dt;
 
-            var values = company.CalculateIntrinsicAndDiscountedValues();
+            var values = company.CalculateIntrinsicAndDiscountedValues(terminalMultiple: company.Average_P_FCF_Multiple);
             DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(values);
             bindingSourceIntrinsicValues = new BindingSource();
             bindingSourceIntrinsicValues.DataSource = dtIntrinsicValues;
@@ -249,6 +249,7 @@ namespace StockScreener
 
                     //txtAvgROE.Text = String.Format("{0:0.00}", company.AverageROE);
                     txtAvgROIC.Text = String.Format("{0:0.00}", company.AverageROIC);
+                    txtTerminalMultiple.Text = company.Average_P_FCF_Multiple.ToString();
 
                     var avgCf = company.Financials[0].FreeCashFlow.Average(c => c.Value);
 

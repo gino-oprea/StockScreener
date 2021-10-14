@@ -25,6 +25,8 @@ namespace BL.Models
 
         public decimal? Growth { get; set; }
 
+        public int Average_P_FCF_Multiple { get; set; } = 10;
+
         public decimal? IntrinsicValue { get; set; }
         public decimal? IntrinsicValue_Discounted30 { get; set; }
         public decimal? IntrinsicValue_Discounted50 { get; set; }
