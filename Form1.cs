@@ -186,6 +186,8 @@ namespace StockScreener
             dt.Columns.Add("ROIC %");
             dt.Columns.Add("Growth %");
 
+            dt.Columns.Add("Terminal Multiple FCF");
+
             foreach (var company in companies)
             {
                 DataRow dr = dt.NewRow();
@@ -203,6 +205,7 @@ namespace StockScreener
 
                 dr[7] = String.Format("{0:0.00}", company.AverageROIC);
                 dr[8] = String.Format("{0:0.00}", company.Growth);
+                dr[9] = String.Format("{0:0}", company.Average_P_FCF_Multiple);
                 dt.Rows.Add(dr);
             }           
 

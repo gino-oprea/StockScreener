@@ -55,13 +55,7 @@ namespace BL.Models
                         lastCashFlow = (decimal)lastCf.Value;
                     else
                         return new List<decimal>() { 0, 0, 0 };
-                }
-
-                //var lastCf = this.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
-                //if (lastCf != null)
-                //    lastCashFlow = (decimal)lastCf.Value;
-                //else
-                //    return new List<decimal>() { 0, 0, 0 };
+                }               
             }            
 
             if (growth == null)

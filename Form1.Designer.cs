@@ -123,7 +123,7 @@ namespace StockScreener
             this.tabControl1.Location = new System.Drawing.Point(4, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1059, 771);
+            this.tabControl1.Size = new System.Drawing.Size(1196, 771);
             this.tabControl1.TabIndex = 0;
             // 
             // tabCheckCompany
@@ -174,7 +174,7 @@ namespace StockScreener
             this.tabCheckCompany.Location = new System.Drawing.Point(4, 29);
             this.tabCheckCompany.Name = "tabCheckCompany";
             this.tabCheckCompany.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCheckCompany.Size = new System.Drawing.Size(1051, 738);
+            this.tabCheckCompany.Size = new System.Drawing.Size(1188, 738);
             this.tabCheckCompany.TabIndex = 0;
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
@@ -324,7 +324,7 @@ namespace StockScreener
             this.gvIntrinsicVal.Name = "gvIntrinsicVal";
             this.gvIntrinsicVal.RowHeadersWidth = 51;
             this.gvIntrinsicVal.RowTemplate.Height = 29;
-            this.gvIntrinsicVal.Size = new System.Drawing.Size(449, 135);
+            this.gvIntrinsicVal.Size = new System.Drawing.Size(528, 135);
             this.gvIntrinsicVal.TabIndex = 26;
             // 
             // btnCalculateIntrinsicValue
@@ -524,7 +524,7 @@ namespace StockScreener
             this.gvFinancials.Name = "gvFinancials";
             this.gvFinancials.RowHeadersWidth = 51;
             this.gvFinancials.RowTemplate.Height = 29;
-            this.gvFinancials.Size = new System.Drawing.Size(996, 265);
+            this.gvFinancials.Size = new System.Drawing.Size(1150, 265);
             this.gvFinancials.TabIndex = 3;
             // 
             // btnSearch
@@ -582,7 +582,7 @@ namespace StockScreener
             this.tabSearchCompanies.Location = new System.Drawing.Point(4, 29);
             this.tabSearchCompanies.Name = "tabSearchCompanies";
             this.tabSearchCompanies.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSearchCompanies.Size = new System.Drawing.Size(1051, 738);
+            this.tabSearchCompanies.Size = new System.Drawing.Size(1188, 738);
             this.tabSearchCompanies.TabIndex = 1;
             this.tabSearchCompanies.Text = "Search Companies";
             this.tabSearchCompanies.UseVisualStyleBackColor = true;
@@ -590,7 +590,7 @@ namespace StockScreener
             // chkOneYearNegative
             // 
             this.chkOneYearNegative.AutoSize = true;
-            this.chkOneYearNegative.Location = new System.Drawing.Point(678, 128);
+            this.chkOneYearNegative.Location = new System.Drawing.Point(803, 115);
             this.chkOneYearNegative.Name = "chkOneYearNegative";
             this.chkOneYearNegative.Size = new System.Drawing.Size(174, 24);
             this.chkOneYearNegative.TabIndex = 23;
@@ -634,7 +634,7 @@ namespace StockScreener
             "Premium 10%",
             "Premium 20%",
             "Unlimited"});
-            this.cbFilterValue.Location = new System.Drawing.Point(881, 123);
+            this.cbFilterValue.Location = new System.Drawing.Point(1019, 111);
             this.cbFilterValue.Name = "cbFilterValue";
             this.cbFilterValue.Size = new System.Drawing.Size(151, 28);
             this.cbFilterValue.TabIndex = 19;
@@ -653,7 +653,7 @@ namespace StockScreener
             // 
             this.rbUnevenGrowth.AutoSize = true;
             this.rbUnevenGrowth.Checked = true;
-            this.rbUnevenGrowth.Location = new System.Drawing.Point(678, 98);
+            this.rbUnevenGrowth.Location = new System.Drawing.Point(667, 115);
             this.rbUnevenGrowth.Name = "rbUnevenGrowth";
             this.rbUnevenGrowth.Size = new System.Drawing.Size(130, 24);
             this.rbUnevenGrowth.TabIndex = 17;
@@ -664,7 +664,7 @@ namespace StockScreener
             // rbAllGrowthPositive
             // 
             this.rbAllGrowthPositive.AutoSize = true;
-            this.rbAllGrowthPositive.Location = new System.Drawing.Point(678, 73);
+            this.rbAllGrowthPositive.Location = new System.Drawing.Point(667, 75);
             this.rbAllGrowthPositive.Name = "rbAllGrowthPositive";
             this.rbAllGrowthPositive.Size = new System.Drawing.Size(155, 24);
             this.rbAllGrowthPositive.TabIndex = 16;
@@ -694,7 +694,7 @@ namespace StockScreener
             this.txtFilterAvgFcfGrowth.Name = "txtFilterAvgFcfGrowth";
             this.txtFilterAvgFcfGrowth.Size = new System.Drawing.Size(34, 27);
             this.txtFilterAvgFcfGrowth.TabIndex = 13;
-            this.txtFilterAvgFcfGrowth.Text = "10";
+            this.txtFilterAvgFcfGrowth.Text = "0";
             // 
             // label24
             // 
@@ -711,7 +711,7 @@ namespace StockScreener
             this.txtFilterAvgEPSGrowth.Name = "txtFilterAvgEPSGrowth";
             this.txtFilterAvgEPSGrowth.Size = new System.Drawing.Size(34, 27);
             this.txtFilterAvgEPSGrowth.TabIndex = 11;
-            this.txtFilterAvgEPSGrowth.Text = "10";
+            this.txtFilterAvgEPSGrowth.Text = "0";
             // 
             // label23
             // 
@@ -728,7 +728,7 @@ namespace StockScreener
             this.txtFilterAvgRevGrowth.Name = "txtFilterAvgRevGrowth";
             this.txtFilterAvgRevGrowth.Size = new System.Drawing.Size(37, 27);
             this.txtFilterAvgRevGrowth.TabIndex = 9;
-            this.txtFilterAvgRevGrowth.Text = "10";
+            this.txtFilterAvgRevGrowth.Text = "0";
             // 
             // label22
             // 
@@ -745,7 +745,7 @@ namespace StockScreener
             this.txtFilterAvgEqGrowth.Name = "txtFilterAvgEqGrowth";
             this.txtFilterAvgEqGrowth.Size = new System.Drawing.Size(37, 27);
             this.txtFilterAvgEqGrowth.TabIndex = 7;
-            this.txtFilterAvgEqGrowth.Text = "10";
+            this.txtFilterAvgEqGrowth.Text = "0";
             // 
             // label21
             // 
@@ -783,7 +783,7 @@ namespace StockScreener
             this.gvCompanies.Location = new System.Drawing.Point(16, 158);
             this.gvCompanies.Name = "gvCompanies";
             this.gvCompanies.RowHeadersWidth = 51;
-            this.gvCompanies.Size = new System.Drawing.Size(1016, 536);
+            this.gvCompanies.Size = new System.Drawing.Size(1166, 536);
             this.gvCompanies.TabIndex = 3;
             // 
             // btnGo
@@ -847,7 +847,7 @@ namespace StockScreener
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1064, 781);
+            this.ClientSize = new System.Drawing.Size(1203, 781);
             this.Controls.Add(this.lblErrorMessage);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

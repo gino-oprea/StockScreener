@@ -256,20 +256,31 @@ namespace BL
             {
                 string json = HtmlHelper.ExtractString(selectedLine, "var chartData = ", "", false);
 
-                List<HistoricalPriceToFreeCashflowData> histData = JsonConvert.DeserializeObject<List<HistoricalPriceToFreeCashflowData>>(json);
-
-                if (histData.Count > 40)//keep just the last 10 years
-                    for (int i = histData.Count-1; i >= 0; i--)
-                    {
-                        if (i < histData.Count - 40)
-                            histData.RemoveAt(i);
-                    }
+                List<HistoricalPriceToFreeCashflowData> histData = JsonConvert.DeserializeObject<List<HistoricalPriceToFreeCashflowData>>(json);                
 
                 var avgPriceToFCF = histData.Average(h => h.v3);
+                bool noOutliersFound = false;
+                //remove outliers
+                while (!noOutliersFound)
+                {
+                    noOutliersFound = true;
+                    var stdDev = Math.Sqrt(histData.Sum(h => Math.Pow(h.v3 - avgPriceToFCF, 2)) / histData.Count);
+                    for (int i = histData.Count - 1; i >= 0; i--)
+                    {
+                        if (histData[i].v3 - avgPriceToFCF > 1.5 * stdDev
+                            || avgPriceToFCF - histData[i].v3 > 2.5 * stdDev) //eliminam mai multe din deviatiile pozitive decat din cele negative 
+                        {
+                            noOutliersFound = false;
+                            histData.RemoveAt(i);
+                        }
+                    }
+                    avgPriceToFCF = histData.Average(h => h.v3);
+                }
 
                 company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 20);//terminal multiple maximum 20
             }
         }
+        
         public static List<int> GetAvailableYears(List<string> rawLines)
         {
             List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines, "thead class=\"table__header\"", "/thead");
