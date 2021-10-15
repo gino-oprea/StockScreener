@@ -78,7 +78,7 @@ namespace BL
                                company.AverageROIC) / 6;
 
                         
-                        company.Growth = Math.Min(25, avgGrowth);
+                        company.Growth = Math.Min(20, avgGrowth);
 
                     }
                     else
