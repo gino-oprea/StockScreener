@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -28,6 +29,7 @@ namespace StockScreener
 
         string TickerInProgess;
         bool isSearchInProgress = false;
+        
 
         public Form1()
         {
@@ -213,17 +215,17 @@ namespace StockScreener
         }
 
         private void bgwCheckCompany_DoWork(object sender, DoWorkEventArgs e)
-        {
-            company = DataAggregator.GetCompanyData(txtTicker.Text);
+        {            
+                company = DataAggregator.GetCompanyData(txtTicker.Text);
 
-            DataTable dt = BuildDataTable();
-            bindingSourceKeyValues = new BindingSource();
-            bindingSourceKeyValues.DataSource = dt;
+                DataTable dt = BuildDataTable();
+                bindingSourceKeyValues = new BindingSource();
+                bindingSourceKeyValues.DataSource = dt;
 
-            var values = company.CalculateIntrinsicAndDiscountedValues(terminalMultiple: company.Average_P_FCF_Multiple);
-            DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(values);
-            bindingSourceIntrinsicValues = new BindingSource();
-            bindingSourceIntrinsicValues.DataSource = dtIntrinsicValues;
+                var values = company.CalculateIntrinsicAndDiscountedValues(terminalMultiple: company.Average_P_FCF_Multiple);
+                DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(values);
+                bindingSourceIntrinsicValues = new BindingSource();
+                bindingSourceIntrinsicValues.DataSource = dtIntrinsicValues;                      
         }
 
         private void bgwCheckCompany_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

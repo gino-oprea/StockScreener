@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace BL
 {
@@ -15,8 +16,6 @@ namespace BL
     {
         public static Company GetCompanyData(string TickerSymbol)
         {
-
-
             Company company = new Company();
             company.Ticker = TickerSymbol.ToUpper();
             company.Financials = new List<Financials>();
@@ -27,13 +26,13 @@ namespace BL
                 GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
 
 
-            Thread.Sleep(250);
+            Thread.Sleep(100);
             string financials_incomeStatement = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials", "GET", null, false);
-            Thread.Sleep(250);
+            Thread.Sleep(100);
             string financials_balanceSheet = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/balance-sheet", "GET", null, false);
-            Thread.Sleep(250);
+            Thread.Sleep(100);
             string financials_cashFlow = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/cash-flow", "GET", null, false);
-            Thread.Sleep(250);            
+            Thread.Sleep(100);            
             //string financials_quickFS = BL.HttpReq.GetUrlHttpWebRequest("https://api.quickfs.net/stocks/" + TickerSymbol + "/ovr/Annual/?sortOrder=ASC" , "GET", null, false);
 
             if (financials_incomeStatement != null)
@@ -42,8 +41,11 @@ namespace BL
                 {
                     GetCompanyFinancials_MarketWatch(financials_incomeStatement, financials_balanceSheet, financials_cashFlow, company);
                     //GetCompanyFinancials_QuickFS(financials_quickFS, company);
-                    GetCompanyFinancials_Morningstar(TickerSymbol, company);
-                    GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company);
+
+                    var task1 = Task.Run(() => GetCompanyFinancials_Morningstar(TickerSymbol, company));
+                    var task2 = Task.Run(() => GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company));
+
+                    Task.WaitAll(task1, task2);
 
                     company.AverageRevenueGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Revenue);//company.Financials[0].Revenue.Count > 0 ? company.Financials[0].Revenue.Average(r => r.Growth) : null;
                     company.AverageEPSGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].EPS);// company.Financials[0].EPS.Count > 0 ? company.Financials[0].EPS.Average(r => r.Growth) : null;
@@ -197,6 +199,7 @@ namespace BL
 
         public static void GetCompanyFinancials_Morningstar(string ticker, Company company)
         {
+
             string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/gamma/assets/8b9e7ff2e51e33cc6303.js", "GET", null, false);
             string api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
             Thread.Sleep(50);
@@ -209,7 +212,7 @@ namespace BL
             Thread.Sleep(50);
             string morningstar_keyratios_html = BL.HttpReq.GetUrlHttpWebRequest(keyRatiosUrl, "GET", null, false);
             Thread.Sleep(50);
-            string morningstar_financials_html= BL.HttpReq.GetUrlHttpWebRequest(financialsUrl, "GET", null, false);
+            string morningstar_financials_html = BL.HttpReq.GetUrlHttpWebRequest(financialsUrl, "GET", null, false);
 
             List<string> rawLines_keyRatios = morningstar_keyratios_html.Split("<", StringSplitOptions.RemoveEmptyEntries).ToList();
             List<string> rawLines_financials = morningstar_financials_html.Split("<", StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -248,15 +251,15 @@ namespace BL
 
         public static void GetCompanyAveragePriceToFCFMultiple(string ticker, Company company)
         {
-            string historicalDataHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/fundamental_iframe.php?t="+ticker+"&type=price-fcf&statement=price-ratios&freq=Q", "GET", null, false);
+            string historicalDataHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/fundamental_iframe.php?t=" + ticker + "&type=price-fcf&statement=price-ratios&freq=Q", "GET", null, false);
 
             List<string> rawLines = historicalDataHtml.Split("\r\n", StringSplitOptions.RemoveEmptyEntries).ToList();
             string selectedLine = rawLines.Find(l => l.Contains("chartData"));
-            if(selectedLine!=null)
+            if (selectedLine != null)
             {
                 string json = HtmlHelper.ExtractString(selectedLine, "var chartData = ", "", false);
 
-                List<HistoricalPriceToFreeCashflowData> histData = JsonConvert.DeserializeObject<List<HistoricalPriceToFreeCashflowData>>(json);                
+                List<HistoricalPriceToFreeCashflowData> histData = JsonConvert.DeserializeObject<List<HistoricalPriceToFreeCashflowData>>(json);
 
                 var avgPriceToFCF = histData.Average(h => h.v3);
                 bool noOutliersFound = false;
