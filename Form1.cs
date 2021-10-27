@@ -215,17 +215,23 @@ namespace StockScreener
         }
 
         private void bgwCheckCompany_DoWork(object sender, DoWorkEventArgs e)
-        {            
-                company = DataAggregator.GetCompanyData(txtTicker.Text);
+        {
+            company = DataAggregator.GetCompanyData(txtTicker.Text);
 
-                DataTable dt = BuildDataTable();
-                bindingSourceKeyValues = new BindingSource();
-                bindingSourceKeyValues.DataSource = dt;
+            DataTable dt = BuildDataTable();
+            bindingSourceKeyValues = new BindingSource();
+            bindingSourceKeyValues.DataSource = dt;
 
-                var values = company.CalculateIntrinsicAndDiscountedValues(terminalMultiple: company.Average_P_FCF_Multiple);
-                DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(values);
-                bindingSourceIntrinsicValues = new BindingSource();
-                bindingSourceIntrinsicValues.DataSource = dtIntrinsicValues;                      
+            int discount;
+            bool converted = int.TryParse(txtDiscountInterestRate.Text, out discount);
+            if (!converted)
+                discount = 10;
+
+            var values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: discount,
+                terminalMultiple: company.Average_P_FCF_Multiple);
+            DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(values);
+            bindingSourceIntrinsicValues = new BindingSource();
+            bindingSourceIntrinsicValues.DataSource = dtIntrinsicValues;
         }
 
         private void bgwCheckCompany_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
