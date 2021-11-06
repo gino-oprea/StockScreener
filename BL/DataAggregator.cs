@@ -188,7 +188,7 @@ namespace BL
             List<string> rawLines_balanceSheet = HtmlHelper.GetRawLinesFromHtml(html_balanceSheet);
             List<string> rawLines_cashFlow = HtmlHelper.GetRawLinesFromHtml(html_cashFlow);
 
-            List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines_incomeStatement, "thead class=\"table__header\"", "/thead");           
+            //List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines_incomeStatement, "thead class=\"table__header\"", "/thead");           
 
             financials.Revenue = GetFinancialData(rawLines_incomeStatement, "<div class=\"cell__content \">Sales/Revenue</div>", "</tr>");
             financials.NetIncome = GetFinancialData(rawLines_incomeStatement, "<div class=\"cell__content \">Net Income</div>", "</tr>");
@@ -196,6 +196,9 @@ namespace BL
             financials.LongTermDebt = GetFinancialData(rawLines_balanceSheet, ">Long-Term Debt</div>", "</tr>");
             financials.Equity = GetFinancialData(rawLines_balanceSheet, "<div class=\"cell__content \">Total Equity</div>", "</tr>");
             financials.FreeCashFlow = GetFinancialData(rawLines_cashFlow, "<div class=\"cell__content \">Free Cash Flow</div>", "</tr>");
+
+            financials.RetainedEarnings = GetFinancialData(rawLines_balanceSheet, "<div class=\"cell__content indent--small\">Retained Earnings</div>", "</tr>");
+            financials.CapitalExpenditures = GetFinancialData(rawLines_cashFlow, "<div class=\"cell__content \">Capital Expenditures</div>", "</tr>");
             //financials.ROE = GetROE(financials);
 
             company.Financials.Add(financials);

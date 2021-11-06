@@ -82,7 +82,9 @@ namespace StockScreener
                 AddRow("Equity", company.Financials[0].Equity, dt);
                 AddRow("EPS", company.Financials[0].EPS, dt);
                 AddRow("Net Income", company.Financials[0].NetIncome, dt);
+                AddRow("Retained earnings", company.Financials[0].RetainedEarnings, dt);
                 AddRow("Free Cash Flow", company.Financials[0].FreeCashFlow, dt);
+                AddRow("Capital Expenditures", company.Financials[0].CapitalExpenditures, dt);
                 AddRow("Long Term Debt", company.Financials[0].LongTermDebt, dt);
                 //AddRow("ROE(%)", company.Financials[0].ROE, dt);
             }
