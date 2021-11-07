@@ -106,6 +106,7 @@ namespace StockScreener
             this.bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
+            this.chkIgnoreADR = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -555,6 +556,7 @@ namespace StockScreener
             // 
             // tabSearchCompanies
             // 
+            this.tabSearchCompanies.Controls.Add(this.chkIgnoreADR);
             this.tabSearchCompanies.Controls.Add(this.chkOneYearNegative);
             this.tabSearchCompanies.Controls.Add(this.txtFilterAvgROIC);
             this.tabSearchCompanies.Controls.Add(this.label28);
@@ -590,7 +592,7 @@ namespace StockScreener
             // chkOneYearNegative
             // 
             this.chkOneYearNegative.AutoSize = true;
-            this.chkOneYearNegative.Location = new System.Drawing.Point(803, 115);
+            this.chkOneYearNegative.Location = new System.Drawing.Point(667, 111);
             this.chkOneYearNegative.Name = "chkOneYearNegative";
             this.chkOneYearNegative.Size = new System.Drawing.Size(174, 24);
             this.chkOneYearNegative.TabIndex = 23;
@@ -653,7 +655,7 @@ namespace StockScreener
             // 
             this.rbUnevenGrowth.AutoSize = true;
             this.rbUnevenGrowth.Checked = true;
-            this.rbUnevenGrowth.Location = new System.Drawing.Point(667, 115);
+            this.rbUnevenGrowth.Location = new System.Drawing.Point(667, 81);
             this.rbUnevenGrowth.Name = "rbUnevenGrowth";
             this.rbUnevenGrowth.Size = new System.Drawing.Size(130, 24);
             this.rbUnevenGrowth.TabIndex = 17;
@@ -664,7 +666,7 @@ namespace StockScreener
             // rbAllGrowthPositive
             // 
             this.rbAllGrowthPositive.AutoSize = true;
-            this.rbAllGrowthPositive.Location = new System.Drawing.Point(667, 75);
+            this.rbAllGrowthPositive.Location = new System.Drawing.Point(667, 60);
             this.rbAllGrowthPositive.Name = "rbAllGrowthPositive";
             this.rbAllGrowthPositive.Size = new System.Drawing.Size(155, 24);
             this.rbAllGrowthPositive.TabIndex = 16;
@@ -843,6 +845,16 @@ namespace StockScreener
             this.tmrTicker.Interval = 500;
             this.tmrTicker.Tick += new System.EventHandler(this.tmrTicker_Tick);
             // 
+            // chkIgnoreADR
+            // 
+            this.chkIgnoreADR.AutoSize = true;
+            this.chkIgnoreADR.Location = new System.Drawing.Point(667, 133);
+            this.chkIgnoreADR.Name = "chkIgnoreADR";
+            this.chkIgnoreADR.Size = new System.Drawing.Size(184, 24);
+            this.chkIgnoreADR.TabIndex = 24;
+            this.chkIgnoreADR.Text = "Ignore ADR companies";
+            this.chkIgnoreADR.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -945,6 +957,7 @@ namespace StockScreener
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox txtTerminalMultiple;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.CheckBox chkIgnoreADR;
     }
 }
 

@@ -168,6 +168,7 @@ namespace StockScreener
 
             filter.IsAllGrowthPositive = rbAllGrowthPositive.Checked;
             filter.AllowOneNegativeYear = chkOneYearNegative.Checked;
+            filter.IgnoreADRCompanies = chkIgnoreADR.Checked;
             //filter.TerminalMultiple = Convert.ToInt32(txtFilterTerminalMultiple.Text);
 
             return filter;

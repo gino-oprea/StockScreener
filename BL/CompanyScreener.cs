@@ -19,7 +19,7 @@ namespace BL
         {
             List<Company> filteredCompanies = new List<Company>();
 
-            List<string> allTickers = GetCompaniesTickers_FinvizScreener(Url, bgw);
+            List<string> allTickers = GetCompaniesTickers_FinvizScreener(Url, filter, bgw);
 
             progress = "0 of " + allTickers.Count.ToString();
 
@@ -184,7 +184,7 @@ namespace BL
             return allTickers;
         }
 
-        public static List<string> GetCompaniesTickers_FinvizScreener(string Url, BackgroundWorker bgw)
+        public static List<string> GetCompaniesTickers_FinvizScreener(string Url, CompanyFilter filter, BackgroundWorker bgw)
         {
             List<string> allTickers = new List<string>();
             string nextPageUrlLine = "";
@@ -209,7 +209,18 @@ namespace BL
                     for (int i = 0; i < rawLines.Count; i++)
                     {
                         if (rawLines[i].Contains("class=\"screener-link-primary\""))
-                            companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "class=\"screener-link-primary\">", "</a>", false));
+                        {
+                            string country = "";
+                            string[] lines = rawLines[i].Split("class=\"screener-link\">");
+                            if (lines.Length > 6)
+                            {
+                                country = HtmlHelper.ExtractString(lines[5], "", "</a>", false);
+                            }
+
+                            if (!filter.IgnoreADRCompanies || (filter.IgnoreADRCompanies && country.ToUpper() == "USA"))
+                                companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "class=\"screener-link-primary\">", "</a>", false));
+
+                        }
 
                         if (rawLines[i].Contains("<b>next</b>"))
                             nextPageUrlLine = rawLines[i];

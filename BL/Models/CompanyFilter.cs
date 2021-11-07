@@ -27,6 +27,7 @@ namespace BL.Models
         public bool IsAllGrowthPositive { get; set; }
 
         public bool AllowOneNegativeYear { get; set; }
+        public bool IgnoreADRCompanies { get; set; } = false;
 
         //public int TerminalMultiple { get; set; }
 
