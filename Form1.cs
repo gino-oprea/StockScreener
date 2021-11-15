@@ -231,7 +231,7 @@ namespace StockScreener
                 discount = 10;
 
             var values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: discount,
-                terminalMultiple: company.Average_P_FCF_Multiple);
+                terminalMultiple: company.Average_P_FCF_Multiple.Value);
             DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(values);
             bindingSourceIntrinsicValues = new BindingSource();
             bindingSourceIntrinsicValues.DataSource = dtIntrinsicValues;

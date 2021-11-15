@@ -98,6 +98,8 @@ namespace BL
                     }
                     else
                         company.Growth = 0;
+
+                    company.Average_P_FCF_Multiple ??= (int)Math.Floor(company.Growth.Value);
                     //}
                 }
                 catch (Exception ex)
@@ -277,28 +279,35 @@ namespace BL
 
                 List<HistoricalPriceToFreeCashflowData> histData = JsonConvert.DeserializeObject<List<HistoricalPriceToFreeCashflowData>>(json);
 
-                histData.RemoveAll(h => h.v3 == 0);//eliminam valorile 0
-
-                var avgPriceToFCF = histData.Average(h => h.v3);
-                bool noOutliersFound = false;
-                //remove outliers
-                while (!noOutliersFound)
+                if (histData != null)
                 {
-                    noOutliersFound = true;
-                    var stdDev = Math.Sqrt(histData.Sum(h => Math.Pow(h.v3 - avgPriceToFCF, 2)) / histData.Count);
-                    for (int i = histData.Count - 1; i >= 0; i--)
-                    {
-                        if (histData[i].v3 - avgPriceToFCF > 1.5 * stdDev
-                            || avgPriceToFCF - histData[i].v3 > 2.5 * stdDev) //eliminam mai multe din deviatiile pozitive decat din cele negative 
-                        {
-                            noOutliersFound = false;
-                            histData.RemoveAt(i);
-                        }
-                    }
-                    avgPriceToFCF = histData.Average(h => h.v3);
-                }
+                    histData.RemoveAll(h => h.v3 == 0);//eliminam valorile 0
 
-                company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 20);//terminal multiple maximum 20
+                    var avgPriceToFCF = histData.Average(h => h.v3);
+                    bool noOutliersFound = false;
+                    //remove outliers
+                    while (!noOutliersFound)
+                    {
+                        noOutliersFound = true;
+                        var stdDev = Math.Sqrt(histData.Sum(h => Math.Pow(h.v3 - avgPriceToFCF, 2)) / histData.Count);
+                        for (int i = histData.Count - 1; i >= 0; i--)
+                        {
+                            if (histData[i].v3 - avgPriceToFCF > 1.5 * stdDev
+                                || avgPriceToFCF - histData[i].v3 > 2.5 * stdDev) //eliminam mai multe din deviatiile pozitive decat din cele negative 
+                            {
+                                noOutliersFound = false;
+                                histData.RemoveAt(i);
+                            }
+                        }
+                        avgPriceToFCF = histData.Average(h => h.v3);
+                    }
+
+                    company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 20);//terminal multiple maximum 20
+                }
+                else
+                {
+                    company.Average_P_FCF_Multiple = null;
+                }
             }
         }
         
