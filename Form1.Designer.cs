@@ -33,11 +33,7 @@ namespace StockScreener
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCheckCompany = new System.Windows.Forms.TabPage();
-            this.lblEnterpriseValue = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.lblCurrentSharePriceEV = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
             this.txtTerminalMultiple = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.lblMarketCap = new System.Windows.Forms.Label();
@@ -134,11 +130,7 @@ namespace StockScreener
             // 
             // tabCheckCompany
             // 
-            this.tabCheckCompany.Controls.Add(this.lblEnterpriseValue);
             this.tabCheckCompany.Controls.Add(this.label33);
-            this.tabCheckCompany.Controls.Add(this.label32);
-            this.tabCheckCompany.Controls.Add(this.lblCurrentSharePriceEV);
-            this.tabCheckCompany.Controls.Add(this.label31);
             this.tabCheckCompany.Controls.Add(this.txtTerminalMultiple);
             this.tabCheckCompany.Controls.Add(this.label26);
             this.tabCheckCompany.Controls.Add(this.lblMarketCap);
@@ -190,15 +182,6 @@ namespace StockScreener
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
             // 
-            // lblEnterpriseValue
-            // 
-            this.lblEnterpriseValue.AutoSize = true;
-            this.lblEnterpriseValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblEnterpriseValue.Location = new System.Drawing.Point(1074, 52);
-            this.lblEnterpriseValue.Name = "lblEnterpriseValue";
-            this.lblEnterpriseValue.Size = new System.Drawing.Size(0, 23);
-            this.lblEnterpriseValue.TabIndex = 50;
-            // 
             // label33
             // 
             this.label33.AutoSize = true;
@@ -207,35 +190,6 @@ namespace StockScreener
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(0, 23);
             this.label33.TabIndex = 49;
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label32.Location = new System.Drawing.Point(896, 52);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(172, 23);
-            this.label32.TabIndex = 48;
-            this.label32.Text = "Enterprise Value (B):";
-            // 
-            // lblCurrentSharePriceEV
-            // 
-            this.lblCurrentSharePriceEV.AutoSize = true;
-            this.lblCurrentSharePriceEV.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblCurrentSharePriceEV.Location = new System.Drawing.Point(1074, 75);
-            this.lblCurrentSharePriceEV.Name = "lblCurrentSharePriceEV";
-            this.lblCurrentSharePriceEV.Size = new System.Drawing.Size(0, 23);
-            this.lblCurrentSharePriceEV.TabIndex = 47;
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label31.Location = new System.Drawing.Point(875, 75);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(193, 23);
-            this.label31.TabIndex = 46;
-            this.label31.Text = "Current share price EV:";
             // 
             // txtTerminalMultiple
             // 
@@ -257,7 +211,7 @@ namespace StockScreener
             // 
             this.lblMarketCap.AutoSize = true;
             this.lblMarketCap.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblMarketCap.Location = new System.Drawing.Point(754, 52);
+            this.lblMarketCap.Location = new System.Drawing.Point(1029, 57);
             this.lblMarketCap.Name = "lblMarketCap";
             this.lblMarketCap.Size = new System.Drawing.Size(0, 23);
             this.lblMarketCap.TabIndex = 43;
@@ -266,7 +220,7 @@ namespace StockScreener
             // 
             this.label27.AutoSize = true;
             this.label27.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label27.Location = new System.Drawing.Point(611, 52);
+            this.label27.Location = new System.Drawing.Point(886, 57);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(137, 23);
             this.label27.TabIndex = 42;
@@ -400,7 +354,7 @@ namespace StockScreener
             // 
             this.lblCurrentSharePrice.AutoSize = true;
             this.lblCurrentSharePrice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblCurrentSharePrice.Location = new System.Drawing.Point(754, 75);
+            this.lblCurrentSharePrice.Location = new System.Drawing.Point(1029, 80);
             this.lblCurrentSharePrice.Name = "lblCurrentSharePrice";
             this.lblCurrentSharePrice.Size = new System.Drawing.Size(0, 23);
             this.lblCurrentSharePrice.TabIndex = 24;
@@ -409,7 +363,7 @@ namespace StockScreener
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label13.Location = new System.Drawing.Point(580, 75);
+            this.label13.Location = new System.Drawing.Point(855, 80);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(168, 23);
             this.label13.TabIndex = 23;
@@ -1018,11 +972,7 @@ namespace StockScreener
         private System.Windows.Forms.TextBox txtTerminalMultiple;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.CheckBox chkIgnoreADR;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Label lblCurrentSharePriceEV;
-        private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.Label lblEnterpriseValue;
     }
 }
 

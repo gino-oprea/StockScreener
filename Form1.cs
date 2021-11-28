@@ -252,9 +252,9 @@ namespace StockScreener
                     lblCompanyName.Text = company.Name;
                     txtSharesOutstanding.Text = company.SharesOutstanding.ToString();
                     lblCurrentSharePrice.Text = company.CurrentPrice.ToString();
-                    lblCurrentSharePriceEV.Text = String.Format("{0:0.00}", company.CurrentPrice_EV);
+                    //lblCurrentSharePriceEV.Text = String.Format("{0:0.00}", company.CurrentPrice_EV);
                     lblMarketCap.Text = company.MarketCap.ToString();
-                    lblEnterpriseValue.Text = String.Format("{0:0.00}", company.EnterpriseValue);
+                    //lblEnterpriseValue.Text = String.Format("{0:0.00}", company.EnterpriseValue);
 
                     txtAvgRevenueGrowth.Text = String.Format("{0:0.00}", company.AverageRevenueGrowth);
 
