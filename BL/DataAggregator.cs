@@ -47,6 +47,8 @@ namespace BL
 
                     Task.WaitAll(task1, task2);
 
+                    company.CurrentPrice_EV = company.EnterpriseValue.Value / company.SharesOutstanding.Value;
+
                     company.AverageRevenueGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Revenue);
                     company.AverageEPSGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].EPS);
                     company.AverageEquityGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Equity);
@@ -172,7 +174,7 @@ namespace BL
                 string sharesOutstanding = HtmlHelper.ExtractString(selectedLines[3], ">", "</", false);
                 string pe_ratio = HtmlHelper.ExtractString(selectedLines[4], ">", "</", false);
 
-                company.Name = name;
+                company.Name = name.Replace("&amp;","&");
                 company.CurrentPrice = float.Parse(currentPrice);
                 company.MarketCap = marketCap != "N/A" ? ConvertStringToBillions(marketCap) : null;
                 //company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : 1;
@@ -195,6 +197,8 @@ namespace BL
             financials.Revenue = GetFinancialData(rawLines_incomeStatement, "<div class=\"cell__content \">Sales/Revenue</div>", "</tr>");
             financials.NetIncome = GetFinancialData(rawLines_incomeStatement, "<div class=\"cell__content \">Net Income</div>", "</tr>");
             financials.EPS = GetFinancialData(rawLines_incomeStatement, "<div class=\"cell__content \">EPS (Diluted)</div>", "</tr>");
+            financials.Cash = GetFinancialData(rawLines_balanceSheet, "<div class=\"cell__content \">Cash &amp; Short Term Investments</div>", "</tr>");
+            financials.ShortTermDebt = GetFinancialData(rawLines_balanceSheet, ">Short Term Debt</div>", "</tr>");
             financials.LongTermDebt = GetFinancialData(rawLines_balanceSheet, ">Long-Term Debt</div>", "</tr>");
             financials.Equity = GetFinancialData(rawLines_balanceSheet, "<div class=\"cell__content \">Total Equity</div>", "</tr>");
             financials.FreeCashFlow = GetFinancialData(rawLines_cashFlow, "<div class=\"cell__content \">Free Cash Flow</div>", "</tr>");
@@ -204,6 +208,12 @@ namespace BL
             //financials.ROE = GetROE(financials);
 
             company.Financials.Add(financials);
+
+            float latestShortTermDebt = financials.ShortTermDebt[financials.ShortTermDebt.Count-1].Value ?? 0;
+            float latestLongTermDebt = financials.LongTermDebt[financials.LongTermDebt.Count-1].Value ?? 0;
+            float latestCash = financials.Cash[financials.Cash.Count-1].Value ?? 0;
+
+            company.EnterpriseValue = company.MarketCap + latestLongTermDebt + latestShortTermDebt - latestCash;            
         }
         //public static void GetCompanyFinancials_QuickFS(string html_quickFS, Company company)
         //{           

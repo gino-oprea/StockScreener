@@ -17,6 +17,8 @@ namespace BL.Models
 
         public List<YearVal> NetIncome { get; set; }
         public List<YearVal> RetainedEarnings { get; set; }
+        public List<YearVal> Cash { get; set; }
+        public List<YearVal> ShortTermDebt { get; set; }
         public List<YearVal> LongTermDebt { get; set; }
         
     }

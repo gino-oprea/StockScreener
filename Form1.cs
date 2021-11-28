@@ -85,7 +85,9 @@ namespace StockScreener
                 AddRow("Retained earnings", company.Financials[0].RetainedEarnings, dt);
                 AddRow("Free Cash Flow", company.Financials[0].FreeCashFlow, dt);
                 AddRow("Capital Expenditures", company.Financials[0].CapitalExpenditures, dt);
+                AddRow("Short Term Debt", company.Financials[0].ShortTermDebt, dt);
                 AddRow("Long Term Debt", company.Financials[0].LongTermDebt, dt);
+                AddRow("Cash and Equivalents", company.Financials[0].Cash, dt);
                 //AddRow("ROE(%)", company.Financials[0].ROE, dt);
             }
             return dt;
@@ -181,7 +183,7 @@ namespace StockScreener
             dt.Columns.Add("Ticker");
             dt.Columns.Add("Name");
             dt.Columns.Add("P/E");
-            dt.Columns.Add("Price");
+            dt.Columns.Add("Price EV");
 
             dt.Columns.Add("Intrinsic Value");
             //dt.Columns.Add("Intrinsic Value (-30%)");
@@ -200,7 +202,7 @@ namespace StockScreener
                 dr[0] = company.Ticker;
                 dr[1] = company.Name;
                 dr[2] = String.Format("{0:0.00}", company.PE_Ratio);
-                dr[3] = String.Format("{0:0.00}", company.CurrentPrice);
+                dr[3] = String.Format("{0:0.00}", company.CurrentPrice_EV);
 
                 dr[4] = String.Format("{0:0.00}", company.IntrinsicValue);
                 //dr[5] = String.Format("{0:0.00}", company.IntrinsicValue_Discounted30);
@@ -250,7 +252,9 @@ namespace StockScreener
                     lblCompanyName.Text = company.Name;
                     txtSharesOutstanding.Text = company.SharesOutstanding.ToString();
                     lblCurrentSharePrice.Text = company.CurrentPrice.ToString();
+                    lblCurrentSharePriceEV.Text = String.Format("{0:0.00}", company.CurrentPrice_EV);
                     lblMarketCap.Text = company.MarketCap.ToString();
+                    lblEnterpriseValue.Text = String.Format("{0:0.00}", company.EnterpriseValue);
 
                     txtAvgRevenueGrowth.Text = String.Format("{0:0.00}", company.AverageRevenueGrowth);
 
@@ -380,5 +384,7 @@ namespace StockScreener
                 lblProgress.Text = CompanyScreener.progress;
             }
         }
+
+       
     }
 }

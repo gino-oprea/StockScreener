@@ -64,7 +64,7 @@ namespace BL
                             {
                                 var refPrice = GetRefPrice(company, filter);
 
-                                if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
+                                if ((decimal)company.CurrentPrice_EV <= refPrice && company.IntrinsicValue > 0)
                                     filteredCompanies.Add(company);
                             }
                             else
@@ -80,7 +80,7 @@ namespace BL
                                 {                                   
                                     var refPrice = GetRefPrice(company, filter);
 
-                                    if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
+                                    if ((decimal)company.CurrentPrice_EV <= refPrice && company.IntrinsicValue > 0)
                                         filteredCompanies.Add(company);                                 
                                 }
                             }
