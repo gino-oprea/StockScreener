@@ -581,11 +581,11 @@ namespace StockScreener
             this.gvFinancials.AllowUserToAddRows = false;
             this.gvFinancials.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvFinancials.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvFinancials.Location = new System.Drawing.Point(7, 111);
+            this.gvFinancials.Location = new System.Drawing.Point(6, 111);
             this.gvFinancials.Name = "gvFinancials";
             this.gvFinancials.RowHeadersWidth = 51;
             this.gvFinancials.RowTemplate.Height = 29;
-            this.gvFinancials.Size = new System.Drawing.Size(1176, 322);
+            this.gvFinancials.Size = new System.Drawing.Size(1177, 322);
             this.gvFinancials.TabIndex = 3;
             // 
             // btnSearch
@@ -852,10 +852,10 @@ namespace StockScreener
             // 
             this.gvCompanies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvCompanies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvCompanies.Location = new System.Drawing.Point(16, 158);
+            this.gvCompanies.Location = new System.Drawing.Point(6, 158);
             this.gvCompanies.Name = "gvCompanies";
             this.gvCompanies.RowHeadersWidth = 51;
-            this.gvCompanies.Size = new System.Drawing.Size(1166, 570);
+            this.gvCompanies.Size = new System.Drawing.Size(1176, 570);
             this.gvCompanies.TabIndex = 3;
             // 
             // btnGo
