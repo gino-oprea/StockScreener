@@ -98,21 +98,22 @@ namespace BL.Models
             decimal totalIntrinsicValue = terminalMultiple * discountedfutureCashFlows[9] + discountedfutureCashFlows.Sum(cf => cf);
             decimal totalIntrinsicValueInclDebt = totalIntrinsicValue + latestCash - latestShortTermDebt - latestLongTermDebt;
 
-            decimal intrinsicValueExclDebt = totalIntrinsicValue / (decimal)sharesOutstanding;
+            //daca pretul de piata e sub Book Value si datoriile totale sunt mai mari decat 3xFCF, valoarea intrinseca este book value            
+            float? latestEquity = this.Financials[0].Equity[this.Financials[0].Equity.Count - 1].Value;
+            decimal netDebt = latestLongTermDebt + latestShortTermDebt - latestCash;
+            if (latestEquity != null && latestEquity > this.MarketCap && (3 * lastCashFlow < netDebt))
+            {
+                totalIntrinsicValueInclDebt = (decimal)latestEquity;
+            }
+            
+
+            //decimal intrinsicValueExclDebt = totalIntrinsicValue / (decimal)sharesOutstanding;
             decimal intrinsicValueInclDebt = totalIntrinsicValueInclDebt / (decimal)sharesOutstanding;
 
-            float? latestEquity = this.Financials[0].Equity[this.Financials[0].Equity.Count - 1].Value;
+            decimal intrinsicValueDiscounted30 = intrinsicValueInclDebt * (decimal)0.7;
+            decimal intrinsicValueDiscounted50 = intrinsicValueInclDebt * (decimal)0.5;
 
-            decimal intrinsicValue = intrinsicValueInclDebt;
-
-            //daca pretul de piata e sub Book Value, datoriile pot fi ignorate
-            if (latestEquity != null && latestEquity > this.MarketCap)
-                intrinsicValue = intrinsicValueExclDebt;
-
-            decimal intrinsicValueDiscounted30 = intrinsicValue * (decimal)0.7;
-            decimal intrinsicValueDiscounted50 = intrinsicValue * (decimal)0.5;
-
-            values.Add(intrinsicValue);
+            values.Add(intrinsicValueInclDebt);
             values.Add(intrinsicValueDiscounted30);
             values.Add(intrinsicValueDiscounted50);
 
