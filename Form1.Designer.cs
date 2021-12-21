@@ -307,7 +307,7 @@ namespace StockScreener
             this.txtDiscountInterestRate.Name = "txtDiscountInterestRate";
             this.txtDiscountInterestRate.Size = new System.Drawing.Size(65, 27);
             this.txtDiscountInterestRate.TabIndex = 29;
-            this.txtDiscountInterestRate.Text = "10";
+            this.txtDiscountInterestRate.Text = "12";
             // 
             // label15
             // 
@@ -703,7 +703,7 @@ namespace StockScreener
             this.txtFilterRateOfReturn.Name = "txtFilterRateOfReturn";
             this.txtFilterRateOfReturn.Size = new System.Drawing.Size(32, 27);
             this.txtFilterRateOfReturn.TabIndex = 15;
-            this.txtFilterRateOfReturn.Text = "10";
+            this.txtFilterRateOfReturn.Text = "12";
             // 
             // label25
             // 

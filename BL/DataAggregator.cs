@@ -312,7 +312,7 @@ namespace BL
                         avgPriceToFCF = histData.Average(h => h.v3);
                     }
 
-                    company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 20);//terminal multiple maximum 20
+                    company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 15);//terminal multiple maximum 15
                 }
                 else
                 {

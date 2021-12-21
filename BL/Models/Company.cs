@@ -38,7 +38,7 @@ namespace BL.Models
         public List<Financials> Financials { get; set; }
 
 
-        public List<decimal> CalculateIntrinsicAndDiscountedValues(decimal? lastCashFlow = null, int discountedInterestRate = 10,
+        public List<decimal> CalculateIntrinsicAndDiscountedValues(decimal? lastCashFlow = null, int discountedInterestRate = 12,
             decimal? growth = null, float? sharesOutstanding = null, int terminalMultiple = 10)
         {
             if (this.Financials[0].FreeCashFlow.Count < 4)
