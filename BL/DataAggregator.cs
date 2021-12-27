@@ -14,6 +14,16 @@ namespace BL
 {
     public static class DataAggregator
     {
+        public static Company GetCompanyCurrentPrice(string TickerSymbol)
+        {
+            string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search", "GET", null, false);
+
+            Company company = new Company();
+            if (generalDetails != null)
+                GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
+
+            return company;
+        }
         public static Company GetCompanyData(string TickerSymbol)
         {
             Company company = new Company();
@@ -26,13 +36,13 @@ namespace BL
                 GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
 
 
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             string financials_incomeStatement = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials", "GET", null, false);
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             string financials_balanceSheet = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/balance-sheet", "GET", null, false);
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             string financials_cashFlow = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/cash-flow", "GET", null, false);
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             //string financials_quickFS = BL.HttpReq.GetUrlHttpWebRequest("https://api.quickfs.net/stocks/" + TickerSymbol + "/ovr/Annual/?sortOrder=ASC" , "GET", null, false);
 
             if (financials_incomeStatement != null)
@@ -230,16 +240,16 @@ namespace BL
 
             string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/gamma/assets/8b9e7ff2e51e33cc6303.js", "GET", null, false);
             string api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
-            Thread.Sleep(50);
+            Thread.Sleep(100);
             Hashtable headers = new Hashtable();
             headers.Add("x-api-key", api_key);
             string raw_searchResults = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/api/v1/search/entities?q=" + ticker + "&limit=6&autocomplete=true", "GET", null, false, headers);
             MorningstarAutocomplete searchResults = JsonConvert.DeserializeObject<MorningstarAutocomplete>(raw_searchResults);
             string keyRatiosUrl = "https://financials.morningstar.com/finan/financials/getKeyStatPart.html?&t=" + searchResults.results[0].performanceId + "&region=usa&culture=en-US&cur=&order=asc";
             string financialsUrl = "https://financials.morningstar.com/finan/financials/getFinancePart.html?&t=" + searchResults.results[0].performanceId + "&region=usa&culture=en-US&cur=&order=asc";
-            Thread.Sleep(50);
+            Thread.Sleep(100);
             string morningstar_keyratios_html = BL.HttpReq.GetUrlHttpWebRequest(keyRatiosUrl, "GET", null, false);
-            Thread.Sleep(50);
+            Thread.Sleep(100);
             string morningstar_financials_html = BL.HttpReq.GetUrlHttpWebRequest(financialsUrl, "GET", null, false);
 
             List<string> rawLines_keyRatios = morningstar_keyratios_html.Split("<", StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -289,7 +299,7 @@ namespace BL
 
                 List<HistoricalPriceToFreeCashflowData> histData = JsonConvert.DeserializeObject<List<HistoricalPriceToFreeCashflowData>>(json);
 
-                if (histData != null)
+                if (histData != null && histData.Count>0)
                 {
                     histData.RemoveAll(h => h.v3 == 0);//eliminam valorile 0
 

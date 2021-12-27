@@ -78,6 +78,10 @@ namespace StockScreener
             this.label1 = new System.Windows.Forms.Label();
             this.txtTicker = new System.Windows.Forms.TextBox();
             this.tabSearchCompanies = new System.Windows.Forms.TabPage();
+            this.btnGetAllCompaniesInCache = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rbCacheSearch = new System.Windows.Forms.RadioButton();
+            this.rbFreshSearch = new System.Windows.Forms.RadioButton();
             this.chkIgnoreADR = new System.Windows.Forms.CheckBox();
             this.chkOneYearNegative = new System.Windows.Forms.CheckBox();
             this.txtFilterAvgROIC = new System.Windows.Forms.TextBox();
@@ -108,12 +112,14 @@ namespace StockScreener
             this.bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
+            this.bgwGetCache = new System.ComponentModel.BackgroundWorker();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvFinancials)).BeginInit();
             this.tabSearchCompanies.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingCompanies)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCompanies)).BeginInit();
             this.SuspendLayout();
@@ -570,6 +576,8 @@ namespace StockScreener
             // 
             // tabSearchCompanies
             // 
+            this.tabSearchCompanies.Controls.Add(this.btnGetAllCompaniesInCache);
+            this.tabSearchCompanies.Controls.Add(this.groupBox1);
             this.tabSearchCompanies.Controls.Add(this.chkIgnoreADR);
             this.tabSearchCompanies.Controls.Add(this.chkOneYearNegative);
             this.tabSearchCompanies.Controls.Add(this.txtFilterAvgROIC);
@@ -602,6 +610,48 @@ namespace StockScreener
             this.tabSearchCompanies.TabIndex = 1;
             this.tabSearchCompanies.Text = "Search Companies";
             this.tabSearchCompanies.UseVisualStyleBackColor = true;
+            // 
+            // btnGetAllCompaniesInCache
+            // 
+            this.btnGetAllCompaniesInCache.Location = new System.Drawing.Point(848, 99);
+            this.btnGetAllCompaniesInCache.Name = "btnGetAllCompaniesInCache";
+            this.btnGetAllCompaniesInCache.Size = new System.Drawing.Size(141, 53);
+            this.btnGetAllCompaniesInCache.TabIndex = 26;
+            this.btnGetAllCompaniesInCache.Text = "Get all companies in cache";
+            this.btnGetAllCompaniesInCache.UseVisualStyleBackColor = true;
+            this.btnGetAllCompaniesInCache.Click += new System.EventHandler(this.btnGetAllCompaniesInCache_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rbCacheSearch);
+            this.groupBox1.Controls.Add(this.rbFreshSearch);
+            this.groupBox1.Location = new System.Drawing.Point(1019, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(151, 65);
+            this.groupBox1.TabIndex = 25;
+            this.groupBox1.TabStop = false;
+            // 
+            // rbCacheSearch
+            // 
+            this.rbCacheSearch.AutoSize = true;
+            this.rbCacheSearch.Checked = true;
+            this.rbCacheSearch.Location = new System.Drawing.Point(7, 35);
+            this.rbCacheSearch.Name = "rbCacheSearch";
+            this.rbCacheSearch.Size = new System.Drawing.Size(116, 24);
+            this.rbCacheSearch.TabIndex = 1;
+            this.rbCacheSearch.TabStop = true;
+            this.rbCacheSearch.Text = "Cache search";
+            this.rbCacheSearch.UseVisualStyleBackColor = true;
+            // 
+            // rbFreshSearch
+            // 
+            this.rbFreshSearch.AutoSize = true;
+            this.rbFreshSearch.Location = new System.Drawing.Point(7, 13);
+            this.rbFreshSearch.Name = "rbFreshSearch";
+            this.rbFreshSearch.Size = new System.Drawing.Size(110, 24);
+            this.rbFreshSearch.TabIndex = 0;
+            this.rbFreshSearch.Text = "Fresh search";
+            this.rbFreshSearch.UseVisualStyleBackColor = true;
             // 
             // chkIgnoreADR
             // 
@@ -869,6 +919,11 @@ namespace StockScreener
             this.tmrTicker.Interval = 500;
             this.tmrTicker.Tick += new System.EventHandler(this.tmrTicker_Tick);
             // 
+            // bgwGetCache
+            // 
+            this.bgwGetCache.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetCache_DoWork);
+            this.bgwGetCache.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetCache_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -887,6 +942,8 @@ namespace StockScreener
             ((System.ComponentModel.ISupportInitialize)(this.gvFinancials)).EndInit();
             this.tabSearchCompanies.ResumeLayout(false);
             this.tabSearchCompanies.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingCompanies)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCompanies)).EndInit();
             this.ResumeLayout(false);
@@ -973,6 +1030,11 @@ namespace StockScreener
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.CheckBox chkIgnoreADR;
         private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton rbCacheSearch;
+        private System.Windows.Forms.RadioButton rbFreshSearch;
+        private System.Windows.Forms.Button btnGetAllCompaniesInCache;
+        private System.ComponentModel.BackgroundWorker bgwGetCache;
     }
 }
 

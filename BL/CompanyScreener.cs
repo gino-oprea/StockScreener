@@ -1,7 +1,10 @@
 ﻿using BL.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -13,13 +16,25 @@ namespace BL
     {
         public static string currentTicker;
         public static List<Company> currentfilteredCompanies;
-        public static string progress;
+        public static string progress;        
 
-        public static List<Company> GetFilteredCompanies(string Url, CompanyFilter filter, BackgroundWorker bgw)
+        public static List<Company> GetFilteredCompanies(string Url, CompanyFilter filter, List<Company> allCompanies, BackgroundWorker bgw)
         {
             List<Company> filteredCompanies = new List<Company>();
+            List<Company> companies = null;
 
-            List<string> allTickers = GetCompaniesTickers_FinvizScreener(Url, filter, bgw);
+            List<string> allTickers = new List<string>();
+            if (allCompanies == null)
+                allTickers = GetCompaniesTickers_FinvizScreener(Url, filter, bgw);
+            else
+            {
+                if (filter!=null && filter.IgnoreADRCompanies)
+                    companies = allCompanies.FindAll(c => c.Name!=null && !c.Name.Contains(" ADR"));
+                else
+                    companies = allCompanies;
+
+                allTickers = companies.Select(c => c.Ticker).ToList();
+            }
 
             progress = "0 of " + allTickers.Count.ToString();
 
@@ -41,53 +56,65 @@ namespace BL
 
                 try
                 {
-                    Company company = DataAggregator.GetCompanyData(ticker);
+                    Company company = new Company();
+                    if (companies == null)
+                        company = DataAggregator.GetCompanyData(ticker);
+                    else
+                        company = companies[i];
 
                     currentTicker = company.Ticker;
 
-                    List<decimal> values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: filter.DiscountRate, terminalMultiple: company.Average_P_FCF_Multiple.Value);
-
-                    company.IntrinsicValue = values[0];
-                    company.IntrinsicValue_Discounted30 = values[1];
-                    company.IntrinsicValue_Discounted50 = values[2];
-
-                    if (company.Financials.Count > 0)
+                    if (filter != null)
                     {
-                        if (company.Financials[0].FreeCashFlow.Count > 2
-                            && company.AverageEquityGrowth >= filter.MinAvgEqGrowth
-                            && company.AverageRevenueGrowth >= filter.MinAvgRevenueGrowth
-                            && company.AverageEPSGrowth >= filter.MinAvgEPSGrowth
-                            && company.AverageFreeCashFlowGrowth >= filter.MinAvgFreeCashFlowGrowth
-                            && company.AverageROIC >= filter.MinAvgROIC)
+                        List<decimal> values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: filter.DiscountRate, terminalMultiple: company.Average_P_FCF_Multiple.Value);
+
+                        company.IntrinsicValue = values[0];
+                        company.IntrinsicValue_Discounted30 = values[1];
+                        company.IntrinsicValue_Discounted50 = values[2];
+
+                        if (company.Financials.Count > 0)
                         {
-                            if (!filter.IsAllGrowthPositive)
+                            if (company.Financials[0].FreeCashFlow.Count > 2
+                                && company.AverageEquityGrowth >= filter.MinAvgEqGrowth
+                                && company.AverageRevenueGrowth >= filter.MinAvgRevenueGrowth
+                                && company.AverageEPSGrowth >= filter.MinAvgEPSGrowth
+                                && company.AverageFreeCashFlowGrowth >= filter.MinAvgFreeCashFlowGrowth
+                                && company.AverageROIC >= filter.MinAvgROIC)
                             {
-                                var refPrice = GetRefPrice(company, filter);
-
-                                if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
-                                    filteredCompanies.Add(company);
-                            }
-                            else
-                            {
-                                //all growth positive
-                                int negativeYearsNo = 0;
-                                if (filter.AllowOneNegativeYear) negativeYearsNo = 1;
-
-                                if (company.Financials[0].Equity.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
-                                && company.Financials[0].EPS.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
-                                && company.Financials[0].Revenue.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
-                                && company.Financials[0].FreeCashFlow.FindAll(v => v.Growth < 0).Count <= negativeYearsNo)
-                                {                                   
+                                if (!filter.IsAllGrowthPositive)
+                                {
                                     var refPrice = GetRefPrice(company, filter);
 
                                     if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
-                                        filteredCompanies.Add(company);                                 
+                                        filteredCompanies.Add(company);
+                                }
+                                else
+                                {
+                                    //all growth positive
+                                    int negativeYearsNo = 0;
+                                    if (filter.AllowOneNegativeYear) negativeYearsNo = 1;
+
+                                    if (company.Financials[0].Equity.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
+                                    && company.Financials[0].EPS.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
+                                    && company.Financials[0].Revenue.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
+                                    && company.Financials[0].FreeCashFlow.FindAll(v => v.Growth < 0).Count <= negativeYearsNo)
+                                    {
+                                        var refPrice = GetRefPrice(company, filter);
+
+                                        if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
+                                            filteredCompanies.Add(company);
+                                    }
                                 }
                             }
                         }
+
+                        currentfilteredCompanies = filteredCompanies;
+                    }
+                    else//le adaugam pe toate fare filtru
+                    {
+                        filteredCompanies.Add(company);
                     }
 
-                    currentfilteredCompanies = filteredCompanies;
                     Thread.Sleep(200);
                 }
                 catch (Exception ex)
@@ -100,6 +127,11 @@ namespace BL
             progress = "";
 
             return filteredCompanies;
+        }
+        public static async Task SaveCompanies(List<Company> companies)
+        {
+            string json = JsonConvert.SerializeObject(companies);
+            await File.WriteAllTextAsync("companies.json", json);
         }
         public static decimal GetRefPrice(Company company, CompanyFilter filter)
         {
@@ -217,7 +249,7 @@ namespace BL
                                 country = HtmlHelper.ExtractString(lines[5], "", "</a>", false);
                             }
 
-                            if (!filter.IgnoreADRCompanies || (filter.IgnoreADRCompanies && country.ToUpper() == "USA"))
+                            if (filter==null || !filter.IgnoreADRCompanies || (filter.IgnoreADRCompanies && country.ToUpper() == "USA"))
                                 companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "class=\"screener-link-primary\">", "</a>", false));
 
                         }

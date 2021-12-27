@@ -1,10 +1,12 @@
 ﻿using BL;
 using BL.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -172,6 +174,7 @@ namespace StockScreener
             filter.AllowOneNegativeYear = chkOneYearNegative.Checked;
             filter.IgnoreADRCompanies = chkIgnoreADR.Checked;
             //filter.TerminalMultiple = Convert.ToInt32(txtFilterTerminalMultiple.Text);
+            filter.IsFreshSearch = rbFreshSearch.Checked;
 
             return filter;
         }
@@ -309,7 +312,24 @@ namespace StockScreener
 
         private void bgwSearchCompanies_DoWork(object sender, DoWorkEventArgs e)
         {
-            filteredCompanies = CompanyScreener.GetFilteredCompanies(Url, companyFilter, bgwSearchCompanies);
+            List<Company> cachedCompanies = null;
+            if(!companyFilter.IsFreshSearch && File.Exists("companies.json"))
+            {
+                using (StreamReader r = new StreamReader("companies.json"))
+                {
+                    try
+                    {
+                        string json = r.ReadToEnd();
+                        cachedCompanies = JsonConvert.DeserializeObject<List<Company>>(json);
+                    }
+                    catch(Exception ex)
+                    {
+                        lblErrorMessage.Text = "Could not read cache file";
+                    }
+                }
+            }
+
+            filteredCompanies = CompanyScreener.GetFilteredCompanies(Url, companyFilter, cachedCompanies, bgwSearchCompanies);
 
             DataTable dtFilteredCompanies = BuildFilteredCompaniesDataTable(filteredCompanies);
             bindingSourcefilteredCompanies = new BindingSource();
@@ -385,6 +405,58 @@ namespace StockScreener
             }
         }
 
-       
+        private void btnGetAllCompaniesInCache_Click(object sender, EventArgs e)
+        {
+            if (txtURL.Text.Trim() != "")
+            {
+                lblErrorMessage.Text = "";
+                lblTickerInProcess.Text = "";
+                lblProgress.Text = "";
+
+                Url = txtURL.Text;               
+
+                try
+                {
+                    tmrTicker.Start();                    
+                    pbLoadingCompanies.Visible = true;
+                    isSearchInProgress = true;
+                    bgwGetCache.RunWorkerAsync();
+                }
+                catch (Exception ex)
+                {
+                    lblErrorMessage.Text = ex.Message;
+                }
+            }
+        }
+
+        private void bgwGetCache_DoWork(object sender, DoWorkEventArgs e)
+        {
+            List<Company> companies = CompanyScreener.GetFilteredCompanies(Url, null, null, bgwGetCache);
+
+            CompanyScreener.SaveCompanies(companies);
+
+            if (bgwGetCache.CancellationPending)
+                e.Cancel = true;
+        }
+
+        private void bgwGetCache_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                lblErrorMessage.Text = e.Error.ToString();
+            }
+            if (e.Cancelled)
+            {
+                lblTickerInProcess.Text = "";
+                lblProgress.Text = "";
+                lblErrorMessage.Text = "Cancelled";
+            }           
+
+            tmrTicker.Stop();            
+            pbLoadingCompanies.Visible = false;
+            isSearchInProgress = false;
+            lblTickerInProcess.Text = "";
+            lblProgress.Text = "";
+        }
     }
 }

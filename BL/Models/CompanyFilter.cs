@@ -29,6 +29,8 @@ namespace BL.Models
         public bool AllowOneNegativeYear { get; set; }
         public bool IgnoreADRCompanies { get; set; } = false;
 
+        public bool IsFreshSearch { get; set; } = false;
+
         //public int TerminalMultiple { get; set; }
 
     }
