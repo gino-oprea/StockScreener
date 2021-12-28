@@ -30,7 +30,8 @@ namespace BL.Models
         public int? Average_P_FCF_Multiple { get; set; } = 10;
 
         public decimal? IntrinsicValue { get; set; }
-        public decimal? IntrinsicValue_Discounted30 { get; set; }
+        public decimal? IntrinsicValue_Discounted10 { get; set; }        
+        public decimal? IntrinsicValue_Discounted30 { get; set; }        
         public decimal? IntrinsicValue_Discounted50 { get; set; }
 
 
@@ -110,10 +111,17 @@ namespace BL.Models
             //decimal intrinsicValueExclDebt = totalIntrinsicValue / (decimal)sharesOutstanding;
             decimal intrinsicValueInclDebt = totalIntrinsicValueInclDebt / (decimal)sharesOutstanding;
 
+            decimal intrinsicValueDiscounted10 = intrinsicValueInclDebt * (decimal)0.9;
             decimal intrinsicValueDiscounted30 = intrinsicValueInclDebt * (decimal)0.7;
             decimal intrinsicValueDiscounted50 = intrinsicValueInclDebt * (decimal)0.5;
 
+            this.IntrinsicValue = intrinsicValueInclDebt;
+            this.IntrinsicValue_Discounted10 = intrinsicValueDiscounted10;
+            this.IntrinsicValue_Discounted30 = intrinsicValueDiscounted30;
+            this.IntrinsicValue_Discounted50 = intrinsicValueDiscounted50;
+
             values.Add(intrinsicValueInclDebt);
+            values.Add(intrinsicValueDiscounted10);
             values.Add(intrinsicValueDiscounted30);
             values.Add(intrinsicValueDiscounted50);
 

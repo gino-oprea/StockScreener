@@ -7,11 +7,12 @@ namespace BL.Models
     public enum PriceFilter
     {
         IntrinsicValue = 0,
-        MOS30 = 1,
-        MOS50 = 2,
-        IntrinsicValuePremium10 = 3,
-        IntrinsicValuePremium20 = 4,
-        Unlimited = 5
+        MOS10 = 1,
+        MOS30 = 2,
+        MOS50 = 3,
+        IntrinsicValuePremium10 = 4,
+        IntrinsicValuePremium20 = 5,
+        Unlimited = 6
     }
 
     public class CompanyFilter

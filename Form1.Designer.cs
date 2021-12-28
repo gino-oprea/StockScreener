@@ -705,6 +705,7 @@ namespace StockScreener
             this.cbFilterValue.FormattingEnabled = true;
             this.cbFilterValue.Items.AddRange(new object[] {
             "Intrinsic Value",
+            "MOS 10%",
             "MOS 30%",
             "MOS 50%",
             "Premium 10%",

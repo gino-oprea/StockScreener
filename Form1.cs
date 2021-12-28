@@ -37,7 +37,7 @@ namespace StockScreener
         {
             InitializeComponent();
 
-            cbFilterValue.SelectedIndex = 0;
+            cbFilterValue.SelectedIndex = 2;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -61,8 +61,8 @@ namespace StockScreener
 
             DataRow dr = dt.NewRow();
             dr[0] = String.Format("{0:0.00}", values[0]);
-            dr[1] = String.Format("{0:0.00}", values[1]);
-            dr[2] = String.Format("{0:0.00}", values[2]);
+            dr[1] = String.Format("{0:0.00}", values[2]);
+            dr[2] = String.Format("{0:0.00}", values[3]);
             dt.Rows.Add(dr);
 
             return dt;

@@ -68,9 +68,9 @@ namespace BL
                     {
                         List<decimal> values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: filter.DiscountRate, terminalMultiple: company.Average_P_FCF_Multiple.Value);
 
-                        company.IntrinsicValue = values[0];
-                        company.IntrinsicValue_Discounted30 = values[1];
-                        company.IntrinsicValue_Discounted50 = values[2];
+                        //company.IntrinsicValue = values[0];
+                        //company.IntrinsicValue_Discounted30 = values[1];
+                        //company.IntrinsicValue_Discounted50 = values[2];
 
                         if (company.Financials.Count > 0)
                         {
@@ -140,6 +140,9 @@ namespace BL
             {
                 case PriceFilter.IntrinsicValue:
                     refPrice = company.IntrinsicValue;
+                    break;
+                case PriceFilter.MOS10:
+                    refPrice = company.IntrinsicValue_Discounted10;
                     break;
                 case PriceFilter.MOS30:
                     refPrice = company.IntrinsicValue_Discounted30;
