@@ -105,7 +105,7 @@ namespace BL
                                company.AverageFreeCashFlowGrowth +
                                company.AverageROIC) / 5;
 
-                        company.Growth = Math.Min(15, avgGrowth);
+                        company.Growth = Math.Min(15, Math.Min(company.AverageFreeCashFlowGrowth.Value, avgGrowth));
 
                     }
                     else
