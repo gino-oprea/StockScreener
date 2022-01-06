@@ -208,6 +208,10 @@ namespace BL
             financials.NetIncome = GetFinancialData(rawLines_incomeStatement, "<div class=\"cell__content \">Net Income</div>", "</tr>");
             financials.EPS = GetFinancialData(rawLines_incomeStatement, "<div class=\"cell__content \">EPS (Diluted)</div>", "</tr>");
             financials.Cash = GetFinancialData(rawLines_balanceSheet, "<div class=\"cell__content \">Cash &amp; Short Term Investments</div>", "</tr>");
+
+            if(financials.Cash.Count==0)
+                financials.Cash = GetFinancialData(rawLines_balanceSheet, "<div class=\"cell__content \">Cash Only</div>", "</tr>");
+
             financials.ShortTermDebt = GetFinancialData(rawLines_balanceSheet, ">Short Term Debt</div>", "</tr>");
             financials.LongTermDebt = GetFinancialData(rawLines_balanceSheet, ">Long-Term Debt</div>", "</tr>");
             financials.Equity = GetFinancialData(rawLines_balanceSheet, "<div class=\"cell__content \">Total Equity</div>", "</tr>");
@@ -221,7 +225,7 @@ namespace BL
 
             float latestShortTermDebt = financials.ShortTermDebt[financials.ShortTermDebt.Count-1].Value ?? 0;
             float latestLongTermDebt = financials.LongTermDebt[financials.LongTermDebt.Count-1].Value ?? 0;
-            float latestCash = financials.Cash[financials.Cash.Count-1].Value ?? 0;
+            float latestCash = financials.Cash.Count > 0 ? (financials.Cash[financials.Cash.Count - 1].Value ?? 0) : 0;
 
             company.EnterpriseValue = company.MarketCap + latestLongTermDebt + latestShortTermDebt - latestCash;            
         }
