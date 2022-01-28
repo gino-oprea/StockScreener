@@ -855,6 +855,7 @@ namespace StockScreener
             // 
             // gvCompanies
             // 
+            this.gvCompanies.AllowUserToAddRows = false;
             this.gvCompanies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvCompanies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvCompanies.Location = new System.Drawing.Point(6, 158);
