@@ -91,9 +91,9 @@ namespace BL.Models
             }
 
             //tine cont de datorii si cash-ul curent
-            decimal latestShortTermDebt = (decimal)(this.Financials[0].ShortTermDebt[this.Financials[0].ShortTermDebt.Count - 1].Value ?? 0);
-            decimal latestLongTermDebt = (decimal)(this.Financials[0].LongTermDebt[this.Financials[0].LongTermDebt.Count - 1].Value ?? 0);
-            decimal latestCash = (decimal)(this.Financials[0].Cash[this.Financials[0].Cash.Count - 1].Value ?? 0);
+            decimal latestShortTermDebt = (decimal)this.Financials[0].ShortTermDebt.Last(d => d.Value.HasValue).Value; //(decimal)(this.Financials[0].ShortTermDebt[this.Financials[0].ShortTermDebt.Count - 1].Value ?? 0);
+            decimal latestLongTermDebt = (decimal)this.Financials[0].LongTermDebt.Last(d => d.Value.HasValue).Value;//(decimal)(this.Financials[0].LongTermDebt[this.Financials[0].LongTermDebt.Count - 1].Value ?? 0);
+            decimal latestCash = (decimal)this.Financials[0].Cash.Last(d => d.Value.HasValue).Value;//(decimal)(this.Financials[0].Cash[this.Financials[0].Cash.Count - 1].Value ?? 0);
             ///
 
 
