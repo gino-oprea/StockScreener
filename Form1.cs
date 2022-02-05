@@ -272,7 +272,8 @@ namespace StockScreener
                     txtAvgROIC.Text = String.Format("{0:0.00}", company.AverageROIC);
                     txtTerminalMultiple.Text = company.Average_P_FCF_Multiple.ToString();
 
-                    var avgCf = company.Financials[0].FreeCashFlow.Average(c => c.Value);
+                    var avgCf = company.Financials[0].FreeCashFlow.Skip(company.Financials[0].FreeCashFlow.Count() - 3).Select(c => c.Value).Average(); //media ultimilor 3 ani
+                    //company.Financials[0].FreeCashFlow.Average(c => c.Value);
 
                     //var lastCf = company.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
 

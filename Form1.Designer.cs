@@ -113,6 +113,7 @@ namespace StockScreener
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
             this.bgwGetCache = new System.ComponentModel.BackgroundWorker();
+            this.label31 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -136,6 +137,7 @@ namespace StockScreener
             // 
             // tabCheckCompany
             // 
+            this.tabCheckCompany.Controls.Add(this.label31);
             this.tabCheckCompany.Controls.Add(this.label33);
             this.tabCheckCompany.Controls.Add(this.txtTerminalMultiple);
             this.tabCheckCompany.Controls.Add(this.label26);
@@ -926,6 +928,15 @@ namespace StockScreener
             this.bgwGetCache.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetCache_DoWork);
             this.bgwGetCache.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetCache_RunWorkerCompleted);
             // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(804, 659);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(139, 20);
+            this.label31.TabIndex = 50;
+            this.label31.Text = "last 3 years average";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -1037,6 +1048,7 @@ namespace StockScreener
         private System.Windows.Forms.RadioButton rbFreshSearch;
         private System.Windows.Forms.Button btnGetAllCompaniesInCache;
         private System.ComponentModel.BackgroundWorker bgwGetCache;
+        private System.Windows.Forms.Label label31;
     }
 }
 

@@ -105,7 +105,7 @@ namespace BL
                                company.AverageFreeCashFlowGrowth +
                                company.AverageROIC) / 5;
 
-                        company.Growth = Math.Min(15, Math.Min(company.AverageFreeCashFlowGrowth.Value, avgGrowth));
+                        company.Growth = Math.Min(15, avgGrowth);
 
                     }
                     else
@@ -354,7 +354,9 @@ namespace BL
                 }
             }
 
-            return years;
+            
+
+            return years; 
         }
 
         public static List<YearVal> GetFinancialData(List<string> rawLines, string stringToStartRecording, string stringToStopRecording, bool leaveNumberAsIs = false)
@@ -399,6 +401,8 @@ namespace BL
                     financialData.Add(yearVal);
                 }
             }
+
+            financialData.Sort((a, b) => a.Year.CompareTo(b.Year));// ascending sort
 
             return financialData;
         }

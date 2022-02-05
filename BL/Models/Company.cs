@@ -47,7 +47,8 @@ namespace BL.Models
 
             if (lastCashFlow == null)
             {
-                var avgCf = this.Financials[0].FreeCashFlow.Average(c => c.Value);
+                var avgCf = this.Financials[0].FreeCashFlow.Skip(this.Financials[0].FreeCashFlow.Count() - 3).Select(c => c.Value).Average(); //media ultimilor 3 ani
+                //this.Financials[0].FreeCashFlow.Average(c => c.Value);
 
                 if (avgCf > 0)
                     lastCashFlow = (decimal)avgCf;
