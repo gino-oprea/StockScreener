@@ -262,6 +262,7 @@ namespace BL
             selectedLines.AddRange(HtmlHelper.GetImportantLines(rawLines_financials, "Shares", "Book Value Per Share"));
 
             List<decimal> ROIC_values = new List<decimal>();
+            List<float> shares = new List<float>();
             foreach (string line in selectedLines)
             {
                 if (line.Contains("pr-profit"))
@@ -274,18 +275,60 @@ namespace BL
                         ROIC_values.Add(RoicVal);
                 }
 
-                if (line.Contains("Y10 i7"))
+                if (line.Contains("Y5 i7")
+                    || line.Contains("Y6 i7") 
+                    || line.Contains("Y7 i7") 
+                    || line.Contains("Y8 i7") 
+                    || line.Contains("Y9 i7") 
+                    || line.Contains("Y10 i7"))
                 {
                     string rawVal = HtmlHelper.ExtractString(line, "\\\">", "", false).Replace(",", "");
                     int sharesOutstanding;
                     bool converted = Int32.TryParse(rawVal, out sharesOutstanding);
 
                     if (converted)
-                        company.SharesOutstanding = sharesOutstanding / 1000f;//convert to billions float
+                        shares.Add(sharesOutstanding / 1000f);//convert to billions float
                     else
-                        company.SharesOutstanding = 1;
+                        shares.Add(0);
                 }
             }
+
+            //fill shares using revenue data years
+            if (shares.Count > 0)
+            {
+                int index = shares.Count - 1;
+                List<YearVal> sharesFinancial = new List<YearVal>();
+                for (int i = company.Financials[0].Revenue.Count - 1; i >= 0; i--)
+                {
+                    if (index < shares.Count) 
+                    {
+                        YearVal yearVal = new YearVal();
+                        yearVal.Year = company.Financials[0].Revenue[i].Year;
+                        yearVal.Value = shares[index];                      
+
+                        sharesFinancial.Insert(0,yearVal);
+                    }
+                    index--;
+                }
+                company.Financials[0].Shares = sharesFinancial;
+            }
+            //add shares growth
+            for (int i = 0; i < company.Financials[0].Shares.Count; i++)
+            {
+                if (i > 0)
+                {
+                    var yearVal = company.Financials[0].Shares[i];
+                    var newVal = yearVal.Value;
+                    var oldVal = company.Financials[0].Shares[i - 1].Value;
+                    if (newVal != null && oldVal != null && oldVal != 0)
+                        yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
+                }               
+            }
+
+            if (shares.Count>0)
+                company.SharesOutstanding = shares[shares.Count-1];
+            else
+                company.SharesOutstanding = 1;
 
             if (ROIC_values.Count > 0)
                 company.AverageROIC = ROIC_values.Average();

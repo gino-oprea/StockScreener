@@ -33,6 +33,7 @@ namespace StockScreener
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCheckCompany = new System.Windows.Forms.TabPage();
+            this.label31 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.txtTerminalMultiple = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
@@ -113,7 +114,6 @@ namespace StockScreener
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
             this.bgwGetCache = new System.ComponentModel.BackgroundWorker();
-            this.label31 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -189,6 +189,15 @@ namespace StockScreener
             this.tabCheckCompany.TabIndex = 0;
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(804, 659);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(139, 20);
+            this.label31.TabIndex = 50;
+            this.label31.Text = "last 3 years average";
             // 
             // label33
             // 
@@ -330,7 +339,7 @@ namespace StockScreener
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label14.Location = new System.Drawing.Point(566, 455);
+            this.label14.Location = new System.Drawing.Point(569, 470);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(159, 30);
             this.label14.TabIndex = 27;
@@ -341,7 +350,7 @@ namespace StockScreener
             this.gvIntrinsicVal.AllowUserToAddRows = false;
             this.gvIntrinsicVal.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvIntrinsicVal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvIntrinsicVal.Location = new System.Drawing.Point(566, 488);
+            this.gvIntrinsicVal.Location = new System.Drawing.Point(569, 503);
             this.gvIntrinsicVal.Name = "gvIntrinsicVal";
             this.gvIntrinsicVal.RowHeadersWidth = 51;
             this.gvIntrinsicVal.RowTemplate.Height = 29;
@@ -543,11 +552,11 @@ namespace StockScreener
             this.gvFinancials.AllowUserToAddRows = false;
             this.gvFinancials.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvFinancials.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvFinancials.Location = new System.Drawing.Point(6, 111);
+            this.gvFinancials.Location = new System.Drawing.Point(4, 106);
             this.gvFinancials.Name = "gvFinancials";
             this.gvFinancials.RowHeadersWidth = 51;
             this.gvFinancials.RowTemplate.Height = 29;
-            this.gvFinancials.Size = new System.Drawing.Size(1177, 322);
+            this.gvFinancials.Size = new System.Drawing.Size(1177, 353);
             this.gvFinancials.TabIndex = 3;
             // 
             // btnSearch
@@ -927,15 +936,6 @@ namespace StockScreener
             // 
             this.bgwGetCache.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetCache_DoWork);
             this.bgwGetCache.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetCache_RunWorkerCompleted);
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(804, 659);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(139, 20);
-            this.label31.TabIndex = 50;
-            this.label31.Text = "last 3 years average";
             // 
             // Form1
             // 

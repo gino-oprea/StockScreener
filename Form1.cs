@@ -90,6 +90,7 @@ namespace StockScreener
                 AddRow("Short Term Debt", company.Financials[0].ShortTermDebt, dt);
                 AddRow("Long Term Debt", company.Financials[0].LongTermDebt, dt);
                 AddRow("Cash and Equivalents", company.Financials[0].Cash, dt);
+                AddRow("Shares Outstanding", company.Financials[0].Shares, dt);
                 //AddRow("ROE(%)", company.Financials[0].ROE, dt);
             }
             return dt;
@@ -104,7 +105,7 @@ namespace StockScreener
                 for (int i = 0; i < values.Count; i++)
                 {
                     if (dt.Columns[i + 1].ColumnName.Trim() == values[i].Year.ToString())
-                        dr[i + 1] = String.Format("{0:0.00}", values[i].Value) + (values[i].Growth != null ? "   (" + String.Format("{0:0.00}", values[i].Growth) + "%)" : "");
+                        dr[i + 1] = String.Format("{0:0.000}", values[i].Value) + (values[i].Growth != null ? "   (" + String.Format("{0:0.00}", values[i].Growth) + "%)" : "");
                 }
                 dt.Rows.Add(dr);
             }

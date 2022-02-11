@@ -14,7 +14,7 @@ namespace BL.Models
         public List<YearVal> CapitalExpenditures { get; set; }
         //public List<YearVal> ROE { get; set; }
 
-
+        public List<YearVal> Shares { get; set; }
         public List<YearVal> NetIncome { get; set; }
         public List<YearVal> RetainedEarnings { get; set; }
         public List<YearVal> Cash { get; set; }
