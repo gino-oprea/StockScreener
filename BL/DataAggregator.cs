@@ -184,7 +184,7 @@ namespace BL
                 string sharesOutstanding = HtmlHelper.ExtractString(selectedLines[3], ">", "</", false);
                 string pe_ratio = HtmlHelper.ExtractString(selectedLines[4], ">", "</", false);
 
-                company.Name = name.Replace("&amp;","&");
+                company.Name = name.Replace("&amp;", "&").Replace("&#x27;", "'");
                 company.CurrentPrice = float.Parse(currentPrice);
                 company.MarketCap = marketCap != "N/A" ? ConvertStringToBillions(marketCap) : null;
                 //company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : 1;
