@@ -100,10 +100,11 @@ namespace BL.Models
             decimal totalIntrinsicValue = terminalMultiple * discountedfutureCashFlows[9] + discountedfutureCashFlows.Sum(cf => cf);
             decimal totalIntrinsicValueInclDebt = totalIntrinsicValue + latestCash - latestShortTermDebt - latestLongTermDebt;
 
-            //daca pretul de piata e sub Book Value si datoriile totale sunt mai mari decat 3xFCF, valoarea intrinseca este book value            
+            //daca pretul de piata e sub Book Value sau valoarea calculata pe baza FCF e mai mic decat book value, valoarea intrinseca este book value            
             float? latestEquity = this.Financials[0].Equity[this.Financials[0].Equity.Count - 1].Value;
             decimal netDebt = latestLongTermDebt + latestShortTermDebt - latestCash;
-            if (latestEquity != null && latestEquity > this.MarketCap && (3 * lastCashFlow < netDebt))
+            if ((latestEquity != null && latestEquity > 0)//book value pozitiv
+                && (latestEquity > this.MarketCap || (decimal)latestEquity.Value > totalIntrinsicValueInclDebt))
             {
                 totalIntrinsicValueInclDebt = (decimal)latestEquity;
             }
