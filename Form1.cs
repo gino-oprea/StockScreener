@@ -171,8 +171,8 @@ namespace StockScreener
             filter.MinAvgFreeCashFlowGrowth = Convert.ToInt32(txtFilterAvgFcfGrowth.Text);
             filter.MinAvgROIC = Convert.ToInt32(txtFilterAvgROIC.Text);
 
-            filter.IsAllGrowthPositive = rbAllGrowthPositive.Checked;
-            filter.AllowOneNegativeYear = chkOneYearNegative.Checked;
+            //filter.IsAllGrowthPositive = rbAllGrowthPositive.Checked;
+            //filter.AllowOneNegativeYear = chkOneYearNegative.Checked;
             filter.IgnoreADRCompanies = chkIgnoreADR.Checked;
             //filter.TerminalMultiple = Convert.ToInt32(txtFilterTerminalMultiple.Text);
             filter.IsFreshSearch = rbFreshSearch.Checked;

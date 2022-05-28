@@ -84,14 +84,11 @@ namespace StockScreener
             this.rbCacheSearch = new System.Windows.Forms.RadioButton();
             this.rbFreshSearch = new System.Windows.Forms.RadioButton();
             this.chkIgnoreADR = new System.Windows.Forms.CheckBox();
-            this.chkOneYearNegative = new System.Windows.Forms.CheckBox();
             this.txtFilterAvgROIC = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.lblProgress = new System.Windows.Forms.Label();
             this.cbFilterValue = new System.Windows.Forms.ComboBox();
             this.btnStop = new System.Windows.Forms.Button();
-            this.rbUnevenGrowth = new System.Windows.Forms.RadioButton();
-            this.rbAllGrowthPositive = new System.Windows.Forms.RadioButton();
             this.txtFilterRateOfReturn = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.txtFilterAvgFcfGrowth = new System.Windows.Forms.TextBox();
@@ -590,14 +587,11 @@ namespace StockScreener
             this.tabSearchCompanies.Controls.Add(this.btnGetAllCompaniesInCache);
             this.tabSearchCompanies.Controls.Add(this.groupBox1);
             this.tabSearchCompanies.Controls.Add(this.chkIgnoreADR);
-            this.tabSearchCompanies.Controls.Add(this.chkOneYearNegative);
             this.tabSearchCompanies.Controls.Add(this.txtFilterAvgROIC);
             this.tabSearchCompanies.Controls.Add(this.label28);
             this.tabSearchCompanies.Controls.Add(this.lblProgress);
             this.tabSearchCompanies.Controls.Add(this.cbFilterValue);
             this.tabSearchCompanies.Controls.Add(this.btnStop);
-            this.tabSearchCompanies.Controls.Add(this.rbUnevenGrowth);
-            this.tabSearchCompanies.Controls.Add(this.rbAllGrowthPositive);
             this.tabSearchCompanies.Controls.Add(this.txtFilterRateOfReturn);
             this.tabSearchCompanies.Controls.Add(this.label25);
             this.tabSearchCompanies.Controls.Add(this.txtFilterAvgFcfGrowth);
@@ -624,9 +618,9 @@ namespace StockScreener
             // 
             // btnGetAllCompaniesInCache
             // 
-            this.btnGetAllCompaniesInCache.Location = new System.Drawing.Point(848, 99);
+            this.btnGetAllCompaniesInCache.Location = new System.Drawing.Point(1019, 86);
             this.btnGetAllCompaniesInCache.Name = "btnGetAllCompaniesInCache";
-            this.btnGetAllCompaniesInCache.Size = new System.Drawing.Size(141, 53);
+            this.btnGetAllCompaniesInCache.Size = new System.Drawing.Size(151, 66);
             this.btnGetAllCompaniesInCache.TabIndex = 26;
             this.btnGetAllCompaniesInCache.Text = "Get all companies in cache";
             this.btnGetAllCompaniesInCache.UseVisualStyleBackColor = true;
@@ -667,22 +661,14 @@ namespace StockScreener
             // chkIgnoreADR
             // 
             this.chkIgnoreADR.AutoSize = true;
-            this.chkIgnoreADR.Location = new System.Drawing.Point(667, 133);
+            this.chkIgnoreADR.Checked = true;
+            this.chkIgnoreADR.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIgnoreADR.Location = new System.Drawing.Point(657, 71);
             this.chkIgnoreADR.Name = "chkIgnoreADR";
             this.chkIgnoreADR.Size = new System.Drawing.Size(184, 24);
             this.chkIgnoreADR.TabIndex = 24;
             this.chkIgnoreADR.Text = "Ignore ADR companies";
             this.chkIgnoreADR.UseVisualStyleBackColor = true;
-            // 
-            // chkOneYearNegative
-            // 
-            this.chkOneYearNegative.AutoSize = true;
-            this.chkOneYearNegative.Location = new System.Drawing.Point(667, 111);
-            this.chkOneYearNegative.Name = "chkOneYearNegative";
-            this.chkOneYearNegative.Size = new System.Drawing.Size(174, 24);
-            this.chkOneYearNegative.TabIndex = 23;
-            this.chkOneYearNegative.Text = "Allow 1 negative year";
-            this.chkOneYearNegative.UseVisualStyleBackColor = true;
             // 
             // txtFilterAvgROIC
             // 
@@ -690,7 +676,7 @@ namespace StockScreener
             this.txtFilterAvgROIC.Name = "txtFilterAvgROIC";
             this.txtFilterAvgROIC.Size = new System.Drawing.Size(32, 27);
             this.txtFilterAvgROIC.TabIndex = 22;
-            this.txtFilterAvgROIC.Text = "7";
+            this.txtFilterAvgROIC.Text = "10";
             // 
             // label28
             // 
@@ -722,9 +708,9 @@ namespace StockScreener
             "Premium 10%",
             "Premium 20%",
             "Unlimited"});
-            this.cbFilterValue.Location = new System.Drawing.Point(1019, 111);
+            this.cbFilterValue.Location = new System.Drawing.Point(657, 112);
             this.cbFilterValue.Name = "cbFilterValue";
-            this.cbFilterValue.Size = new System.Drawing.Size(151, 28);
+            this.cbFilterValue.Size = new System.Drawing.Size(184, 28);
             this.cbFilterValue.TabIndex = 19;
             // 
             // btnStop
@@ -736,28 +722,6 @@ namespace StockScreener
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
-            // rbUnevenGrowth
-            // 
-            this.rbUnevenGrowth.AutoSize = true;
-            this.rbUnevenGrowth.Checked = true;
-            this.rbUnevenGrowth.Location = new System.Drawing.Point(667, 81);
-            this.rbUnevenGrowth.Name = "rbUnevenGrowth";
-            this.rbUnevenGrowth.Size = new System.Drawing.Size(130, 24);
-            this.rbUnevenGrowth.TabIndex = 17;
-            this.rbUnevenGrowth.TabStop = true;
-            this.rbUnevenGrowth.Text = "Uneven growth";
-            this.rbUnevenGrowth.UseVisualStyleBackColor = true;
-            // 
-            // rbAllGrowthPositive
-            // 
-            this.rbAllGrowthPositive.AutoSize = true;
-            this.rbAllGrowthPositive.Location = new System.Drawing.Point(667, 60);
-            this.rbAllGrowthPositive.Name = "rbAllGrowthPositive";
-            this.rbAllGrowthPositive.Size = new System.Drawing.Size(155, 24);
-            this.rbAllGrowthPositive.TabIndex = 16;
-            this.rbAllGrowthPositive.Text = "All growth positive";
-            this.rbAllGrowthPositive.UseVisualStyleBackColor = true;
             // 
             // txtFilterRateOfReturn
             // 
@@ -1015,8 +979,6 @@ namespace StockScreener
         private System.ComponentModel.BackgroundWorker bgwSearchCompanies;
         private System.Windows.Forms.Label lblTickerInProcess;
         private System.Windows.Forms.Timer tmrCompanies;
-        private System.Windows.Forms.RadioButton rbUnevenGrowth;
-        private System.Windows.Forms.RadioButton rbAllGrowthPositive;
         private System.Windows.Forms.TextBox txtFilterRateOfReturn;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox txtFilterAvgFcfGrowth;
@@ -1033,7 +995,6 @@ namespace StockScreener
         private System.Windows.Forms.Label lblProgress;
         private System.Windows.Forms.TextBox txtFilterAvgROIC;
         private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.CheckBox chkOneYearNegative;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox txtAvgROIC;
         private System.Windows.Forms.Label label30;

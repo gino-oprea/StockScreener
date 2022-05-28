@@ -25,9 +25,9 @@ namespace BL.Models
         public int MinAvgFreeCashFlowGrowth { get; set; }
         public int MinAvgROIC { get; set; }
         public int DiscountRate { get; set; }
-        public bool IsAllGrowthPositive { get; set; }
+        //public bool IsAllGrowthPositive { get; set; }
 
-        public bool AllowOneNegativeYear { get; set; }
+        //public bool AllowOneNegativeYear { get; set; }
         public bool IgnoreADRCompanies { get; set; } = false;
 
         public bool IsFreshSearch { get; set; } = false;

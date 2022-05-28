@@ -60,7 +60,11 @@ namespace BL
                     if (companies == null)
                         company = DataAggregator.GetCompanyData(ticker);
                     else
+                    {
+                        //get company from casche but current price from online
                         company = companies[i];
+                        company.CurrentPrice = DataAggregator.GetCompanyCurrentPrice(ticker).CurrentPrice;
+                    }
 
                     currentTicker = company.Ticker;
 
@@ -81,30 +85,30 @@ namespace BL
                                 && company.AverageFreeCashFlowGrowth >= filter.MinAvgFreeCashFlowGrowth
                                 && company.AverageROIC >= filter.MinAvgROIC)
                             {
-                                if (!filter.IsAllGrowthPositive)
-                                {
+                                //if (!filter.IsAllGrowthPositive)
+                                //{
                                     var refPrice = GetRefPrice(company, filter);
 
                                     if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
                                         filteredCompanies.Add(company);
-                                }
-                                else
-                                {
-                                    //all growth positive
-                                    int negativeYearsNo = 0;
-                                    if (filter.AllowOneNegativeYear) negativeYearsNo = 1;
+                                //}
+                                //else
+                                //{
+                                //    //all growth positive
+                                //    int negativeYearsNo = 0;
+                                //    if (filter.AllowOneNegativeYear) negativeYearsNo = 1;
 
-                                    if (company.Financials[0].Equity.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
-                                    && company.Financials[0].EPS.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
-                                    && company.Financials[0].Revenue.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
-                                    && company.Financials[0].FreeCashFlow.FindAll(v => v.Growth < 0).Count <= negativeYearsNo)
-                                    {
-                                        var refPrice = GetRefPrice(company, filter);
+                                //    if (company.Financials[0].Equity.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
+                                //    && company.Financials[0].EPS.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
+                                //    && company.Financials[0].Revenue.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
+                                //    && company.Financials[0].FreeCashFlow.FindAll(v => v.Growth < 0).Count <= negativeYearsNo)
+                                //    {
+                                //        var refPrice = GetRefPrice(company, filter);
 
-                                        if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
-                                            filteredCompanies.Add(company);
-                                    }
-                                }
+                                //        if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
+                                //            filteredCompanies.Add(company);
+                                //    }
+                                //}
                             }
                         }
 
