@@ -247,6 +247,8 @@ namespace BL
             Thread.Sleep(100);
             Hashtable headers = new Hashtable();
             headers.Add("x-api-key", api_key);
+            headers.Add("Host", "www.morningstar.com");
+            headers.Add("Accept-Encoding", "gzip, deflate, br");
             string raw_searchResults = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/api/v1/search/entities?q=" + ticker + "&limit=6&autocomplete=true", "GET", null, false, headers);
             MorningstarAutocomplete searchResults = JsonConvert.DeserializeObject<MorningstarAutocomplete>(raw_searchResults);
             string keyRatiosUrl = "https://financials.morningstar.com/finan/financials/getKeyStatPart.html?&t=" + searchResults.results[0].performanceId + "&region=usa&culture=en-US&cur=&order=asc";
