@@ -225,7 +225,7 @@ namespace StockScreener
 
         private void bgwCheckCompany_DoWork(object sender, DoWorkEventArgs e)
         {
-            company = DataAggregator.GetCompanyData(txtTicker.Text);
+            company = DataAggregator.GetCompanyData(txtTicker.Text, rbCacheCompCheck.Checked);
 
             DataTable dt = BuildDataTable();
             bindingSourceKeyValues = new BindingSource();

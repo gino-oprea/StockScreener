@@ -24,99 +24,115 @@ namespace BL
 
             return company;
         }
-        public static Company GetCompanyData(string TickerSymbol)
+        public static Company GetCompanyData(string TickerSymbol, bool isCache=false)
         {
             Company company = new Company();
-            company.Ticker = TickerSymbol.ToUpper();
-            company.Financials = new List<Financials>();
-
-            string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search", "GET", null, false);
-
-            if (generalDetails != null)
-                GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
-
-
-            Thread.Sleep(200);
-            string financials_incomeStatement = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials", "GET", null, false);
-            Thread.Sleep(200);
-            string financials_balanceSheet = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/balance-sheet", "GET", null, false);
-            Thread.Sleep(200);
-            string financials_cashFlow = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/cash-flow", "GET", null, false);
-            Thread.Sleep(200);
-            //string financials_quickFS = BL.HttpReq.GetUrlHttpWebRequest("https://api.quickfs.net/stocks/" + TickerSymbol + "/ovr/Annual/?sortOrder=ASC" , "GET", null, false);
-
-            if (financials_incomeStatement != null)
+            if (isCache)
             {
-                try
+                StreamReader r = new StreamReader("companies.json");
+                string jsonString = r.ReadToEnd();
+                List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(jsonString);
+
+                company = companies.Find(c => c.Ticker.ToLower() == TickerSymbol.ToLower());
+
+                //for current price
+                string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search", "GET", null, false);
+                if (generalDetails != null)
+                    GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
+            }
+            else
+            {                
+                company.Ticker = TickerSymbol.ToUpper();
+                company.Financials = new List<Financials>();
+
+                string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search", "GET", null, false);
+
+                if (generalDetails != null)
+                    GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
+
+
+                Thread.Sleep(200);
+                string financials_incomeStatement = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials", "GET", null, false);
+                Thread.Sleep(200);
+                string financials_balanceSheet = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/balance-sheet", "GET", null, false);
+                Thread.Sleep(200);
+                string financials_cashFlow = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/cash-flow", "GET", null, false);
+                Thread.Sleep(200);
+                //string financials_quickFS = BL.HttpReq.GetUrlHttpWebRequest("https://api.quickfs.net/stocks/" + TickerSymbol + "/ovr/Annual/?sortOrder=ASC" , "GET", null, false);
+
+                if (financials_incomeStatement != null)
                 {
-                    GetCompanyFinancials_MarketWatch(financials_incomeStatement, financials_balanceSheet, financials_cashFlow, company);
-                    //GetCompanyFinancials_QuickFS(financials_quickFS, company);
-
-                    var task1 = Task.Run(() => GetCompanyFinancials_Morningstar(TickerSymbol, company));
-                    var task2 = Task.Run(() => GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company));
-
-                    Task.WaitAll(task1, task2);
-
-                    company.CurrentPrice_EV = company.EnterpriseValue.Value / company.SharesOutstanding.Value;
-
-                    company.AverageRevenueGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Revenue);
-                    company.AverageEPSGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].EPS);
-                    company.AverageEquityGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Equity);
-                    company.AverageNetIncomeGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].NetIncome);
-                    company.AverageFreeCashFlowGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].FreeCashFlow);
-
-                    //if (company.Financials[0].ROE.Count > 0)
-                    //{
-                    //    var avgROE = (decimal)company.Financials[0].ROE.Average(r => r.Value);
-                    //    company.AverageROE = avgROE;
-                    //}
-
-                    //if (company.AverageROIC != null)
-                    //    company.Growth = company.AverageROIC;
-                    //else
-                    //{
-                    if (company.AverageEquityGrowth != null)
+                    try
                     {
-                        decimal avgGrowth = 0;
-                        if (company.AverageRevenueGrowth != null)
-                            avgGrowth = (decimal)(company.AverageRevenueGrowth +
-                               company.AverageEPSGrowth +
-                               company.AverageEquityGrowth +
-                               company.AverageNetIncomeGrowth +
-                               company.AverageFreeCashFlowGrowth) / 5;
-                        else
-                            avgGrowth = (decimal)(company.AverageEPSGrowth +
-                                company.AverageEquityGrowth +
-                                company.AverageNetIncomeGrowth +
-                                company.AverageFreeCashFlowGrowth) / 4;
+                        GetCompanyFinancials_MarketWatch(financials_incomeStatement, financials_balanceSheet, financials_cashFlow, company);
+                        //GetCompanyFinancials_QuickFS(financials_quickFS, company);
 
-                        if (company.AverageROIC != null)
+                        var task1 = Task.Run(() => GetCompanyFinancials_Morningstar(TickerSymbol, company));
+                        var task2 = Task.Run(() => GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company));
+
+                        Task.WaitAll(task1, task2);
+
+                        company.CurrentPrice_EV = company.EnterpriseValue.Value / company.SharesOutstanding.Value;
+
+                        company.AverageRevenueGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Revenue);
+                        company.AverageEPSGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].EPS);
+                        company.AverageEquityGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Equity);
+                        company.AverageNetIncomeGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].NetIncome);
+                        company.AverageFreeCashFlowGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].FreeCashFlow);
+
+                        //if (company.Financials[0].ROE.Count > 0)
+                        //{
+                        //    var avgROE = (decimal)company.Financials[0].ROE.Average(r => r.Value);
+                        //    company.AverageROE = avgROE;
+                        //}
+
+                        //if (company.AverageROIC != null)
+                        //    company.Growth = company.AverageROIC;
+                        //else
+                        //{
+                        if (company.AverageEquityGrowth != null)
+                        {
+                            decimal avgGrowth = 0;
                             if (company.AverageRevenueGrowth != null)
                                 avgGrowth = (decimal)(company.AverageRevenueGrowth +
-                               company.AverageEPSGrowth +
-                               company.AverageEquityGrowth +
-                               company.AverageNetIncomeGrowth +
-                               company.AverageFreeCashFlowGrowth +
-                               company.AverageROIC) / 6;
+                                   company.AverageEPSGrowth +
+                                   company.AverageEquityGrowth +
+                                   company.AverageNetIncomeGrowth +
+                                   company.AverageFreeCashFlowGrowth) / 5;
                             else
                                 avgGrowth = (decimal)(company.AverageEPSGrowth +
-                               company.AverageEquityGrowth +
-                               company.AverageNetIncomeGrowth +
-                               company.AverageFreeCashFlowGrowth +
-                               company.AverageROIC) / 5;
+                                    company.AverageEquityGrowth +
+                                    company.AverageNetIncomeGrowth +
+                                    company.AverageFreeCashFlowGrowth) / 4;
 
-                        company.Growth = Math.Min(15, avgGrowth);
+                            if (company.AverageROIC != null)
+                                if (company.AverageRevenueGrowth != null)
+                                    avgGrowth = (decimal)(company.AverageRevenueGrowth +
+                                   company.AverageEPSGrowth +
+                                   company.AverageEquityGrowth +
+                                   company.AverageNetIncomeGrowth +
+                                   company.AverageFreeCashFlowGrowth +
+                                   company.AverageROIC) / 6;
+                                else
+                                    avgGrowth = (decimal)(company.AverageEPSGrowth +
+                                   company.AverageEquityGrowth +
+                                   company.AverageNetIncomeGrowth +
+                                   company.AverageFreeCashFlowGrowth +
+                                   company.AverageROIC) / 5;
 
+                            company.Growth = Math.Min(15, avgGrowth);
+
+                        }
+                        else
+                            company.Growth = 0;
+
+                        company.Average_P_FCF_Multiple ??= (int)Math.Floor(company.Growth.Value);
+                        //}
                     }
-                    else
-                        company.Growth = 0;
-
-                    company.Average_P_FCF_Multiple ??= (int)Math.Floor(company.Growth.Value);
-                    //}
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
             }
 

@@ -111,6 +111,9 @@ namespace StockScreener
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
             this.bgwGetCache = new System.ComponentModel.BackgroundWorker();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbFreshCompCheck = new System.Windows.Forms.RadioButton();
+            this.rbCacheCompCheck = new System.Windows.Forms.RadioButton();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
@@ -120,6 +123,7 @@ namespace StockScreener
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingCompanies)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCompanies)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -134,6 +138,7 @@ namespace StockScreener
             // 
             // tabCheckCompany
             // 
+            this.tabCheckCompany.Controls.Add(this.groupBox2);
             this.tabCheckCompany.Controls.Add(this.label31);
             this.tabCheckCompany.Controls.Add(this.label33);
             this.tabCheckCompany.Controls.Add(this.txtTerminalMultiple);
@@ -901,6 +906,38 @@ namespace StockScreener
             this.bgwGetCache.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetCache_DoWork);
             this.bgwGetCache.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetCache_RunWorkerCompleted);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.rbCacheCompCheck);
+            this.groupBox2.Controls.Add(this.rbFreshCompCheck);
+            this.groupBox2.Location = new System.Drawing.Point(497, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(144, 96);
+            this.groupBox2.TabIndex = 51;
+            this.groupBox2.TabStop = false;
+            // 
+            // rbFreshCompCheck
+            // 
+            this.rbFreshCompCheck.AutoSize = true;
+            this.rbFreshCompCheck.Location = new System.Drawing.Point(20, 21);
+            this.rbFreshCompCheck.Name = "rbFreshCompCheck";
+            this.rbFreshCompCheck.Size = new System.Drawing.Size(110, 24);
+            this.rbFreshCompCheck.TabIndex = 0;
+            this.rbFreshCompCheck.Text = "Fresh search";
+            this.rbFreshCompCheck.UseVisualStyleBackColor = true;
+            // 
+            // rbCacheCompCheck
+            // 
+            this.rbCacheCompCheck.AutoSize = true;
+            this.rbCacheCompCheck.Checked = true;
+            this.rbCacheCompCheck.Location = new System.Drawing.Point(20, 56);
+            this.rbCacheCompCheck.Name = "rbCacheCompCheck";
+            this.rbCacheCompCheck.Size = new System.Drawing.Size(116, 24);
+            this.rbCacheCompCheck.TabIndex = 1;
+            this.rbCacheCompCheck.TabStop = true;
+            this.rbCacheCompCheck.Text = "Cache search";
+            this.rbCacheCompCheck.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -923,6 +960,8 @@ namespace StockScreener
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingCompanies)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCompanies)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1010,6 +1049,9 @@ namespace StockScreener
         private System.Windows.Forms.Button btnGetAllCompaniesInCache;
         private System.ComponentModel.BackgroundWorker bgwGetCache;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton rbCacheCompCheck;
+        private System.Windows.Forms.RadioButton rbFreshCompCheck;
     }
 }
 
