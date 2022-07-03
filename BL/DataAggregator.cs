@@ -69,8 +69,9 @@ namespace BL
 
                         var task1 = Task.Run(() => GetCompanyFinancials_Morningstar(TickerSymbol, company));
                         var task2 = Task.Run(() => GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company));
+                        var task3 = Task.Run(() => GetCompanyDataMacrotrends(TickerSymbol, company));
 
-                        Task.WaitAll(task1, task2);
+                        Task.WaitAll(task1, task2, task3);
 
                         company.CurrentPrice_EV = company.EnterpriseValue.Value / company.SharesOutstanding.Value;
 
@@ -255,7 +256,7 @@ namespace BL
         //    }
         //}
 
-        public static void GetCompanyFinancials_Morningstar(string ticker, Company company)
+        public static void GetCompanyFinancials_Morningstar_Old(string ticker, Company company)
         {
 
             string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/7191f38.js", "GET", null, false);
@@ -351,6 +352,51 @@ namespace BL
             if (ROIC_values.Count > 0)
                 company.AverageROIC = ROIC_values.Average();
         }
+        public static void GetCompanyFinancials_Morningstar(string ticker, Company company)
+        {
+
+            string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/e32d129.js", "GET", null, false);
+            string api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
+            Thread.Sleep(100);
+            Hashtable headers = new Hashtable();
+            headers.Add("x-api-key", api_key);
+            headers.Add("Host", "www.morningstar.com");
+            headers.Add("Accept-Encoding", "gzip, deflate, br");
+            string raw_searchResults = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/api/v1/search/entities?q=" + ticker + "&limit=6&autocomplete=true", "GET", null, false, headers);
+            MorningstarAutocomplete searchResults = JsonConvert.DeserializeObject<MorningstarAutocomplete>(raw_searchResults);
+
+            if (searchResults.results.Count == 0)
+                return;
+
+            string raw_key_ratios_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/quotes/2.4.0/sal-components.umd.min.42.js", "GET", null, false);
+            string key_ratios_api_key = HtmlHelper.ExtractString(raw_key_ratios_api_key_html, "keyApigee:\"", "\",", false);
+
+
+            Hashtable headers_keyRatios = new Hashtable();
+            headers_keyRatios.Add("apikey", key_ratios_api_key);
+            headers_keyRatios.Add("Host", "api-global.morningstar.com");                        
+            headers_keyRatios.Add("Content-Type", "application/json; charset=utf-8");
+            string keyRatiosUrl = "https://api-global.morningstar.com/sal-service/v1/stock/keyStats/OperatingAndEfficiency/" +
+                searchResults.results[0].performanceId + "?languageId=en&locale=en&clientId=undefined&component=sal-components-key-stats-oper-efficiency&version=3.71.0";
+            string morningstar_keyratios_json = BL.HttpReq.GetUrlHttpWebRequest(keyRatiosUrl, "GET", null, false, headers_keyRatios);
+
+            if (morningstar_keyratios_json != null)
+            {
+                MorningstarKeyRatios keyRatios = JsonConvert.DeserializeObject<MorningstarKeyRatios>(morningstar_keyratios_json);
+
+                for (int i = keyRatios.dataList.Count - 1; i >= 0; i--)
+                {
+                    if (!int.TryParse(keyRatios.dataList[i].fiscalPeriodYear, out int n) || keyRatios.dataList[i].roic == null)
+                        keyRatios.dataList.RemoveAt(i);
+                }
+
+                var Last5Yr_keyRatios = keyRatios.dataList.Skip(Math.Max(0, keyRatios.dataList.Count() - 5)).ToList();
+
+
+                if (Last5Yr_keyRatios.Count > 0)
+                    company.AverageROIC = Last5Yr_keyRatios.Select(k => k.roic.Value).Average();
+            }
+        }
 
         public static void GetCompanyAveragePriceToFCFMultiple(string ticker, Company company)
         {
@@ -368,24 +414,25 @@ namespace BL
                 {
                     histData.RemoveAll(h => h.v3 == 0);//eliminam valorile 0
 
-                    var avgPriceToFCF = histData.Average(h => h.v3);
+                    var avgPriceToFCF = histData.Count > 0 ? histData.Average(h => h.v3) : 1;
                     bool noOutliersFound = false;
                     //remove outliers
-                    while (!noOutliersFound)
-                    {
-                        noOutliersFound = true;
-                        var stdDev = Math.Sqrt(histData.Sum(h => Math.Pow(h.v3 - avgPriceToFCF, 2)) / histData.Count);
-                        for (int i = histData.Count - 1; i >= 0; i--)
+                    if (histData.Count > 0)
+                        while (!noOutliersFound)
                         {
-                            if (histData[i].v3 - avgPriceToFCF > 1.5 * stdDev
-                                || avgPriceToFCF - histData[i].v3 > 2.5 * stdDev) //eliminam mai multe din deviatiile pozitive decat din cele negative 
+                            noOutliersFound = true;
+                            var stdDev = Math.Sqrt(histData.Sum(h => Math.Pow(h.v3 - avgPriceToFCF, 2)) / histData.Count);
+                            for (int i = histData.Count - 1; i >= 0; i--)
                             {
-                                noOutliersFound = false;
-                                histData.RemoveAt(i);
+                                if (histData[i].v3 - avgPriceToFCF > 1.5 * stdDev
+                                    || avgPriceToFCF - histData[i].v3 > 2.5 * stdDev) //eliminam mai multe din deviatiile pozitive decat din cele negative 
+                                {
+                                    noOutliersFound = false;
+                                    histData.RemoveAt(i);
+                                }
                             }
+                            avgPriceToFCF = histData.Average(h => h.v3);
                         }
-                        avgPriceToFCF = histData.Average(h => h.v3);
-                    }
 
                     company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 15);//terminal multiple maximum 15
                 }
@@ -394,6 +441,91 @@ namespace BL
                     company.Average_P_FCF_Multiple = null;
                 }
             }
+        }
+
+        public static void GetCompanyDataMacrotrends(string ticker, Company company)
+        {
+            string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + company.Name, "GET", null, false);
+            List<MacroTrendsCategoryLink> categoryLinks = JsonConvert.DeserializeObject<List<MacroTrendsCategoryLink>>(categoryLinkJsonString);
+
+            if(categoryLinks==null)
+            {
+                company.SharesOutstanding = 1;
+                return;
+            }
+
+            MacroTrendsCategoryLink sharesOutstandingLink = categoryLinks.Find(l => l.url.Contains("shares-outstanding"));
+            
+            if(sharesOutstandingLink==null)
+            {
+                company.SharesOutstanding = 1;
+                return;
+            }
+             
+            string sharesOutstandingHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net" + sharesOutstandingLink.url, "GET", null, false);
+
+            List<float> shares = new List<float>();
+
+            if (sharesOutstandingHtml != null)
+            {
+                List<string> rawLines_sharesOutstanding = sharesOutstandingHtml.Split("<", StringSplitOptions.RemoveEmptyEntries).ToList();
+                List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines_sharesOutstanding, "Annual Shares Outstanding", "/tbody");
+
+                for (int i = 0; i < selectedLines.Count; i++)
+                {
+                    if (i < selectedLines.Count - 2 && selectedLines[i].Contains("text-align:center") && selectedLines[i + 2].Contains("text-align:center"))
+                    {
+                        string line = selectedLines[i + 2];
+                        string rawVal = HtmlHelper.ExtractString(line, "text-align:center\">", "", false).Replace(",", "");
+                        int sharesOutstanding;
+                        bool converted = Int32.TryParse(rawVal, out sharesOutstanding);
+
+                        if (converted)
+                            shares.Add(sharesOutstanding / 1000f);//convert to billions float
+                        else
+                            shares.Add(0);
+                    }
+                }
+            }
+
+            //fill shares using revenue data years
+            if (shares.Count > 0)
+            {
+                int index = 0;
+                List<YearVal> sharesFinancial = new List<YearVal>();
+                for (int i = company.Financials[0].Revenue.Count - 1; i >= 0; i--)
+                {
+                    if (index < shares.Count)
+                    {
+                        YearVal yearVal = new YearVal();
+                        yearVal.Year = company.Financials[0].Revenue[i].Year;
+                        yearVal.Value = shares[index];
+
+                        sharesFinancial.Insert(0, yearVal);
+                    }
+                    index++;
+                }
+                company.Financials[0].Shares = sharesFinancial;
+            }
+
+            //add shares growth
+            if (shares.Count > 0)
+                for (int i = 0; i < company.Financials[0].Shares.Count; i++)
+                {
+                    if (i > 0)
+                    {
+                        var yearVal = company.Financials[0].Shares[i];
+                        var newVal = yearVal.Value;
+                        var oldVal = company.Financials[0].Shares[i - 1].Value;
+                        if (newVal != null && oldVal != null && oldVal != 0)
+                            yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
+                    }
+                }
+
+            if (shares.Count > 0)
+                company.SharesOutstanding = shares[0];
+            else
+                company.SharesOutstanding = 1;
         }
         
         public static List<int> GetAvailableYears(List<string> rawLines)

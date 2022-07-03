@@ -33,6 +33,9 @@ namespace StockScreener
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCheckCompany = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbCacheCompCheck = new System.Windows.Forms.RadioButton();
+            this.rbFreshCompCheck = new System.Windows.Forms.RadioButton();
             this.label31 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.txtTerminalMultiple = new System.Windows.Forms.TextBox();
@@ -111,11 +114,9 @@ namespace StockScreener
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
             this.bgwGetCache = new System.ComponentModel.BackgroundWorker();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rbFreshCompCheck = new System.Windows.Forms.RadioButton();
-            this.rbCacheCompCheck = new System.Windows.Forms.RadioButton();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvFinancials)).BeginInit();
@@ -123,7 +124,6 @@ namespace StockScreener
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingCompanies)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCompanies)).BeginInit();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -191,6 +191,38 @@ namespace StockScreener
             this.tabCheckCompany.TabIndex = 0;
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.rbCacheCompCheck);
+            this.groupBox2.Controls.Add(this.rbFreshCompCheck);
+            this.groupBox2.Location = new System.Drawing.Point(497, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(144, 96);
+            this.groupBox2.TabIndex = 51;
+            this.groupBox2.TabStop = false;
+            // 
+            // rbCacheCompCheck
+            // 
+            this.rbCacheCompCheck.AutoSize = true;
+            this.rbCacheCompCheck.Location = new System.Drawing.Point(20, 56);
+            this.rbCacheCompCheck.Name = "rbCacheCompCheck";
+            this.rbCacheCompCheck.Size = new System.Drawing.Size(116, 24);
+            this.rbCacheCompCheck.TabIndex = 1;
+            this.rbCacheCompCheck.Text = "Cache search";
+            this.rbCacheCompCheck.UseVisualStyleBackColor = true;
+            // 
+            // rbFreshCompCheck
+            // 
+            this.rbFreshCompCheck.AutoSize = true;
+            this.rbFreshCompCheck.Checked = true;
+            this.rbFreshCompCheck.Location = new System.Drawing.Point(20, 21);
+            this.rbFreshCompCheck.Name = "rbFreshCompCheck";
+            this.rbFreshCompCheck.Size = new System.Drawing.Size(110, 24);
+            this.rbFreshCompCheck.TabIndex = 0;
+            this.rbFreshCompCheck.TabStop = true;
+            this.rbFreshCompCheck.Text = "Fresh search";
+            this.rbFreshCompCheck.UseVisualStyleBackColor = true;
             // 
             // label31
             // 
@@ -906,38 +938,6 @@ namespace StockScreener
             this.bgwGetCache.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetCache_DoWork);
             this.bgwGetCache.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetCache_RunWorkerCompleted);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.rbCacheCompCheck);
-            this.groupBox2.Controls.Add(this.rbFreshCompCheck);
-            this.groupBox2.Location = new System.Drawing.Point(497, 0);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(144, 96);
-            this.groupBox2.TabIndex = 51;
-            this.groupBox2.TabStop = false;
-            // 
-            // rbFreshCompCheck
-            // 
-            this.rbFreshCompCheck.AutoSize = true;
-            this.rbFreshCompCheck.Location = new System.Drawing.Point(20, 21);
-            this.rbFreshCompCheck.Name = "rbFreshCompCheck";
-            this.rbFreshCompCheck.Size = new System.Drawing.Size(110, 24);
-            this.rbFreshCompCheck.TabIndex = 0;
-            this.rbFreshCompCheck.Text = "Fresh search";
-            this.rbFreshCompCheck.UseVisualStyleBackColor = true;
-            // 
-            // rbCacheCompCheck
-            // 
-            this.rbCacheCompCheck.AutoSize = true;
-            this.rbCacheCompCheck.Checked = true;
-            this.rbCacheCompCheck.Location = new System.Drawing.Point(20, 56);
-            this.rbCacheCompCheck.Name = "rbCacheCompCheck";
-            this.rbCacheCompCheck.Size = new System.Drawing.Size(116, 24);
-            this.rbCacheCompCheck.TabIndex = 1;
-            this.rbCacheCompCheck.TabStop = true;
-            this.rbCacheCompCheck.Text = "Cache search";
-            this.rbCacheCompCheck.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -951,6 +951,8 @@ namespace StockScreener
             this.tabControl1.ResumeLayout(false);
             this.tabCheckCompany.ResumeLayout(false);
             this.tabCheckCompany.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvIntrinsicVal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoading)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvFinancials)).EndInit();
@@ -960,8 +962,6 @@ namespace StockScreener
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingCompanies)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCompanies)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
