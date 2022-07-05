@@ -445,7 +445,10 @@ namespace BL
 
         public static void GetCompanyDataMacrotrends(string ticker, Company company)
         {
-            string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + company.Name, "GET", null, false);
+            string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, "GET", null, false);
+            if(categoryLinkJsonString=="null")
+                categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + company.Name, "GET", null, false);
+
             List<MacroTrendsCategoryLink> categoryLinks = JsonConvert.DeserializeObject<List<MacroTrendsCategoryLink>>(categoryLinkJsonString);
 
             if(categoryLinks==null)
