@@ -204,7 +204,7 @@ namespace BL
                 company.Name = name.Replace("&amp;", "&").Replace("&#x27;", "'");
                 company.CurrentPrice = float.Parse(currentPrice);
                 company.MarketCap = marketCap != "N/A" ? ConvertStringToBillions(marketCap) : null;
-                //company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : 1;
+                company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : 1;
                 if (pe_ratio != "N/A")
                     company.PE_Ratio = float.Parse(pe_ratio);
             }
@@ -445,9 +445,11 @@ namespace BL
 
         public static void GetCompanyDataMacrotrends(string ticker, Company company)
         {
+            string companyNameTrimmed = company.Name.ToLower().Replace("ltd", "").Replace(".", "");
+
             string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, "GET", null, false);
             if(categoryLinkJsonString=="null")
-                categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + company.Name, "GET", null, false);
+                categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + companyNameTrimmed, "GET", null, false);
 
             List<MacroTrendsCategoryLink> categoryLinks = JsonConvert.DeserializeObject<List<MacroTrendsCategoryLink>>(categoryLinkJsonString);
 
