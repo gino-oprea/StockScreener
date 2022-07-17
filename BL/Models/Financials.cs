@@ -10,6 +10,7 @@ namespace BL.Models
         public List<YearVal> Revenue { get; set; }
         public List<YearVal> Equity { get; set; }
         public List<YearVal> EPS { get; set; }
+        public List<YearVal> OperatingMargin { get; set; }
         public List<YearVal> FreeCashFlow { get; set; }  
         public List<YearVal> CapitalExpenditures { get; set; }
         //public List<YearVal> ROE { get; set; }

@@ -84,6 +84,7 @@ namespace StockScreener
                 AddRow("Equity", company.Financials[0].Equity, dt);
                 AddRow("EPS", company.Financials[0].EPS, dt);
                 AddRow("Net Income", company.Financials[0].NetIncome, dt);
+                AddRow("Operating Margin %", company.Financials[0].OperatingMargin, dt);
                 AddRow("Retained earnings", company.Financials[0].RetainedEarnings, dt);
                 AddRow("Free Cash Flow", company.Financials[0].FreeCashFlow, dt);
                 AddRow("Capital Expenditures", company.Financials[0].CapitalExpenditures, dt);
@@ -267,6 +268,7 @@ namespace StockScreener
 
                     txtAvgEPSGrowth.Text = String.Format("{0:0.00}", company.AverageEPSGrowth);
                     txtAvgNetIncomeGrowth.Text = String.Format("{0:0.00}", company.AverageNetIncomeGrowth);
+                    txtAvgOperatingMarginGrowth.Text = String.Format("{0:0.00}", company.AverageOperatingMarginGrowth);
                     txtAvgFreeCashFlowGrowth.Text = String.Format("{0:0.00}", company.AverageFreeCashFlowGrowth);
 
                     //txtAvgROE.Text = String.Format("{0:0.00}", company.AverageROE);

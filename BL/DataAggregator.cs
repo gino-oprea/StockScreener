@@ -79,6 +79,7 @@ namespace BL
                         company.AverageEPSGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].EPS);
                         company.AverageEquityGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].Equity);
                         company.AverageNetIncomeGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].NetIncome);
+                        company.AverageOperatingMarginGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].OperatingMargin);
                         company.AverageFreeCashFlowGrowth = CalculateCompoundAnualGrowthRate(company.Financials[0].FreeCashFlow);
 
                         //if (company.Financials[0].ROE.Count > 0)
@@ -144,7 +145,7 @@ namespace BL
         {
             decimal? growth = null;
 
-            if (FinancialIndicator.Count > 0)
+            if (FinancialIndicator!=null && FinancialIndicator.Count > 0)
             {
                 //se poate calcula cresterea compusa(pentru ca sunt pozitive)
                 if (FinancialIndicator[FinancialIndicator.Count - 1].Value >= 0
@@ -386,15 +387,56 @@ namespace BL
 
                 for (int i = keyRatios.dataList.Count - 1; i >= 0; i--)
                 {
-                    if (!int.TryParse(keyRatios.dataList[i].fiscalPeriodYear, out int n) || keyRatios.dataList[i].roic == null)
+                    if (!int.TryParse(keyRatios.dataList[i].fiscalPeriodYear, out int n) || keyRatios.dataList[i].operatingMargin == null)
                         keyRatios.dataList.RemoveAt(i);
                 }
+
+                //fill operating margin using revenue data years
+                if (keyRatios.dataList.Count > 0)
+                {
+                    int index = keyRatios.dataList.Count - 1;
+                    List<YearVal> operatingMargins = new List<YearVal>();
+                    for (int i = company.Financials[0].Revenue.Count - 1; i >= 0; i--)
+                    {
+                        if (index < keyRatios.dataList.Count)
+                        {
+                            YearVal yearVal = new YearVal();
+                            if (index < 0)//if no data, fill with null objects
+                            {
+                                yearVal.Year = company.Financials[0].Revenue[i].Year;
+                                yearVal.Value = null;
+                            }
+                            else
+                            {
+                                yearVal.Year = company.Financials[0].Revenue[i].Year;
+                                yearVal.Value = (float)keyRatios.dataList[index].operatingMargin;
+                            }
+
+                            operatingMargins.Insert(0, yearVal);
+                        }
+                        index--;
+                    }
+                    company.Financials[0].OperatingMargin = operatingMargins;
+                }
+                //add operating margins growth
+                if (company.Financials[0].OperatingMargin != null)
+                    for (int i = 0; i < company.Financials[0].OperatingMargin.Count; i++)
+                    {
+                        if (i > 0)
+                        {
+                            var yearVal = company.Financials[0].OperatingMargin[i];
+                            var newVal = yearVal.Value;
+                            var oldVal = company.Financials[0].OperatingMargin[i - 1].Value;
+                            if (newVal != null && oldVal != null && oldVal != 0)
+                                yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
+                        }
+                    }
 
                 var Last5Yr_keyRatios = keyRatios.dataList.Skip(Math.Max(0, keyRatios.dataList.Count() - 5)).ToList();
 
 
-                if (Last5Yr_keyRatios.Count > 0)
-                    company.AverageROIC = Last5Yr_keyRatios.Select(k => k.roic.Value).Average();
+                if (Last5Yr_keyRatios.Count > 0 && Last5Yr_keyRatios.FindAll(k => k.roic != null).Count>0)
+                    company.AverageROIC = Last5Yr_keyRatios.FindAll(k=>k.roic!=null).Select(k => k.roic.Value).Average();
             }
         }
 

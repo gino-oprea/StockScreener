@@ -20,6 +20,7 @@ namespace BL.Models
         public decimal? AverageRevenueGrowth { get; set; }
         public decimal? AverageEPSGrowth { get; set; }
         public decimal? AverageNetIncomeGrowth { get; set; }
+        public decimal? AverageOperatingMarginGrowth { get; set; }
         public decimal? AverageFreeCashFlowGrowth { get; set; }
 
         //public decimal? AverageROE { get; set; }
