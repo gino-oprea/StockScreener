@@ -356,7 +356,7 @@ namespace BL
         public static void GetCompanyFinancials_Morningstar(string ticker, Company company)
         {
 
-            string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/e32d129.js", "GET", null, false);
+            string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/dd6c4cc.js", "GET", null, false);
             string api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
             Thread.Sleep(100);
             Hashtable headers = new Hashtable();
