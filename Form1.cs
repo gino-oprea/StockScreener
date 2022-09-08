@@ -99,7 +99,7 @@ namespace StockScreener
 
         private void AddRow(string item, List<YearVal> values, DataTable dt)
         {
-            if (values.Count > 0)
+            if (values!=null && values.Count > 0)
             {
                 DataRow dr = dt.NewRow();
                 dr[0] = item;

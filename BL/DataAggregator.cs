@@ -493,6 +493,9 @@ namespace BL
             if(categoryLinkJsonString=="null")
                 categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + companyNameTrimmed, "GET", null, false);
 
+            if (categoryLinkJsonString == "null")
+                return;
+
             List<MacroTrendsCategoryLink> categoryLinks = JsonConvert.DeserializeObject<List<MacroTrendsCategoryLink>>(categoryLinkJsonString);
 
             if(categoryLinks==null)
