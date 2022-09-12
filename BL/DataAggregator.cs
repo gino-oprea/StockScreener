@@ -353,10 +353,47 @@ namespace BL
             if (ROIC_values.Count > 0)
                 company.AverageROIC = ROIC_values.Average();
         }
+
+        public static string GetMorningstarApiKeyUrlJs()
+        {
+            string apiKeyUrl = "";
+
+            string raw_api_js_asset_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com", "GET", null, false);
+            string rawLine;
+            StringReader sr = new StringReader(raw_api_js_asset_html);
+            List<string> rawLines = new List<string>();
+            while ((rawLine = sr.ReadLine()) != null)
+            {
+                if (rawLine != "" && rawLine.Contains("href=\"/assets") && rawLine.Contains(".js"))
+                    rawLines.Add(rawLine.Trim());
+            }
+            if (rawLines.Count > 0)
+            {
+                var rawJsLines = rawLines[0].Split("<link");
+
+                var scriptLines = new List<string>();
+                for (int i = 0; i < rawJsLines.Length; i++)
+                {
+                    if (rawJsLines[i].Contains("as=\"script\""))
+                        scriptLines.Add(rawJsLines[i]);
+                }
+
+                apiKeyUrl = HtmlHelper.ExtractString(scriptLines[scriptLines.Count - 2], "href=\"", "\" as=\"script\"", false);
+            }
+
+
+            return apiKeyUrl;
+        }
         public static void GetCompanyFinancials_Morningstar(string ticker, Company company)
         {
 
-            string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/6105b70.js", "GET", null, false);
+            string apiKeyUrlJs = GetMorningstarApiKeyUrlJs();
+
+            string Url = "https://www.morningstar.com/assets/6105b70.js";
+            if (apiKeyUrlJs != "")
+                Url = "https://www.morningstar.com" + apiKeyUrlJs;
+
+            string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest(Url, "GET", null, false);
             string api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
             Thread.Sleep(100);
             Hashtable headers = new Hashtable();
