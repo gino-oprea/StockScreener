@@ -33,6 +33,9 @@ namespace StockScreener
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCheckCompany = new System.Windows.Forms.TabPage();
+            this.label34 = new System.Windows.Forms.Label();
+            this.txtAvgOperatingMarginGrowth = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbCacheCompCheck = new System.Windows.Forms.RadioButton();
             this.rbFreshCompCheck = new System.Windows.Forms.RadioButton();
@@ -114,9 +117,6 @@ namespace StockScreener
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
             this.bgwGetCache = new System.ComponentModel.BackgroundWorker();
-            this.label32 = new System.Windows.Forms.Label();
-            this.txtAvgOperatingMarginGrowth = new System.Windows.Forms.TextBox();
-            this.label34 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -197,6 +197,31 @@ namespace StockScreener
             this.tabCheckCompany.TabIndex = 0;
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(300, 633);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(21, 20);
+            this.label34.TabIndex = 54;
+            this.label34.Text = "%";
+            // 
+            // txtAvgOperatingMarginGrowth
+            // 
+            this.txtAvgOperatingMarginGrowth.Location = new System.Drawing.Point(229, 629);
+            this.txtAvgOperatingMarginGrowth.Name = "txtAvgOperatingMarginGrowth";
+            this.txtAvgOperatingMarginGrowth.Size = new System.Drawing.Size(65, 27);
+            this.txtAvgOperatingMarginGrowth.TabIndex = 53;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(6, 632);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(209, 20);
+            this.label32.TabIndex = 52;
+            this.label32.Text = "Avg Operating Margin Growth";
             // 
             // groupBox2
             // 
@@ -364,7 +389,7 @@ namespace StockScreener
             this.txtDiscountInterestRate.Name = "txtDiscountInterestRate";
             this.txtDiscountInterestRate.Size = new System.Drawing.Size(65, 27);
             this.txtDiscountInterestRate.TabIndex = 29;
-            this.txtDiscountInterestRate.Text = "12";
+            this.txtDiscountInterestRate.Text = "13";
             // 
             // label15
             // 
@@ -772,7 +797,7 @@ namespace StockScreener
             this.txtFilterRateOfReturn.Name = "txtFilterRateOfReturn";
             this.txtFilterRateOfReturn.Size = new System.Drawing.Size(32, 27);
             this.txtFilterRateOfReturn.TabIndex = 15;
-            this.txtFilterRateOfReturn.Text = "12";
+            this.txtFilterRateOfReturn.Text = "13";
             // 
             // label25
             // 
@@ -943,31 +968,6 @@ namespace StockScreener
             // 
             this.bgwGetCache.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetCache_DoWork);
             this.bgwGetCache.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetCache_RunWorkerCompleted);
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(6, 632);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(209, 20);
-            this.label32.TabIndex = 52;
-            this.label32.Text = "Avg Operating Margin Growth";
-            // 
-            // txtAvgOperatingMarginGrowth
-            // 
-            this.txtAvgOperatingMarginGrowth.Location = new System.Drawing.Point(229, 629);
-            this.txtAvgOperatingMarginGrowth.Name = "txtAvgOperatingMarginGrowth";
-            this.txtAvgOperatingMarginGrowth.Size = new System.Drawing.Size(65, 27);
-            this.txtAvgOperatingMarginGrowth.TabIndex = 53;
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(300, 633);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(21, 20);
-            this.label34.TabIndex = 54;
-            this.label34.Text = "%";
             // 
             // Form1
             // 
