@@ -406,7 +406,7 @@ namespace BL
             if (searchResults.results.Count == 0)
                 return;
 
-            string raw_key_ratios_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/quotes/2.4.0/sal-components.umd.min.42.js", "GET", null, false);
+            string raw_key_ratios_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/quotes/2.9.0/sal-components.umd.min.51.js", "GET", null, false);
             string key_ratios_api_key = HtmlHelper.ExtractString(raw_key_ratios_api_key_html, "keyApigee:\"", "\",", false);
 
 
