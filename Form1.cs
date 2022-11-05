@@ -226,14 +226,14 @@ namespace StockScreener
 
         private void bgwCheckCompany_DoWork(object sender, DoWorkEventArgs e)
         {
-            company = DataAggregator.GetCompanyData(txtTicker.Text, rbCacheCompCheck.Checked);
+            company = DataAggregator.GetCompanyData(txtTicker.Text.Trim(), rbCacheCompCheck.Checked);
 
             DataTable dt = BuildDataTable();
             bindingSourceKeyValues = new BindingSource();
             bindingSourceKeyValues.DataSource = dt;
 
             int discount;
-            bool converted = int.TryParse(txtDiscountInterestRate.Text, out discount);
+            bool converted = int.TryParse(txtDiscountInterestRate.Text.Trim(), out discount);
             if (!converted)
                 discount = 10;
 
