@@ -1,5 +1,6 @@
 ﻿using BL;
 using BL.Models;
+using BL.OnlineCompaniesData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,9 @@ namespace StockScreener
 
         string TickerInProgess;
         bool isSearchInProgress = false;
+
+        IDataAggregator dataAggregator;
+        CompanyScreener companyScreener;
         
 
         public Form1()
@@ -38,6 +42,8 @@ namespace StockScreener
             InitializeComponent();
 
             cbFilterValue.SelectedIndex = 2;
+
+            initDataAggregator();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -72,27 +78,26 @@ namespace StockScreener
         {
             DataTable dt = new DataTable();
 
-            if (company.Financials.Count > 0)
+            if (company.Financials!= null)
             {
                 dt.Columns.Add("Item");
-                for (int i = 0; i < company.Financials[0].NetIncome.Count; i++)
+                for (int i = 0; i < company.Financials.NetIncome.Count; i++)
                 {
-                    dt.Columns.Add(company.Financials[0].NetIncome[i].Year.ToString());
+                    dt.Columns.Add(company.Financials.NetIncome[i].Year.ToString());
                 }
 
-                AddRow("Revenue", company.Financials[0].Revenue, dt);
-                AddRow("Equity", company.Financials[0].Equity, dt);
-                AddRow("EPS", company.Financials[0].EPS, dt);
-                AddRow("Net Income", company.Financials[0].NetIncome, dt);
-                AddRow("Operating Margin %", company.Financials[0].OperatingMargin, dt);
-                AddRow("Retained earnings", company.Financials[0].RetainedEarnings, dt);
-                AddRow("Free Cash Flow", company.Financials[0].FreeCashFlow, dt);
-                AddRow("Capital Expenditures", company.Financials[0].CapitalExpenditures, dt);
-                AddRow("Short Term Debt", company.Financials[0].ShortTermDebt, dt);
-                AddRow("Long Term Debt", company.Financials[0].LongTermDebt, dt);
-                AddRow("Cash and Equivalents", company.Financials[0].Cash, dt);
-                AddRow("Shares Outstanding", company.Financials[0].Shares, dt);
-                //AddRow("ROE(%)", company.Financials[0].ROE, dt);
+                AddRow("Revenue", company.Financials.Revenue, dt);
+                AddRow("Equity", company.Financials.Equity, dt);
+                AddRow("EPS", company.Financials.EPS, dt);
+                AddRow("Net Income", company.Financials.NetIncome, dt);
+                AddRow("Operating Margin %", company.Financials.OperatingMargin, dt);
+                AddRow("Retained earnings", company.Financials.RetainedEarnings, dt);
+                AddRow("Free Cash Flow", company.Financials.FreeCashFlow, dt);
+                AddRow("Capital Expenditures", company.Financials.CapitalExpenditures, dt);
+                AddRow("Short Term Debt", company.Financials.ShortTermDebt, dt);
+                AddRow("Long Term Debt", company.Financials.LongTermDebt, dt);
+                AddRow("Cash and Equivalents", company.Financials.Cash, dt);
+                AddRow("Shares Outstanding", company.Financials.Shares, dt);                
             }
             return dt;
         }
@@ -156,6 +161,7 @@ namespace StockScreener
         private void btnStop_Click(object sender, EventArgs e)
         {
             bgwSearchCompanies.CancelAsync();
+            bgwGetCache.CancelAsync();
         }
 
         private CompanyFilter GetFilter()
@@ -226,7 +232,7 @@ namespace StockScreener
 
         private void bgwCheckCompany_DoWork(object sender, DoWorkEventArgs e)
         {
-            company = DataAggregator.GetCompanyData(txtTicker.Text.Trim(), rbCacheCompCheck.Checked);
+            company = dataAggregator.GetCompanyData(txtTicker.Text.Trim(), rbCacheCompCheck.Checked);
 
             DataTable dt = BuildDataTable();
             bindingSourceKeyValues = new BindingSource();
@@ -275,7 +281,7 @@ namespace StockScreener
                     txtAvgROIC.Text = String.Format("{0:0.00}", company.AverageROIC);
                     txtTerminalMultiple.Text = company.Average_P_FCF_Multiple.ToString();
 
-                    var avgCf = company.Financials[0].FreeCashFlow.Skip(company.Financials[0].FreeCashFlow.Count() - 3).Select(c => c.Value).Average(); //media ultimilor 3 ani
+                    var avgCf = company.Financials.FreeCashFlow.Skip(company.Financials.FreeCashFlow.Count() - 3).Select(c => c.Value).Average(); //media ultimilor 3 ani
                     //company.Financials[0].FreeCashFlow.Average(c => c.Value);
 
                     //var lastCf = company.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
@@ -284,7 +290,7 @@ namespace StockScreener
                         txtLastFreeCashFlow.Text = String.Format("{0:0.00}", (decimal)avgCf);
                     else
                     {
-                        var lastCf = company.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
+                        var lastCf = company.Financials.FreeCashFlow.FindLast(c => c.Value > 0);
                         if (lastCf != null)
                             txtLastFreeCashFlow.Text = String.Format("{0:0.00}", (decimal)lastCf.Value);
                         else
@@ -333,7 +339,7 @@ namespace StockScreener
                 }
             }
 
-            filteredCompanies = CompanyScreener.GetFilteredCompanies(Url, companyFilter, cachedCompanies, bgwSearchCompanies);
+            filteredCompanies = companyScreener.GetFilteredCompanies(Url, companyFilter, cachedCompanies, bgwSearchCompanies);
 
             DataTable dtFilteredCompanies = BuildFilteredCompaniesDataTable(filteredCompanies);
             bindingSourcefilteredCompanies = new BindingSource();
@@ -435,9 +441,9 @@ namespace StockScreener
 
         private void bgwGetCache_DoWork(object sender, DoWorkEventArgs e)
         {
-            List<Company> companies = CompanyScreener.GetFilteredCompanies(Url, null, null, bgwGetCache);
+            List<Company> companies = companyScreener.GetFilteredCompanies(Url, null, null, bgwGetCache);
 
-            CompanyScreener.SaveCompanies(companies);
+            companyScreener.SaveCompanies(companies);
 
             if (bgwGetCache.CancellationPending)
                 e.Cancel = true;
@@ -461,6 +467,27 @@ namespace StockScreener
             isSearchInProgress = false;
             lblTickerInProcess.Text = "";
             lblProgress.Text = "";
+        }
+
+        private void initDataAggregator()
+        {
+            if (rbCompCheckRoicAi.Checked)
+                dataAggregator = new DataAggregator_RoicAi();
+            else
+                dataAggregator = new DataAggregator_MarketWatch();
+
+            companyScreener = new CompanyScreener(dataAggregator);
+        }
+       
+
+        private void rbCompCheckRoicAi_Click(object sender, EventArgs e)
+        {
+            initDataAggregator();
+        }
+
+        private void rbCompCheckMarketWatch_Click(object sender, EventArgs e)
+        {
+            initDataAggregator();
         }
     }
 }

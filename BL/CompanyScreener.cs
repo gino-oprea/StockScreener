@@ -1,4 +1,5 @@
 ﻿using BL.Models;
+using BL.OnlineCompaniesData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,21 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    public static class CompanyScreener
+    public class CompanyScreener
     {
         public static string currentTicker;
         public static List<Company> currentfilteredCompanies;
-        public static string progress;        
+        public static string progress;
 
-        public static List<Company> GetFilteredCompanies(string Url, CompanyFilter filter, List<Company> allCompanies, BackgroundWorker bgw)
+
+        private IDataAggregator dataAggregator;
+
+        public CompanyScreener(IDataAggregator dataAgg)
+        {
+            this.dataAggregator = dataAgg;
+        }
+
+        public List<Company> GetFilteredCompanies(string Url, CompanyFilter filter, List<Company> allCompanies, BackgroundWorker bgw)
         {
             List<Company> filteredCompanies = new List<Company>();
             List<Company> companies = null;
@@ -28,8 +37,8 @@ namespace BL
                 allTickers = GetCompaniesTickers_FinvizScreener(Url, filter, bgw);
             else
             {
-                if (filter!=null && filter.IgnoreADRCompanies)
-                    companies = allCompanies.FindAll(c => c.Name!=null && !c.Name.Contains(" ADR"));
+                if (filter != null && filter.IgnoreADRCompanies)
+                    companies = allCompanies.FindAll(c => c.Name != null && !c.Name.Contains(" ADR"));
                 else
                     companies = allCompanies;
 
@@ -58,12 +67,12 @@ namespace BL
                 {
                     Company company = new Company();
                     if (companies == null)
-                        company = DataAggregator.GetCompanyData(ticker);
+                        company = dataAggregator.GetCompanyData(ticker);
                     else
                     {
                         //get company from casche but current price from online
                         company = companies[i];
-                        company.CurrentPrice = DataAggregator.GetCompanyCurrentPrice(ticker).CurrentPrice;
+                        company.CurrentPrice = dataAggregator.GetCompanyCurrentPrice(ticker).CurrentPrice;
                     }
 
                     currentTicker = company.Ticker;
@@ -72,43 +81,21 @@ namespace BL
                     {
                         List<decimal> values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: filter.DiscountRate, terminalMultiple: company.Average_P_FCF_Multiple.Value);
 
-                        //company.IntrinsicValue = values[0];
-                        //company.IntrinsicValue_Discounted30 = values[1];
-                        //company.IntrinsicValue_Discounted50 = values[2];
 
-                        if (company.Financials.Count > 0)
+
+                        if (company.Financials!= null)
                         {
-                            if (company.Financials[0].FreeCashFlow.Count > 2
+                            if (company.Financials.FreeCashFlow.Count > 2
                                 && company.AverageEquityGrowth >= filter.MinAvgEqGrowth
                                 && company.AverageRevenueGrowth >= filter.MinAvgRevenueGrowth
                                 && company.AverageEPSGrowth >= filter.MinAvgEPSGrowth
                                 && company.AverageFreeCashFlowGrowth >= filter.MinAvgFreeCashFlowGrowth
                                 && company.AverageROIC >= filter.MinAvgROIC)
                             {
-                                //if (!filter.IsAllGrowthPositive)
-                                //{
-                                    var refPrice = GetRefPrice(company, filter);
+                                var refPrice = GetRefPrice(company, filter);
 
-                                    if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
-                                        filteredCompanies.Add(company);
-                                //}
-                                //else
-                                //{
-                                //    //all growth positive
-                                //    int negativeYearsNo = 0;
-                                //    if (filter.AllowOneNegativeYear) negativeYearsNo = 1;
-
-                                //    if (company.Financials[0].Equity.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
-                                //    && company.Financials[0].EPS.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
-                                //    && company.Financials[0].Revenue.FindAll(v => v.Growth < 0).Count <= negativeYearsNo
-                                //    && company.Financials[0].FreeCashFlow.FindAll(v => v.Growth < 0).Count <= negativeYearsNo)
-                                //    {
-                                //        var refPrice = GetRefPrice(company, filter);
-
-                                //        if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
-                                //            filteredCompanies.Add(company);
-                                //    }
-                                //}
+                                if ((decimal)company.CurrentPrice <= refPrice && company.IntrinsicValue > 0)
+                                    filteredCompanies.Add(company);
                             }
                         }
 
@@ -132,12 +119,12 @@ namespace BL
 
             return filteredCompanies;
         }
-        public static async Task SaveCompanies(List<Company> companies)
+        public async Task SaveCompanies(List<Company> companies)
         {
             string json = JsonConvert.SerializeObject(companies);
             await File.WriteAllTextAsync("companies.json", json);
         }
-        public static decimal GetRefPrice(Company company, CompanyFilter filter)
+        private decimal GetRefPrice(Company company, CompanyFilter filter)
         {
             var refPrice = company.IntrinsicValue;
             switch (filter.PriceFilter)
@@ -170,60 +157,7 @@ namespace BL
 
             return (decimal)refPrice;
         }
-        public static List<string> GetCompaniesTickers_MarketwatchScreener(string Url, BackgroundWorker bgw)
-        {
-            List<string> allTickers = new List<string>();
-            string nextPageUrlLine = "";
-            do
-            {
-                if (bgw.CancellationPending)
-                {                    
-                    currentTicker = "";
-                    progress = "";
-                    break;
-                }
-
-                nextPageUrlLine = "";
-
-                string htmlCompanies = BL.HttpReq.GetUrlHttpWebRequest(Url, "GET", null, false);
-                if (htmlCompanies != null)
-                {
-                    var rawLines = HtmlHelper.GetRawLinesFromHtml(htmlCompanies);
-
-                    List<string> companyLines = new List<string>();
-
-                    for (int i = 0; i < rawLines.Count; i++)
-                    {
-                        if (rawLines[i].Contains("<td class=\"aleft\"><a href=\"/investing/stock"))
-                            companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "<td class=\"aleft\"><a href=", "</a>", false));
-
-                        if (rawLines[i].Contains("<a href=\"/tools/stockresearch/screener/results.asp") && rawLines[i].Contains("Next"))
-                            nextPageUrlLine = rawLines[i];
-                    }
-
-
-                    for (int i = 0; i < companyLines.Count; i++)
-                    {
-                        var ticker = companyLines[i].Substring(companyLines[i].IndexOf(">") + 1);
-                        allTickers.Add(ticker);
-                    }
-
-                    if (nextPageUrlLine != "")
-                    {
-                        string nextPageUrl = WebUtility.HtmlDecode("https://www.marketwatch.com" + HtmlHelper.ExtractString(nextPageUrlLine, "href=\"", "\">Next", false));
-                        Url = nextPageUrl;
-                    }
-                }
-
-                Thread.Sleep(250);
-
-            }
-            while (nextPageUrlLine != "");
-
-            return allTickers;
-        }
-
-        public static List<string> GetCompaniesTickers_FinvizScreener(string Url, CompanyFilter filter, BackgroundWorker bgw)
+        private List<string> GetCompaniesTickers_FinvizScreener(string Url, CompanyFilter filter, BackgroundWorker bgw)
         {
             List<string> allTickers = new List<string>();
             string nextPageUrlLine = "";
