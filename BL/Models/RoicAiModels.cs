@@ -71,7 +71,7 @@ public class Outlook
 
 public class Ratio
 {   
-    public float peRatioTTM { get; set; }    
+    public float? peRatioTTM { get; set; }    
 }
 
 public class Cfy

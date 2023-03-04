@@ -32,6 +32,8 @@ namespace BL
             List<Company> filteredCompanies = new List<Company>();
             List<Company> companies = null;
 
+            Random rand = new Random();
+
             List<string> allTickers = new List<string>();
             if (allCompanies == null)
                 allTickers = GetCompaniesTickers_FinvizScreener(Url, filter, bgw);
@@ -106,10 +108,11 @@ namespace BL
                         filteredCompanies.Add(company);
                     }
 
-                    Thread.Sleep(200);
+                    Thread.Sleep(200 + rand.Next(100));
                 }
                 catch (Exception ex)
                 {
+                    var currentTicker = allTickers[i];
                     //log
                 }
             }

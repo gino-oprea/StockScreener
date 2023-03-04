@@ -233,41 +233,52 @@ namespace BL.Models
             this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageFreeCashFlowGrowth);
 
 
-            if (this.AverageEquityGrowth != null)
-            {
-                decimal avgGrowth = 0;
-                if (this.AverageRevenueGrowth != null)
-                    avgGrowth = (decimal)(this.AverageRevenueGrowth +
-                       this.AverageEPSGrowth +
-                       this.AverageEquityGrowth +
-                       this.AverageNetIncomeGrowth +
-                       this.AverageFreeCashFlowGrowth) / 5;
-                else
-                    avgGrowth = (decimal)(this.AverageEPSGrowth +
-                        this.AverageEquityGrowth +
-                        this.AverageNetIncomeGrowth +
-                        this.AverageFreeCashFlowGrowth) / 4;
 
-                if (this.AverageROIC != null)
-                    if (this.AverageRevenueGrowth != null)
-                        avgGrowth = (decimal)(this.AverageRevenueGrowth +
-                       this.AverageEPSGrowth +
-                       this.AverageEquityGrowth +
-                       this.AverageNetIncomeGrowth +
-                       this.AverageFreeCashFlowGrowth +
-                       this.AverageROIC) / 6;
-                    else
-                        avgGrowth = (decimal)(this.AverageEPSGrowth +
-                       this.AverageEquityGrowth +
-                       this.AverageNetIncomeGrowth +
-                       this.AverageFreeCashFlowGrowth +
-                       this.AverageROIC) / 5;
+            List<decimal?> allGrowthValues = new List<decimal?>() { this.AverageRevenueGrowth,
+                this.AverageEPSGrowth ,
+                this.AverageEquityGrowth ,
+                this.AverageNetIncomeGrowth,
+            this.AverageFreeCashFlowGrowth,
+            this.AverageROIC};
 
-                this.Growth = Math.Min(13, avgGrowth);
+            decimal avgGrowth = (decimal)allGrowthValues.FindAll(g => g != null).Average();
+            this.Growth = Math.Min(13, avgGrowth);
 
-            }
-            else
-                this.Growth = 0;
+            //if (this.AverageEquityGrowth != null)
+            //{
+            //    decimal avgGrowth = 0;
+            //    if (this.AverageRevenueGrowth != null)
+            //        avgGrowth = (decimal)(this.AverageRevenueGrowth +
+            //           this.AverageEPSGrowth +
+            //           this.AverageEquityGrowth +
+            //           this.AverageNetIncomeGrowth +
+            //           this.AverageFreeCashFlowGrowth) / 5;
+            //    else
+            //        avgGrowth = (decimal)(this.AverageEPSGrowth +
+            //            this.AverageEquityGrowth +
+            //            this.AverageNetIncomeGrowth +
+            //            this.AverageFreeCashFlowGrowth) / 4;
+
+            //    if (this.AverageROIC != null)
+            //        if (this.AverageRevenueGrowth != null)
+            //            avgGrowth = (decimal)(this.AverageRevenueGrowth +
+            //           this.AverageEPSGrowth +
+            //           this.AverageEquityGrowth +
+            //           this.AverageNetIncomeGrowth +
+            //           this.AverageFreeCashFlowGrowth +
+            //           this.AverageROIC) / 6;
+            //        else
+            //            avgGrowth = (decimal)(this.AverageEPSGrowth +
+            //           this.AverageEquityGrowth +
+            //           this.AverageNetIncomeGrowth +
+            //           this.AverageFreeCashFlowGrowth +
+            //           this.AverageROIC) / 5;
+
+            //    this.Growth = Math.Min(13, avgGrowth);
+
+            //}
+            //else
+            //    this.Growth = 0;
 
             this.Average_P_FCF_Multiple ??= (int)Math.Floor(this.Growth.Value);
         }

@@ -31,25 +31,28 @@ namespace BL.OnlineCompaniesData.DataHelpers
             {
                 if (selectedLines[i].Contains("justify-end") && selectedLines[i].Contains("%"))
                 {
-                    float roicValue = float.Parse(HtmlHelper.ExtractString(selectedLines[i], ">", "%", false).Replace("(", "-").Replace(")", ""));
-                    roic.Add(new YearVal { Value = roicValue });
+                    float roicValue;
+                    bool converted = float.TryParse(HtmlHelper.ExtractString(selectedLines[i], ">", "%", false).Replace("(", "-").Replace(")", ""),out roicValue);
+                    if (converted)
+                        roic.Add(new YearVal { Value = roicValue });
                 }
             }
 
 
 
             var last5Roic = roic.Skip(Math.Max(0, roic.Count - lastNoOfYears)).ToList();
-            company.AverageROIC = (decimal)last5Roic.Select(r => r.Value).Average();
+            if (last5Roic.Count > 0 && last5Roic.FindAll(k => k.Value != null).Count > 0)
+                company.AverageROIC = (decimal)last5Roic.FindAll(k => k.Value != null).Select(k => k.Value).Average();
         }
 
 
         public static void GetCompanyFinancials(string html, Company company)
         {
-            RootRoicAiModel roicAiprops = GetRoicModel(html);            
+            RootRoicAiModel roicAiprops = GetRoicModel(html);
 
-            Financials financials = GetFinancialData(roicAiprops);
+            Financials financials = GetFinancialData(roicAiprops);            
 
-            company.SharesOutstanding = financials.Shares.Last().Value;
+            company.SharesOutstanding = financials.Shares.Last().Value != 0 ? financials.Shares.Last().Value : 1;
             company.Financials = financials;
         }
 
