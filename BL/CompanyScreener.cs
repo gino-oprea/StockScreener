@@ -108,7 +108,7 @@ namespace BL
                         filteredCompanies.Add(company);
                     }
 
-                    Thread.Sleep(200 + rand.Next(100));
+                    Thread.Sleep(100 + rand.Next(100));
                 }
                 catch (Exception ex)
                 {

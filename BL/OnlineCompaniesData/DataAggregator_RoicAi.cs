@@ -14,7 +14,7 @@ namespace BL.OnlineCompaniesData
         public DataAggregator_RoicAi() { }
         public Company GetCompanyCurrentPrice(string TickerSymbol)
         {
-            string generalDetailsHtml = BL.HttpReq.GetUrlHttpWebRequest("https://roic.ai/financials/" + TickerSymbol, "GET", null, false);
+            string generalDetailsHtml = BL.HttpReq.GetUrlHttpWebRequest("https://roic.ai/company/" + TickerSymbol, "GET", null, false);
 
             Company company = new Company();
             if (generalDetailsHtml != null)
@@ -35,7 +35,7 @@ namespace BL.OnlineCompaniesData
                 company = companies.Find(c => c.Ticker.ToLower() == TickerSymbol.ToLower());
 
                 //for current price
-                string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://roic.ai/financials/" + TickerSymbol, "GET", null, false);
+                string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://roic.ai/company/" + TickerSymbol, "GET", null, false);
                 if (generalDetails != null)
                     RoicAiHelper.GetCompanyGeneralInfo(generalDetails, company);
             }
@@ -44,7 +44,7 @@ namespace BL.OnlineCompaniesData
                 company.Ticker = TickerSymbol.ToUpper();
                 company.Financials = new Financials();
 
-                string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://roic.ai/financials/" + TickerSymbol, "GET", null, false);
+                string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://roic.ai/company/" + TickerSymbol, "GET", null, false);
                 if (generalDetails != null)
                     RoicAiHelper.GetCompanyGeneralInfo(generalDetails, company);
                 
@@ -53,7 +53,10 @@ namespace BL.OnlineCompaniesData
                 {
                     try
                     {
-                        RoicAiHelper.GetCompanyFinancials(generalDetails, company);
+                        Thread.Sleep(50);
+                        string financialDetails = BL.HttpReq.GetUrlHttpWebRequest("https://roic.ai/financials/" + TickerSymbol, "GET", null, false);
+
+                        RoicAiHelper.GetCompanyFinancials(financialDetails, company);
                         MacroTrendsHelper.GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company);
 
                         company.CalculateGrowthAverages();
