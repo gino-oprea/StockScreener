@@ -57,13 +57,13 @@ namespace BL
                     MarketWatchHelper.GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
 
 
-                Thread.Sleep(200);
+                Thread.Sleep(100);
                 string financials_incomeStatement = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials", "GET", null, false);
-                Thread.Sleep(200);
+                Thread.Sleep(100);
                 string financials_balanceSheet = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/balance-sheet", "GET", null, false);
-                Thread.Sleep(200);
+                Thread.Sleep(100);
                 string financials_cashFlow = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/cash-flow", "GET", null, false);
-                Thread.Sleep(200);
+                Thread.Sleep(100);
 
                 if (financials_incomeStatement != null)
                 {

@@ -15,9 +15,9 @@ namespace BL
 {
     public class CompanyScreener
     {
-        public static string currentTicker;
-        public static List<Company> currentfilteredCompanies;
-        public static string progress;
+        public string currentTicker;
+        public List<Company> currentfilteredCompanies;
+        public string progress;
 
 
         private IDataAggregator dataAggregator;
@@ -72,7 +72,7 @@ namespace BL
                         company = dataAggregator.GetCompanyData(ticker);
                     else
                     {
-                        //get company from casche but current price from online
+                        //get company from cache but current price from online
                         company = companies[i];
                         company.CurrentPrice = dataAggregator.GetCompanyCurrentPrice(ticker).CurrentPrice;
                     }
@@ -108,7 +108,7 @@ namespace BL
                         filteredCompanies.Add(company);
                     }
 
-                    Thread.Sleep(100 + rand.Next(100));
+                    Thread.Sleep(100 + rand.Next(50));
                 }
                 catch (Exception ex)
                 {

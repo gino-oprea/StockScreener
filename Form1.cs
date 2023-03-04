@@ -33,7 +33,8 @@ namespace StockScreener
         string TickerInProgess;
         bool isSearchInProgress = false;
 
-        IDataAggregator dataAggregator;
+        IDataAggregator dataAggregator_checkCompany;
+        IDataAggregator dataAggregator_searchCompany;
         CompanyScreener companyScreener;
         
 
@@ -43,7 +44,8 @@ namespace StockScreener
 
             cbFilterValue.SelectedIndex = 2;
 
-            initDataAggregator();
+            initDataAggregator_CheckCompany();
+            initDataAggregator_SearchCompany();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -232,7 +234,7 @@ namespace StockScreener
 
         private void bgwCheckCompany_DoWork(object sender, DoWorkEventArgs e)
         {
-            company = dataAggregator.GetCompanyData(txtTicker.Text.Trim(), rbCacheCompCheck.Checked);
+            company = dataAggregator_checkCompany.GetCompanyData(txtTicker.Text.Trim(), rbCacheCompCheck.Checked);
 
             DataTable dt = BuildDataTable();
             bindingSourceKeyValues = new BindingSource();
@@ -390,9 +392,9 @@ namespace StockScreener
         {
             if(isSearchInProgress)
             {
-                if (CompanyScreener.currentfilteredCompanies != null && CompanyScreener.currentfilteredCompanies.Count > 0)
+                if (companyScreener.currentfilteredCompanies != null && companyScreener.currentfilteredCompanies.Count > 0)
                 {
-                    DataTable dtFilteredCompanies = BuildFilteredCompaniesDataTable(CompanyScreener.currentfilteredCompanies);
+                    DataTable dtFilteredCompanies = BuildFilteredCompaniesDataTable(companyScreener.currentfilteredCompanies);
                     bindingSourcefilteredCompanies = new BindingSource();
                     bindingSourcefilteredCompanies.DataSource = dtFilteredCompanies;
 
@@ -410,8 +412,8 @@ namespace StockScreener
         {
             if (isSearchInProgress)
             {
-                lblTickerInProcess.Text = CompanyScreener.currentTicker;
-                lblProgress.Text = CompanyScreener.progress;
+                lblTickerInProcess.Text = companyScreener.currentTicker;
+                lblProgress.Text = companyScreener.progress;
             }
         }
 
@@ -443,10 +445,10 @@ namespace StockScreener
         {
             List<Company> companies = companyScreener.GetFilteredCompanies(Url, null, null, bgwGetCache);
 
-            companyScreener.SaveCompanies(companies);
-
             if (bgwGetCache.CancellationPending)
                 e.Cancel = true;
+            else
+                companyScreener.SaveCompanies(companies);          
         }
 
         private void bgwGetCache_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -469,25 +471,40 @@ namespace StockScreener
             lblProgress.Text = "";
         }
 
-        private void initDataAggregator()
+        private void initDataAggregator_CheckCompany()
         {
             if (rbCompCheckRoicAi.Checked)
-                dataAggregator = new DataAggregator_RoicAi();
+                dataAggregator_checkCompany = new DataAggregator_RoicAi();
             else
-                dataAggregator = new DataAggregator_MarketWatch();
-
-            companyScreener = new CompanyScreener(dataAggregator);
+                dataAggregator_checkCompany = new DataAggregator_MarketWatch();           
         }
-       
+        private void initDataAggregator_SearchCompany()
+        {
+            if (rbCompSearchRoicAi.Checked)
+                dataAggregator_searchCompany = new DataAggregator_RoicAi();
+            else
+                dataAggregator_searchCompany = new DataAggregator_MarketWatch();
+
+            companyScreener = new CompanyScreener(dataAggregator_searchCompany);
+        }       
 
         private void rbCompCheckRoicAi_Click(object sender, EventArgs e)
         {
-            initDataAggregator();
+            initDataAggregator_CheckCompany();
         }
 
         private void rbCompCheckMarketWatch_Click(object sender, EventArgs e)
         {
-            initDataAggregator();
+            initDataAggregator_CheckCompany();
+        }
+
+        private void rbCompSearchRoicAi_Click(object sender, EventArgs e)
+        {
+            initDataAggregator_SearchCompany();
+        }
+        private void rbCompSearchMarketWatch_Click(object sender, EventArgs e)
+        {
+            initDataAggregator_SearchCompany();
         }
     }
 }

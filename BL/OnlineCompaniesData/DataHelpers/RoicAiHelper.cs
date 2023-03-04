@@ -139,7 +139,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 AddFinancialValue(incomeStatement[i].revenue, incomeStatement[i].calendarYear, revenue, index);
                 AddFinancialValue(incomeStatement[i].netIncome, incomeStatement[i].calendarYear, netIncome, index);
                 AddFinancialValue(incomeStatement[i].epsdiluted, incomeStatement[i].calendarYear, EPS, index, false);
-                AddFinancialValue(incomeStatement[i].operatingIncomeRatio ?? incomeStatement[i].operatingIncomeRatio * 100, incomeStatement[i].calendarYear, operatingMargin, index, false);
+                AddFinancialValue(incomeStatement[i].operatingIncomeRatio != null ? incomeStatement[i].operatingIncomeRatio * 100 : null, incomeStatement[i].calendarYear, operatingMargin, index, false);
                 AddFinancialValue(incomeStatement[i].weightedAverageShsOutDil, incomeStatement[i].calendarYear, shares, index);
 
                 AddFinancialValue(balanceSheet[i].totalStockholdersEquity, balanceSheet[i].calendarYear, equity, index);

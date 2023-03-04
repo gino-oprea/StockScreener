@@ -88,6 +88,9 @@ namespace StockScreener
             this.label1 = new System.Windows.Forms.Label();
             this.txtTicker = new System.Windows.Forms.TextBox();
             this.tabSearchCompanies = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.rbCompSearchMarketWatch = new System.Windows.Forms.RadioButton();
+            this.rbCompSearchRoicAi = new System.Windows.Forms.RadioButton();
             this.btnGetAllCompaniesInCache = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbCacheSearch = new System.Windows.Forms.RadioButton();
@@ -128,6 +131,7 @@ namespace StockScreener
             ((System.ComponentModel.ISupportInitialize)(this.pbLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvFinancials)).BeginInit();
             this.tabSearchCompanies.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingCompanies)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvCompanies)).BeginInit();
@@ -691,6 +695,7 @@ namespace StockScreener
             // 
             // tabSearchCompanies
             // 
+            this.tabSearchCompanies.Controls.Add(this.groupBox4);
             this.tabSearchCompanies.Controls.Add(this.btnGetAllCompaniesInCache);
             this.tabSearchCompanies.Controls.Add(this.groupBox1);
             this.tabSearchCompanies.Controls.Add(this.chkIgnoreADR);
@@ -722,6 +727,40 @@ namespace StockScreener
             this.tabSearchCompanies.TabIndex = 1;
             this.tabSearchCompanies.Text = "Search Companies";
             this.tabSearchCompanies.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.rbCompSearchMarketWatch);
+            this.groupBox4.Controls.Add(this.rbCompSearchRoicAi);
+            this.groupBox4.Location = new System.Drawing.Point(995, 6);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(138, 65);
+            this.groupBox4.TabIndex = 27;
+            this.groupBox4.TabStop = false;
+            // 
+            // rbCompSearchMarketWatch
+            // 
+            this.rbCompSearchMarketWatch.AutoSize = true;
+            this.rbCompSearchMarketWatch.Checked = true;
+            this.rbCompSearchMarketWatch.Location = new System.Drawing.Point(7, 35);
+            this.rbCompSearchMarketWatch.Name = "rbCompSearchMarketWatch";
+            this.rbCompSearchMarketWatch.Size = new System.Drawing.Size(117, 24);
+            this.rbCompSearchMarketWatch.TabIndex = 1;
+            this.rbCompSearchMarketWatch.TabStop = true;
+            this.rbCompSearchMarketWatch.Text = "MarketWatch";
+            this.rbCompSearchMarketWatch.UseVisualStyleBackColor = true;
+            this.rbCompSearchMarketWatch.Click += new System.EventHandler(this.rbCompSearchMarketWatch_Click);
+            // 
+            // rbCompSearchRoicAi
+            // 
+            this.rbCompSearchRoicAi.AutoSize = true;
+            this.rbCompSearchRoicAi.Location = new System.Drawing.Point(7, 13);
+            this.rbCompSearchRoicAi.Name = "rbCompSearchRoicAi";
+            this.rbCompSearchRoicAi.Size = new System.Drawing.Size(74, 24);
+            this.rbCompSearchRoicAi.TabIndex = 0;
+            this.rbCompSearchRoicAi.Text = "Roic.ai";
+            this.rbCompSearchRoicAi.UseVisualStyleBackColor = true;
+            this.rbCompSearchRoicAi.Click += new System.EventHandler(this.rbCompSearchRoicAi_Click);
             // 
             // btnGetAllCompaniesInCache
             // 
@@ -1032,6 +1071,8 @@ namespace StockScreener
             ((System.ComponentModel.ISupportInitialize)(this.gvFinancials)).EndInit();
             this.tabSearchCompanies.ResumeLayout(false);
             this.tabSearchCompanies.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingCompanies)).EndInit();
@@ -1132,6 +1173,9 @@ namespace StockScreener
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RadioButton rbCompCheckMarketWatch;
         private System.Windows.Forms.RadioButton rbCompCheckRoicAi;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.RadioButton rbCompSearchMarketWatch;
+        private System.Windows.Forms.RadioButton rbCompSearchRoicAi;
     }
 }
 
