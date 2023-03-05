@@ -322,23 +322,33 @@ namespace StockScreener
             pbLoading.Visible = false;
         }
 
+        private List<Company> GetCachedCompanies()
+        {
+            List<Company> cachedCompanies = null;
+
+            using (StreamReader r = new StreamReader("companies.json"))
+            {
+                try
+                {
+                    string json = r.ReadToEnd();
+                    cachedCompanies = JsonConvert.DeserializeObject<List<Company>>(json);
+                }
+                catch (Exception ex)
+                {
+                    lblErrorMessage.Text = "Could not read cache file";
+                }
+            }
+
+            return cachedCompanies;
+        }
+
+
         private void bgwSearchCompanies_DoWork(object sender, DoWorkEventArgs e)
         {
             List<Company> cachedCompanies = null;
             if(!companyFilter.IsFreshSearch && File.Exists("companies.json"))
             {
-                using (StreamReader r = new StreamReader("companies.json"))
-                {
-                    try
-                    {
-                        string json = r.ReadToEnd();
-                        cachedCompanies = JsonConvert.DeserializeObject<List<Company>>(json);
-                    }
-                    catch(Exception ex)
-                    {
-                        lblErrorMessage.Text = "Could not read cache file";
-                    }
-                }
+                cachedCompanies = GetCachedCompanies();
             }
 
             filteredCompanies = companyScreener.GetFilteredCompanies(Url, companyFilter, cachedCompanies, bgwSearchCompanies);
@@ -443,12 +453,15 @@ namespace StockScreener
 
         private void bgwGetCache_DoWork(object sender, DoWorkEventArgs e)
         {
-            List<Company> companies = companyScreener.GetFilteredCompanies(Url, null, null, bgwGetCache);
+            //check if some companies already in cache
+            List<Company> cachedCompanies = GetCachedCompanies();
+
+            List<Company> companies = companyScreener.GetFilteredCompanies(Url, null, null, bgwGetCache, cachedCompanies);
 
             if (bgwGetCache.CancellationPending)
                 e.Cancel = true;
-            else
-                companyScreener.SaveCompanies(companies);          
+
+            companyScreener.SaveCompanies(companies);
         }
 
         private void bgwGetCache_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

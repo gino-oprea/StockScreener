@@ -27,9 +27,12 @@ namespace BL
             this.dataAggregator = dataAgg;
         }
 
-        public List<Company> GetFilteredCompanies(string Url, CompanyFilter filter, List<Company> allCompanies, BackgroundWorker bgw)
+        public List<Company> GetFilteredCompanies(string Url, CompanyFilter filter, List<Company> allCompanies,             
+            BackgroundWorker bgw, 
+            List<Company> companiesAlreadyInCache = null)//send this param only when getting companies for caching
         {
-            List<Company> filteredCompanies = new List<Company>();
+            List<Company> filteredCompanies = companiesAlreadyInCache?.Count > 0 ? companiesAlreadyInCache : new List<Company>();
+            
             List<Company> companies = null;
 
             Random rand = new Random();
@@ -52,17 +55,22 @@ namespace BL
 
             for (int i = 0; i < allTickers.Count; i++)
             {
-                var ticker = allTickers[i];
+                var ticker = allTickers[i];                
 
                 progress = (i + 1).ToString() + " of " + allTickers.Count.ToString();
 
+                if (companiesAlreadyInCache?.Count > 0 && companiesAlreadyInCache.Find(c => c.Ticker == ticker)!=null)//skip if already in cache
+                    continue;
+
                 if (bgw.CancellationPending)
                 {
-                    filteredCompanies = new List<Company>();
-                    currentfilteredCompanies = new List<Company>();
-                    currentTicker = "";
-                    progress = "";
-                    break;
+                    //filteredCompanies = new List<Company>();
+                    //currentfilteredCompanies = new List<Company>();
+                    //currentTicker = "";
+                    //progress = "";
+                    //break;
+
+                    return filteredCompanies;                    
                 }
 
                 try
