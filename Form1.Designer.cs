@@ -211,16 +211,16 @@ namespace StockScreener
             // 
             this.groupBox3.Controls.Add(this.rbCompCheckMarketWatch);
             this.groupBox3.Controls.Add(this.rbCompCheckRoicAi);
-            this.groupBox3.Location = new System.Drawing.Point(647, 3);
+            this.groupBox3.Location = new System.Drawing.Point(647, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(194, 93);
+            this.groupBox3.Size = new System.Drawing.Size(194, 96);
             this.groupBox3.TabIndex = 55;
             this.groupBox3.TabStop = false;
             // 
             // rbCompCheckMarketWatch
             // 
             this.rbCompCheckMarketWatch.AutoSize = true;
-            this.rbCompCheckMarketWatch.Location = new System.Drawing.Point(7, 53);
+            this.rbCompCheckMarketWatch.Location = new System.Drawing.Point(7, 56);
             this.rbCompCheckMarketWatch.Name = "rbCompCheckMarketWatch";
             this.rbCompCheckMarketWatch.Size = new System.Drawing.Size(117, 24);
             this.rbCompCheckMarketWatch.TabIndex = 1;
@@ -232,7 +232,7 @@ namespace StockScreener
             // 
             this.rbCompCheckRoicAi.AutoSize = true;
             this.rbCompCheckRoicAi.Checked = true;
-            this.rbCompCheckRoicAi.Location = new System.Drawing.Point(7, 20);
+            this.rbCompCheckRoicAi.Location = new System.Drawing.Point(6, 22);
             this.rbCompCheckRoicAi.Name = "rbCompCheckRoicAi";
             this.rbCompCheckRoicAi.Size = new System.Drawing.Size(74, 24);
             this.rbCompCheckRoicAi.TabIndex = 0;
@@ -336,7 +336,7 @@ namespace StockScreener
             // 
             this.lblMarketCap.AutoSize = true;
             this.lblMarketCap.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblMarketCap.Location = new System.Drawing.Point(1215, 51);
+            this.lblMarketCap.Location = new System.Drawing.Point(1156, 56);
             this.lblMarketCap.Name = "lblMarketCap";
             this.lblMarketCap.Size = new System.Drawing.Size(0, 23);
             this.lblMarketCap.TabIndex = 43;
@@ -345,7 +345,7 @@ namespace StockScreener
             // 
             this.label27.AutoSize = true;
             this.label27.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label27.Location = new System.Drawing.Point(1072, 51);
+            this.label27.Location = new System.Drawing.Point(1013, 56);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(137, 23);
             this.label27.TabIndex = 42;
@@ -479,7 +479,7 @@ namespace StockScreener
             // 
             this.lblCurrentSharePrice.AutoSize = true;
             this.lblCurrentSharePrice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblCurrentSharePrice.Location = new System.Drawing.Point(1215, 74);
+            this.lblCurrentSharePrice.Location = new System.Drawing.Point(1156, 79);
             this.lblCurrentSharePrice.Name = "lblCurrentSharePrice";
             this.lblCurrentSharePrice.Size = new System.Drawing.Size(0, 23);
             this.lblCurrentSharePrice.TabIndex = 24;
@@ -488,7 +488,7 @@ namespace StockScreener
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label13.Location = new System.Drawing.Point(1041, 74);
+            this.label13.Location = new System.Drawing.Point(982, 79);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(168, 23);
             this.label13.TabIndex = 23;
@@ -732,7 +732,7 @@ namespace StockScreener
             // 
             this.groupBox4.Controls.Add(this.rbCompSearchMarketWatch);
             this.groupBox4.Controls.Add(this.rbCompSearchRoicAi);
-            this.groupBox4.Location = new System.Drawing.Point(995, 6);
+            this.groupBox4.Location = new System.Drawing.Point(939, 6);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(138, 65);
             this.groupBox4.TabIndex = 27;
@@ -764,7 +764,7 @@ namespace StockScreener
             // 
             // btnGetAllCompaniesInCache
             // 
-            this.btnGetAllCompaniesInCache.Location = new System.Drawing.Point(1139, 86);
+            this.btnGetAllCompaniesInCache.Location = new System.Drawing.Point(1110, 86);
             this.btnGetAllCompaniesInCache.Name = "btnGetAllCompaniesInCache";
             this.btnGetAllCompaniesInCache.Size = new System.Drawing.Size(151, 66);
             this.btnGetAllCompaniesInCache.TabIndex = 26;
@@ -776,7 +776,7 @@ namespace StockScreener
             // 
             this.groupBox1.Controls.Add(this.rbCacheSearch);
             this.groupBox1.Controls.Add(this.rbFreshSearch);
-            this.groupBox1.Location = new System.Drawing.Point(1139, 6);
+            this.groupBox1.Location = new System.Drawing.Point(1110, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(151, 65);
             this.groupBox1.TabIndex = 25;
@@ -837,7 +837,7 @@ namespace StockScreener
             // 
             this.lblProgress.AutoSize = true;
             this.lblProgress.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblProgress.Location = new System.Drawing.Point(919, 67);
+            this.lblProgress.Location = new System.Drawing.Point(939, 121);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(70, 20);
             this.lblProgress.TabIndex = 20;
@@ -958,7 +958,7 @@ namespace StockScreener
             // 
             this.lblTickerInProcess.AutoSize = true;
             this.lblTickerInProcess.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTickerInProcess.Location = new System.Drawing.Point(938, 30);
+            this.lblTickerInProcess.Location = new System.Drawing.Point(967, 86);
             this.lblTickerInProcess.Name = "lblTickerInProcess";
             this.lblTickerInProcess.Size = new System.Drawing.Size(51, 20);
             this.lblTickerInProcess.TabIndex = 5;
@@ -967,7 +967,7 @@ namespace StockScreener
             // pbLoadingCompanies
             // 
             this.pbLoadingCompanies.Image = ((System.Drawing.Image)(resources.GetObject("pbLoadingCompanies.Image")));
-            this.pbLoadingCompanies.Location = new System.Drawing.Point(910, 30);
+            this.pbLoadingCompanies.Location = new System.Drawing.Point(939, 86);
             this.pbLoadingCompanies.Name = "pbLoadingCompanies";
             this.pbLoadingCompanies.Size = new System.Drawing.Size(22, 20);
             this.pbLoadingCompanies.TabIndex = 4;
