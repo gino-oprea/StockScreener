@@ -45,11 +45,11 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 string pe_ratio = HtmlHelper.ExtractString(selectedLines[4], ">", "</", false);
 
                 company.Name = name.Replace("&amp;", "&").Replace("&#x27;", "'");
-                company.CurrentPrice = float.Parse(currentPrice);
+                company.CurrentPrice = decimal.Parse(currentPrice);
                 company.MarketCap = marketCap != "N/A" ? ConvertStringToBillions(marketCap) : null;
                 company.SharesOutstanding = sharesOutstanding != "N/A" ? ConvertStringToBillions(sharesOutstanding) : 1;
                 if (pe_ratio != "N/A")
-                    company.PE_Ratio = float.Parse(pe_ratio);
+                    company.PE_Ratio = decimal.Parse(pe_ratio);
             }
         }
 
@@ -156,7 +156,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             return financialData;
         }
 
-        private static float? ConvertStringToBillions(string value)
+        private static decimal? ConvertStringToBillions(string value)
         {
             if (value != "-" && value != "—")
             {
@@ -165,20 +165,20 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 value = value.Replace("(", "-").Replace(")", "");
 
 
-                float? number = null;
+                decimal? number = null;
                 if (value.ToUpper().EndsWith("K"))
-                    number = float.Parse(value.Substring(0, value.Length - 1)) / 1000000;
+                    number = decimal.Parse(value.Substring(0, value.Length - 1)) / 1000000;
                 else
                     if (value.ToUpper().EndsWith("M"))
-                    number = float.Parse(value.Substring(0, value.Length - 1)) / 1000;
+                    number = decimal.Parse(value.Substring(0, value.Length - 1)) / 1000;
                 else
                         if (value.ToUpper().EndsWith("B"))
-                    number = float.Parse(value.Substring(0, value.Length - 1));
+                    number = decimal.Parse(value.Substring(0, value.Length - 1));
                 else
                             if (value.ToUpper().EndsWith("T"))
-                    number = float.Parse(value.Substring(0, value.Length - 1)) * 1000;
+                    number = decimal.Parse(value.Substring(0, value.Length - 1)) * 1000;
                 else
-                    number = float.Parse(value);
+                    number = decimal.Parse(value);
 
                 return number;
 

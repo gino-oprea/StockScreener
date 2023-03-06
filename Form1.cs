@@ -123,7 +123,7 @@ namespace StockScreener
         {
             var values = company.CalculateIntrinsicAndDiscountedValues(Convert.ToDecimal(txtLastFreeCashFlow.Text), Convert.ToInt32(txtDiscountInterestRate.Text),
                 Convert.ToDecimal(txtGrowth.Text),
-                float.Parse(txtSharesOutstanding.Text), Convert.ToInt32(txtTerminalMultiple.Text));
+                decimal.Parse(txtSharesOutstanding.Text), Convert.ToInt32(txtTerminalMultiple.Text));
 
 
             DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(values);

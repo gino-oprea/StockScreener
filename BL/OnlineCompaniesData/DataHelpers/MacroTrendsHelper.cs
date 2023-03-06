@@ -38,7 +38,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
 
             string sharesOutstandingHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net" + sharesOutstandingLink.url, "GET", null, false);
 
-            List<float> shares = new List<float>();
+            List<decimal> shares = new List<decimal>();
 
             if (sharesOutstandingHtml != null)
             {
@@ -55,7 +55,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
                         bool converted = Int32.TryParse(rawVal, out sharesOutstanding);
 
                         if (converted)
-                            shares.Add(sharesOutstanding / 1000f);//convert to billions float
+                            shares.Add((decimal)sharesOutstanding / 1000);//convert to billions
                         else
                             shares.Add(0);
                     }

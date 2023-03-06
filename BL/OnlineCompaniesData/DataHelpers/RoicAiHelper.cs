@@ -31,8 +31,8 @@ namespace BL.OnlineCompaniesData.DataHelpers
             {
                 if (selectedLines[i].Contains("justify-end") && selectedLines[i].Contains("%"))
                 {
-                    float roicValue;
-                    bool converted = float.TryParse(HtmlHelper.ExtractString(selectedLines[i], ">", "%", false).Replace("(", "-").Replace(")", ""),out roicValue);
+                    decimal roicValue;
+                    bool converted = decimal.TryParse(HtmlHelper.ExtractString(selectedLines[i], ">", "%", false).Replace("(", "-").Replace(")", ""),out roicValue);
                     if (converted)
                         roic.Add(new YearVal { Value = roicValue });
                 }
@@ -77,7 +77,16 @@ namespace BL.OnlineCompaniesData.DataHelpers
             List<Cfy> cashflowStatment = roicAiModel.props.pageProps.data.data.cfy;
 
             //level out the statements
-            var maxNoYears = new List<int>() { incomeStatement.Count, balanceSheet.Count, cashflowStatment.Count }.Max();
+            var statementsListCount = new List<int>() { incomeStatement.Count, balanceSheet.Count, cashflowStatment.Count };
+            var maxNoYears = statementsListCount.Max();
+
+            var finyearsStatement = incomeStatement.Select(s => s.calendarYear).ToList();
+            if(balanceSheet.Count == maxNoYears)
+                finyearsStatement = balanceSheet.Select(s => s.calendarYear).ToList();
+            if (cashflowStatment.Count == maxNoYears)
+                finyearsStatement = cashflowStatment.Select(s => s.calendarYear).ToList();
+
+
             var dummyNo = maxNoYears - incomeStatement.Count;
             for (int i = 0; i < dummyNo; i++)
             {
@@ -136,21 +145,21 @@ namespace BL.OnlineCompaniesData.DataHelpers
             {
                 index++;
 
-                AddFinancialValue(incomeStatement[i].revenue, incomeStatement[i].calendarYear, revenue, index);
-                AddFinancialValue(incomeStatement[i].netIncome, incomeStatement[i].calendarYear, netIncome, index);
-                AddFinancialValue(incomeStatement[i].epsdiluted, incomeStatement[i].calendarYear, EPS, index, false);
-                AddFinancialValue(incomeStatement[i].operatingIncomeRatio != null ? incomeStatement[i].operatingIncomeRatio * 100 : null, incomeStatement[i].calendarYear, operatingMargin, index, false);
-                AddFinancialValue(incomeStatement[i].weightedAverageShsOutDil, incomeStatement[i].calendarYear, shares, index);
+                AddFinancialValue(incomeStatement[i].revenue, finyearsStatement[i], revenue, index);
+                AddFinancialValue(incomeStatement[i].netIncome, finyearsStatement[i], netIncome, index);
+                AddFinancialValue(incomeStatement[i].epsdiluted, finyearsStatement[i], EPS, index, false);
+                AddFinancialValue(incomeStatement[i].operatingIncomeRatio != null ? incomeStatement[i].operatingIncomeRatio * 100 : null, finyearsStatement[i], operatingMargin, index, false);
+                AddFinancialValue(incomeStatement[i].weightedAverageShsOutDil, finyearsStatement[i], shares, index);
 
-                AddFinancialValue(balanceSheet[i].totalStockholdersEquity, balanceSheet[i].calendarYear, equity, index);
-                AddFinancialValue(balanceSheet[i].shortTermDebt, balanceSheet[i].calendarYear, shortTermDebt, index);
-                AddFinancialValue(balanceSheet[i].longTermDebt, balanceSheet[i].calendarYear, longTermDebt, index);
-                AddFinancialValue(balanceSheet[i].retainedEarnings, balanceSheet[i].calendarYear, retainedEarnings, index);
-                AddFinancialValue(balanceSheet[i].cashAndShortTermInvestments, balanceSheet[i].calendarYear, cash, index);
+                AddFinancialValue(balanceSheet[i].totalStockholdersEquity, finyearsStatement[i], equity, index);
+                AddFinancialValue(balanceSheet[i].shortTermDebt, finyearsStatement[i], shortTermDebt, index);
+                AddFinancialValue(balanceSheet[i].longTermDebt, finyearsStatement[i], longTermDebt, index);
+                AddFinancialValue(balanceSheet[i].retainedEarnings, finyearsStatement[i], retainedEarnings, index);
+                AddFinancialValue(balanceSheet[i].cashAndShortTermInvestments, finyearsStatement[i], cash, index);
                 
 
-                AddFinancialValue(cashflowStatment[i].freeCashFlow, cashflowStatment[i].calendarYear, freeCashFlow, index);
-                AddFinancialValue(cashflowStatment[i].capitalExpenditure, cashflowStatment[i].calendarYear, capitalExpenditures, index);
+                AddFinancialValue(cashflowStatment[i].freeCashFlow, finyearsStatement[i], freeCashFlow, index);
+                AddFinancialValue(cashflowStatment[i].capitalExpenditure, finyearsStatement[i], capitalExpenditures, index);
                
             }            
 
@@ -171,7 +180,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             return financials;
         }
 
-        private static void AddFinancialValue(float? value,  string calendarYear, List<YearVal> financialItem, int index, bool convertToBillions=true)
+        private static void AddFinancialValue(decimal? value,  string calendarYear, List<YearVal> financialItem, int index, bool convertToBillions=true)
         {
             YearVal yearVal = new YearVal();
             yearVal.Year = Convert.ToInt32(calendarYear);

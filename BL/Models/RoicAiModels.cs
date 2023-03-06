@@ -31,7 +31,7 @@ public class Price
 
 public class RegularMarketPrice
 {
-    public float raw { get; set; }
+    public decimal raw { get; set; }
     public string fmt { get; set; }
 }
 
@@ -71,8 +71,10 @@ public class Outlook
 
 public class Ratio
 {   
-    public float? peRatioTTM { get; set; }    
+    public decimal? peRatioTTM { get; set; }    
 }
+
+
 
 public class Cfy
 {
@@ -113,7 +115,7 @@ public class Cfy
     public object cashAtBeginningOfPeriod { get; set; }
     public object operatingCashFlow { get; set; }
     public long? capitalExpenditure { get; set; }
-    public float? freeCashFlow { get; set; }
+    public decimal? freeCashFlow { get; set; }
     public string link { get; set; }
     public string finalLink { get; set; }
 }
@@ -130,7 +132,7 @@ public class Bsy
     public string period { get; set; }
     public object cashAndCashEquivalents { get; set; }
     public object shortTermInvestments { get; set; }
-    public float? cashAndShortTermInvestments { get; set; }
+    public decimal? cashAndShortTermInvestments { get; set; }
     public object netReceivables { get; set; }
     public long inventory { get; set; }
     public object otherCurrentAssets { get; set; }
@@ -146,12 +148,12 @@ public class Bsy
     public long otherAssets { get; set; }
     public object totalAssets { get; set; }
     public object accountPayables { get; set; }
-    public float? shortTermDebt { get; set; }
+    public decimal? shortTermDebt { get; set; }
     public long taxPayables { get; set; }
     public long deferredRevenue { get; set; }
     public object otherCurrentLiabilities { get; set; }
     public object totalCurrentLiabilities { get; set; }
-    public float? longTermDebt { get; set; }
+    public decimal? longTermDebt { get; set; }
     public long deferredRevenueNonCurrent { get; set; }
     public long deferredTaxLiabilitiesNonCurrent { get; set; }
     public object otherNonCurrentLiabilities { get; set; }
@@ -161,10 +163,10 @@ public class Bsy
     public object totalLiabilities { get; set; }
     public long preferredStock { get; set; }
     public long commonStock { get; set; }
-    public float? retainedEarnings { get; set; }
+    public decimal? retainedEarnings { get; set; }
     public long accumulatedOtherComprehensiveIncomeLoss { get; set; }
     public object othertotalStockholdersEquity { get; set; }
-    public float? totalStockholdersEquity { get; set; }
+    public decimal? totalStockholdersEquity { get; set; }
     public object totalEquity { get; set; }
     public object totalLiabilitiesAndStockholdersEquity { get; set; }
     public long minorityInterest { get; set; }
@@ -185,7 +187,7 @@ public class Isy
     public string acceptedDate { get; set; }
     public string calendarYear { get; set; }
     public string period { get; set; }
-    public float? revenue { get; set; }
+    public decimal? revenue { get; set; }
     public object costOfRevenue { get; set; }
     public object? grossProfit { get; set; }
     public double grossProfitRatio { get; set; }
@@ -202,17 +204,17 @@ public class Isy
     public object ebitda { get; set; }
     public double ebitdaratio { get; set; }
     public object operatingIncome { get; set; }
-    public float? operatingIncomeRatio { get; set; }
+    public decimal? operatingIncomeRatio { get; set; }
     public long totalOtherIncomeExpensesNet { get; set; }
     public object incomeBeforeTax { get; set; }
     public double incomeBeforeTaxRatio { get; set; }
     public object incomeTaxExpense { get; set; }
-    public float? netIncome { get; set; }
+    public decimal? netIncome { get; set; }
     public double netIncomeRatio { get; set; }
     public double? eps { get; set; }
-    public float? epsdiluted { get; set; }
+    public decimal? epsdiluted { get; set; }
     public object weightedAverageShsOut { get; set; }
-    public float? weightedAverageShsOutDil { get; set; }
+    public decimal? weightedAverageShsOutDil { get; set; }
     public string link { get; set; }
     public string finalLink { get; set; }
 }

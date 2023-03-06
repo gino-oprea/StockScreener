@@ -37,7 +37,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             selectedLines.AddRange(HtmlHelper.GetImportantLines(rawLines_financials, "Shares", "Book Value Per Share"));
 
             List<decimal> ROIC_values = new List<decimal>();
-            List<float> shares = new List<float>();
+            List<decimal> shares = new List<decimal>();
             foreach (string line in selectedLines)
             {
                 if (line.Contains("pr-profit"))
@@ -62,7 +62,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
                     bool converted = Int32.TryParse(rawVal, out sharesOutstanding);
 
                     if (converted)
-                        shares.Add(sharesOutstanding / 1000f);//convert to billions float
+                        shares.Add((decimal)sharesOutstanding / 1000);//convert to billions
                     else
                         shares.Add(0);
                 }
@@ -201,7 +201,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
                             else
                             {
                                 yearVal.Year = company.Financials.Revenue[i].Year;
-                                yearVal.Value = (float)keyRatios.dataList[index].operatingMargin;
+                                yearVal.Value = (decimal)keyRatios.dataList[index].operatingMargin;
                             }
 
                             operatingMargins.Insert(0, yearVal);

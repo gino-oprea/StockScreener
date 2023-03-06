@@ -18,12 +18,12 @@ namespace BL.Models
     {
         public string Name { get; set; }
         public string Ticker { get; set; }
-        public float? CurrentPrice { get; set; }
-        public float? CurrentPrice_EV { get; set; }
-        public float? MarketCap { get; set; }
-        public float? EnterpriseValue { get; set; }
-        public float? SharesOutstanding { get; set; }
-        public float? PE_Ratio { get; set; }
+        public decimal? CurrentPrice { get; set; }
+        public decimal? CurrentPrice_EV { get; set; }
+        public decimal? MarketCap { get; set; }
+        public decimal? EnterpriseValue { get; set; }
+        public decimal? SharesOutstanding { get; set; }
+        public decimal? PE_Ratio { get; set; }
 
         public decimal? AverageEquityGrowth { get; set; }
         public decimal? AverageRevenueGrowth { get; set; }
@@ -50,7 +50,7 @@ namespace BL.Models
 
 
         public List<decimal> CalculateIntrinsicAndDiscountedValues(decimal? lastCashFlow = null, int discountedInterestRate = 12,
-            decimal? growth = null, float? sharesOutstanding = null, int terminalMultiple = 10)
+            decimal? growth = null, decimal? sharesOutstanding = null, int terminalMultiple = 10)
         {
             if (this.Financials.FreeCashFlow.Count < 4)
                 return new List<decimal>() { 0, 0, 0 };
@@ -111,7 +111,7 @@ namespace BL.Models
             decimal totalIntrinsicValueInclDebt = totalIntrinsicValue + latestCash - latestShortTermDebt - latestLongTermDebt;
 
             //daca valoarea calculata pe baza FCF e mai mic decat book value, valoarea intrinseca este book value            
-            float? latestEquity = this.Financials.Equity[this.Financials.Equity.Count - 1].Value;
+            decimal? latestEquity = this.Financials.Equity[this.Financials.Equity.Count - 1].Value;
             decimal netDebt = latestLongTermDebt + latestShortTermDebt - latestCash;
             if ((latestEquity != null && latestEquity > 0)//book value pozitiv
                 && (decimal)latestEquity.Value > totalIntrinsicValueInclDebt)
@@ -216,9 +216,9 @@ namespace BL.Models
 
         public void CalculateGrowthAverages()
         {
-            float latestShortTermDebt = this.Financials.ShortTermDebt[this.Financials.ShortTermDebt.Count - 1].Value ?? 0;
-            float latestLongTermDebt = this.Financials.LongTermDebt[this.Financials.LongTermDebt.Count - 1].Value ?? 0;
-            float latestCash = this.Financials.Cash.Count > 0 ? (this.Financials.Cash[this.Financials.Cash.Count - 1].Value ?? 0) : 0;
+            decimal latestShortTermDebt = this.Financials.ShortTermDebt[this.Financials.ShortTermDebt.Count - 1].Value ?? 0;
+            decimal latestLongTermDebt = this.Financials.LongTermDebt[this.Financials.LongTermDebt.Count - 1].Value ?? 0;
+            decimal latestCash = this.Financials.Cash.Count > 0 ? (this.Financials.Cash[this.Financials.Cash.Count - 1].Value ?? 0) : 0;
 
             this.EnterpriseValue = this.MarketCap + latestLongTermDebt + latestShortTermDebt - latestCash;
 

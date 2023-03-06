@@ -7,7 +7,7 @@ namespace BL.Models
     public class YearVal
     {
         public int Year { get; set; }
-        public float? Value { get; set; }
+        public decimal? Value { get; set; }
         public decimal? Growth { get; set; }
     }
 }
