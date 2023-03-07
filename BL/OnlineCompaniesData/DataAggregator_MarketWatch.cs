@@ -79,6 +79,10 @@ namespace BL
                         Task.WaitAll(task1, task2, task3);
 
 
+                        List<YearVal> FCFperShare = calculateFCFperShare(company);
+
+                        company.Financials.FCFperShare = FCFperShare;
+
                         company.CalculateGrowthAverages();
                     }
                     catch (Exception ex)
@@ -89,6 +93,33 @@ namespace BL
             }
 
             return company;
+        }
+
+        private List<YearVal> calculateFCFperShare(Company company)
+        {
+            List<YearVal> FCFperShare = new List<YearVal>();
+
+            for (int i = 0; i < company.Financials.FreeCashFlow.Count; i++)
+            {
+                decimal? fcfPerShare = null;
+                if (company.Financials.Shares[i].Value != 0)
+                    fcfPerShare = company.Financials.FreeCashFlow[i].Value / company.Financials.Shares[i].Value;
+
+                YearVal yearVal = new YearVal();
+                yearVal.Year = company.Financials.FreeCashFlow[i].Year;
+                yearVal.Value = fcfPerShare;
+
+                if (i > 0)
+                {
+                    var newVal = yearVal.Value;
+                    var oldVal = FCFperShare[i - 1].Value;
+                    if (newVal != null && oldVal != null && oldVal != 0)
+                        yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
+                }
+                FCFperShare.Add(yearVal);
+            }
+
+            return FCFperShare;
         }
     }
 }

@@ -126,6 +126,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             List<YearVal> revenue = new List<YearVal>();
             List<YearVal> netIncome = new List<YearVal>();
             List<YearVal> EPS = new List<YearVal>();
+            List<YearVal> FCFperShare = new List<YearVal>();
             List<YearVal> operatingMargin = new List<YearVal>();
 
             List<YearVal> equity = new List<YearVal>();
@@ -155,12 +156,13 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 AddFinancialValue(balanceSheet[i].shortTermDebt, finyearsStatement[i], shortTermDebt, index);
                 AddFinancialValue(balanceSheet[i].longTermDebt, finyearsStatement[i], longTermDebt, index);
                 AddFinancialValue(balanceSheet[i].retainedEarnings, finyearsStatement[i], retainedEarnings, index);
-                AddFinancialValue(balanceSheet[i].cashAndShortTermInvestments, finyearsStatement[i], cash, index);
-                
+                AddFinancialValue(balanceSheet[i].cashAndShortTermInvestments, finyearsStatement[i], cash, index);                
 
                 AddFinancialValue(cashflowStatment[i].freeCashFlow, finyearsStatement[i], freeCashFlow, index);
                 AddFinancialValue(cashflowStatment[i].capitalExpenditure, finyearsStatement[i], capitalExpenditures, index);
-               
+
+                var fcfPerShare = cashflowStatment[i].freeCashFlow / incomeStatement[i].weightedAverageShsOutDil;
+                AddFinancialValue(fcfPerShare, finyearsStatement[i], FCFperShare, index, false);
             }            
 
             financials.Revenue = revenue.Skip(Math.Max(0, revenue.Count - lastNoOfYears)).ToList();
@@ -168,6 +170,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             financials.OperatingMargin = operatingMargin.Skip(Math.Max(0, operatingMargin.Count - lastNoOfYears)).ToList();
             financials.Shares = shares.Skip(Math.Max(0, shares.Count - lastNoOfYears)).ToList();
             financials.EPS = EPS.Skip(Math.Max(0, EPS.Count - lastNoOfYears)).ToList();
+            financials.FCFperShare = FCFperShare.Skip(Math.Max(0, FCFperShare.Count - lastNoOfYears)).ToList();
             financials.Equity = equity.Skip(Math.Max(0, equity.Count - lastNoOfYears)).ToList();
             financials.ShortTermDebt = shortTermDebt.Skip(Math.Max(0, shortTermDebt.Count - lastNoOfYears)).ToList();
             financials.LongTermDebt = longTermDebt.Skip(Math.Max(0, longTermDebt.Count - lastNoOfYears)).ToList();

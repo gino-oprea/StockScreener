@@ -91,6 +91,7 @@ namespace StockScreener
                 AddRow("Revenue", company.Financials.Revenue, dt);
                 AddRow("Equity", company.Financials.Equity, dt);
                 AddRow("EPS", company.Financials.EPS, dt);
+                AddRow("FCF per Share", company.Financials.FCFperShare, dt);
                 AddRow("Net Income", company.Financials.NetIncome, dt);
                 AddRow("Operating Margin %", company.Financials.OperatingMargin, dt);
                 AddRow("Retained earnings", company.Financials.RetainedEarnings, dt);
@@ -275,6 +276,7 @@ namespace StockScreener
                     txtGrowth.Text = String.Format("{0:0.00}", company.Growth);
 
                     txtAvgEPSGrowth.Text = String.Format("{0:0.00}", company.AverageEPSGrowth);
+                    txtAvgFcfPerShareGrowth.Text = String.Format("{0:0.00}", company.AverageFCFperShareGrowth);
                     txtAvgNetIncomeGrowth.Text = String.Format("{0:0.00}", company.AverageNetIncomeGrowth);
                     txtAvgOperatingMarginGrowth.Text = String.Format("{0:0.00}", company.AverageOperatingMarginGrowth);
                     txtAvgFreeCashFlowGrowth.Text = String.Format("{0:0.00}", company.AverageFreeCashFlowGrowth);
@@ -326,18 +328,19 @@ namespace StockScreener
         {
             List<Company> cachedCompanies = null;
 
-            using (StreamReader r = new StreamReader("companies.json"))
-            {
-                try
+            if (File.Exists("companies.json"))
+                using (StreamReader r = new StreamReader("companies.json"))
                 {
-                    string json = r.ReadToEnd();
-                    cachedCompanies = JsonConvert.DeserializeObject<List<Company>>(json);
+                    try
+                    {
+                        string json = r.ReadToEnd();
+                        cachedCompanies = JsonConvert.DeserializeObject<List<Company>>(json);
+                    }
+                    catch (Exception ex)
+                    {
+                        lblErrorMessage.Text = "Could not read cache file";
+                    }
                 }
-                catch (Exception ex)
-                {
-                    lblErrorMessage.Text = "Could not read cache file";
-                }
-            }
 
             return cachedCompanies;
         }

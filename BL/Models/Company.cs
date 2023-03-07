@@ -9,6 +9,7 @@ namespace BL.Models
     {
         AverageRevenueGrowth,
         AverageEPSGrowth,
+        AverageFCFperShareGrowth,
         AverageEquityGrowth,
         AverageNetIncomeGrowth,
         AverageOperatingMarginGrowth,
@@ -28,6 +29,7 @@ namespace BL.Models
         public decimal? AverageEquityGrowth { get; set; }
         public decimal? AverageRevenueGrowth { get; set; }
         public decimal? AverageEPSGrowth { get; set; }
+        public decimal? AverageFCFperShareGrowth { get; set; }
         public decimal? AverageNetIncomeGrowth { get; set; }
         public decimal? AverageOperatingMarginGrowth { get; set; }
         public decimal? AverageFreeCashFlowGrowth { get; set; }
@@ -153,6 +155,9 @@ namespace BL.Models
                 case FinancialAverageType.AverageEPSGrowth:
                     FinancialIndicator = this.Financials.EPS;
                     break;
+                case FinancialAverageType.AverageFCFperShareGrowth:
+                    FinancialIndicator = this.Financials.FCFperShare;
+                    break;
                 case FinancialAverageType.AverageEquityGrowth:
                     FinancialIndicator = this.Financials.Equity;
                     break;
@@ -197,6 +202,9 @@ namespace BL.Models
                 case FinancialAverageType.AverageEPSGrowth:
                     this.AverageEPSGrowth = growth;
                     break;
+                case FinancialAverageType.AverageFCFperShareGrowth:
+                    this.AverageFCFperShareGrowth = growth;
+                    break;
                 case FinancialAverageType.AverageEquityGrowth:
                     this.AverageEquityGrowth = growth;
                     break;
@@ -227,6 +235,7 @@ namespace BL.Models
 
             this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageRevenueGrowth);
             this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageEPSGrowth);
+            this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageFCFperShareGrowth);
             this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageEquityGrowth);
             this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageNetIncomeGrowth);
             this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageOperatingMarginGrowth);
@@ -236,6 +245,7 @@ namespace BL.Models
 
             List<decimal?> allGrowthValues = new List<decimal?>() { this.AverageRevenueGrowth,
                 this.AverageEPSGrowth ,
+                this.AverageFCFperShareGrowth,
                 this.AverageEquityGrowth ,
                 this.AverageNetIncomeGrowth,
             this.AverageFreeCashFlowGrowth,
@@ -244,41 +254,7 @@ namespace BL.Models
             decimal avgGrowth = (decimal)allGrowthValues.FindAll(g => g != null).Average();
             this.Growth = Math.Min(13, avgGrowth);
 
-            //if (this.AverageEquityGrowth != null)
-            //{
-            //    decimal avgGrowth = 0;
-            //    if (this.AverageRevenueGrowth != null)
-            //        avgGrowth = (decimal)(this.AverageRevenueGrowth +
-            //           this.AverageEPSGrowth +
-            //           this.AverageEquityGrowth +
-            //           this.AverageNetIncomeGrowth +
-            //           this.AverageFreeCashFlowGrowth) / 5;
-            //    else
-            //        avgGrowth = (decimal)(this.AverageEPSGrowth +
-            //            this.AverageEquityGrowth +
-            //            this.AverageNetIncomeGrowth +
-            //            this.AverageFreeCashFlowGrowth) / 4;
-
-            //    if (this.AverageROIC != null)
-            //        if (this.AverageRevenueGrowth != null)
-            //            avgGrowth = (decimal)(this.AverageRevenueGrowth +
-            //           this.AverageEPSGrowth +
-            //           this.AverageEquityGrowth +
-            //           this.AverageNetIncomeGrowth +
-            //           this.AverageFreeCashFlowGrowth +
-            //           this.AverageROIC) / 6;
-            //        else
-            //            avgGrowth = (decimal)(this.AverageEPSGrowth +
-            //           this.AverageEquityGrowth +
-            //           this.AverageNetIncomeGrowth +
-            //           this.AverageFreeCashFlowGrowth +
-            //           this.AverageROIC) / 5;
-
-            //    this.Growth = Math.Min(13, avgGrowth);
-
-            //}
-            //else
-            //    this.Growth = 0;
+           
 
             this.Average_P_FCF_Multiple ??= (int)Math.Floor(this.Growth.Value);
         }
