@@ -83,8 +83,8 @@ namespace BL.OnlineCompaniesData.DataHelpers
             var finyearsStatement = incomeStatement.Select(s => s.calendarYear).ToList();
             if(balanceSheet.Count == maxNoYears)
                 finyearsStatement = balanceSheet.Select(s => s.calendarYear).ToList();
-            if (cashflowStatment.Count == maxNoYears)
-                finyearsStatement = cashflowStatment.Select(s => s.calendarYear).ToList();
+            //if (cashflowStatment.Count == maxNoYears)
+            //    finyearsStatement = cashflowStatment.Select(s => s.calendarYear).ToList();
 
 
             var dummyNo = maxNoYears - incomeStatement.Count;
