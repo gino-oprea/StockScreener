@@ -42,7 +42,7 @@ public class OpenInterest
 }
 public class MarketCap
 {
-    public long raw { get; set; }
+    public decimal raw { get; set; }
     public string fmt { get; set; }
     public string longFmt { get; set; }
 }

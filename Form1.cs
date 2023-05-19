@@ -264,10 +264,10 @@ namespace StockScreener
                 try
                 {
                     lblCompanyName.Text = company.Name;
-                    txtSharesOutstanding.Text = company.SharesOutstanding.ToString();
-                    lblCurrentSharePrice.Text = company.CurrentPrice.ToString();
+                    txtSharesOutstanding.Text = String.Format("{0:0.000}", company.SharesOutstanding);
+                    lblCurrentSharePrice.Text = String.Format("{0:0.00}", company.CurrentPrice);
                     //lblCurrentSharePriceEV.Text = String.Format("{0:0.00}", company.CurrentPrice_EV);
-                    lblMarketCap.Text = company.MarketCap.ToString();
+                    lblMarketCap.Text = String.Format("{0:0.000}", company.MarketCap);
                     //lblEnterpriseValue.Text = String.Format("{0:0.00}", company.EnterpriseValue);
 
                     txtAvgRevenueGrowth.Text = String.Format("{0:0.00}", company.AverageRevenueGrowth);
@@ -300,7 +300,7 @@ namespace StockScreener
                         else
                             throw new Exception("No positive cashflow found!");
                     }
-                    
+
 
 
                     gvFinancials.DataSource = bindingSourceKeyValues;
@@ -316,7 +316,7 @@ namespace StockScreener
                     }
 
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     lblErrorMessage.Text = ex.Message;
                 }
