@@ -171,6 +171,7 @@ namespace BL
         private List<string> GetCompaniesTickers_FinvizScreener(string Url, CompanyFilter filter, BackgroundWorker bgw)
         {
             List<string> allTickers = new List<string>();
+            string nextPageFooterHTML = "";
             string nextPageUrlLine = "";
             do
             {
@@ -201,13 +202,18 @@ namespace BL
                                 country = HtmlHelper.ExtractString(lines[5], "", "</a>", false);
                             }
 
-                            if (filter==null || !filter.IgnoreADRCompanies || (filter.IgnoreADRCompanies && country.ToUpper() == "USA"))
+                            if (filter == null || !filter.IgnoreADRCompanies || (filter.IgnoreADRCompanies && country.ToUpper() == "USA"))
                                 companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "class=\"screener-link-primary\">", "</a>", false));
 
                         }
 
-                        if (rawLines[i].Contains("<b>next</b>"))
-                            nextPageUrlLine = rawLines[i];
+                        if (rawLines[i].Contains("tab-link is-next"))
+                        {
+                            nextPageFooterHTML = rawLines[i];
+
+                            var footerRawLines = nextPageFooterHTML.Split("<a");
+                            nextPageUrlLine = footerRawLines.Last();
+                        }
                     }
 
 
