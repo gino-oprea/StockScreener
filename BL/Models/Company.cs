@@ -228,9 +228,11 @@ namespace BL.Models
             decimal latestLongTermDebt = this.Financials.LongTermDebt[this.Financials.LongTermDebt.Count - 1].Value ?? 0;
             decimal latestCash = this.Financials.Cash.Count > 0 ? (this.Financials.Cash[this.Financials.Cash.Count - 1].Value ?? 0) : 0;
 
-            this.EnterpriseValue = this.MarketCap + latestLongTermDebt + latestShortTermDebt - latestCash;
-
-            this.CurrentPrice_EV = this.EnterpriseValue.Value / this.SharesOutstanding.Value;
+            if (this.MarketCap != null)
+            {
+                this.EnterpriseValue = this.MarketCap + latestLongTermDebt + latestShortTermDebt - latestCash;
+                this.CurrentPrice_EV = this.EnterpriseValue.Value / this.SharesOutstanding.Value;
+            }
 
 
             this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageRevenueGrowth);

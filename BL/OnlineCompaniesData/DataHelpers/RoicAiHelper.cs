@@ -15,9 +15,9 @@ namespace BL.OnlineCompaniesData.DataHelpers
         {
             RootRoicAiModel roicAiprops = GetRoicModel(html);
 
-            company.Name = roicAiprops.props.pageProps.ya_price.price.longName;
-            company.CurrentPrice = roicAiprops.props.pageProps.ya_price.price.regularMarketPrice.raw;
-            company.MarketCap = roicAiprops.props.pageProps.ya_price.price.marketCap.raw / 1000000000;//to billions
+            company.Name = roicAiprops.props.pageProps.ya_price?.price.longName;
+            company.CurrentPrice = roicAiprops.props.pageProps.ya_price?.price.regularMarketPrice.raw;
+            company.MarketCap = roicAiprops.props.pageProps.ya_price?.price.marketCap.raw / 1000000000;//to billions
             company.PE_Ratio = roicAiprops.props.pageProps.data.data.outlook[0].ratios[0].peRatioTTM;
 
 
@@ -63,7 +63,16 @@ namespace BL.OnlineCompaniesData.DataHelpers
             List<string> rawLines_financials = HtmlHelper.GetRawLinesFromHtml(html_financials);
 
             string jsonString = rawLines_financials.Find(r => r.Contains("props"));
-            RootRoicAiModel roicAiprops = JsonConvert.DeserializeObject<RootRoicAiModel>(jsonString);
+
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                Error = (serializer, err) =>
+                {
+                    err.ErrorContext.Handled = true;
+                }
+            };
+            
+            RootRoicAiModel roicAiprops = JsonConvert.DeserializeObject<RootRoicAiModel>(jsonString, settings);
 
             return roicAiprops;
         }

@@ -109,9 +109,10 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 company.AverageROIC = ROIC_values.Average();
         }
 
-        public static string GetMorningstarApiKeyUrlJs()
+        public static List<string> GetMorningstarApiKeyUrlJs()
         {
-            string apiKeyUrl = "";
+            List<string> apiKeyUrls = new List<string>();
+            
 
             string raw_api_js_asset_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com", "GET", null, false);
             string rawLine;
@@ -129,28 +130,50 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 var scriptLines = new List<string>();
                 for (int i = 0; i < rawJsLines.Length; i++)
                 {
+                    
+
                     if (rawJsLines[i].Contains("as=\"script\""))
                         scriptLines.Add(rawJsLines[i]);
                 }
 
-                apiKeyUrl = HtmlHelper.ExtractString(scriptLines[scriptLines.Count - 2], "href=\"", "\" as=\"script\"", false);
+                for (int i = 0; i < scriptLines.Count; i++)
+                {
+                    string apiKeyUrl = "";
+                    apiKeyUrl = HtmlHelper.ExtractString(scriptLines[i], "href=\"", "\" as=\"script\"", false);
+                    apiKeyUrls.Add(apiKeyUrl);
+                }                
             }
 
-
-            return apiKeyUrl;
+            
+            return apiKeyUrls;
         }
         public static void GetCompanyFinancials_Morningstar(string ticker, Company company)
         {
 
-            string apiKeyUrlJs = GetMorningstarApiKeyUrlJs();
+            List<string> apiKeyUrlsJs = GetMorningstarApiKeyUrlJs();
 
-            string Url = "https://www.morningstar.com/assets/6105b70.js";
-            if (apiKeyUrlJs != "")
-                Url = "https://www.morningstar.com" + apiKeyUrlJs;
+            string api_key = "";
 
-            string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest(Url, "GET", null, false);
-            string api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
-            Thread.Sleep(100);
+            for (int i = 0; i < apiKeyUrlsJs.Count; i++)
+            {
+                var apiKeyUrl = apiKeyUrlsJs[i];
+                if (apiKeyUrl != "")
+                {
+                    string Url = "https://www.morningstar.com" + apiKeyUrl;
+                    string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest(Url, "GET", null, false);
+                    try
+                    {
+                        api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
+                    }
+                    catch (Exception ex) { };
+                    Thread.Sleep(100);
+
+                    if (api_key != "")
+                        break;
+                }
+            }            
+
+            
             Hashtable headers = new Hashtable();
             headers.Add("x-api-key", api_key);
             headers.Add("Host", "www.morningstar.com");
