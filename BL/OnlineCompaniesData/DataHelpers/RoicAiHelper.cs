@@ -15,10 +15,23 @@ namespace BL.OnlineCompaniesData.DataHelpers
         {
             RootRoicAiModel roicAiprops = GetRoicModel(html);
 
-            company.Name = roicAiprops.props.pageProps.ya_price?.price.longName;
-            company.CurrentPrice = roicAiprops.props.pageProps.ya_price?.price.regularMarketPrice.raw;
-            company.MarketCap = roicAiprops.props.pageProps.ya_price?.price.marketCap.raw / 1000000000;//to billions
-            company.PE_Ratio = roicAiprops.props.pageProps.data.data.outlook[0].ratios[0].peRatioTTM;
+            if (roicAiprops.props.pageProps.ya_price != null)
+            {
+                company.Name = roicAiprops.props.pageProps.ya_price?.price.longName;
+                company.CurrentPrice = roicAiprops.props.pageProps.ya_price?.price.regularMarketPrice.raw;
+                company.MarketCap = roicAiprops.props.pageProps.ya_price?.price.marketCap.raw / 1000000000;//to billions
+                company.PE_Ratio = roicAiprops.props.pageProps.data.data.outlook[0].ratios[0].peRatioTTM;
+            }
+            else
+            {
+                DataAggregator_MarketWatch da_marketWatch = new DataAggregator_MarketWatch();
+                var mw_company = da_marketWatch.GetCompanyCurrentPrice(company.Ticker);
+
+                company.Name = mw_company.Name;
+                company.CurrentPrice = mw_company.CurrentPrice;
+                company.MarketCap = mw_company.MarketCap;
+                company.PE_Ratio = mw_company.PE_Ratio;
+            }
 
 
             //get ROIC ratios            
