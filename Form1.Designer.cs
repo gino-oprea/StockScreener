@@ -33,6 +33,9 @@ namespace StockScreener
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCheckCompany = new System.Windows.Forms.TabPage();
+            this.label35 = new System.Windows.Forms.Label();
+            this.txtAvgFcfPerShareGrowth = new System.Windows.Forms.TextBox();
+            this.label36 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.rbCompCheckMarketWatch = new System.Windows.Forms.RadioButton();
             this.rbCompCheckRoicAi = new System.Windows.Forms.RadioButton();
@@ -123,9 +126,6 @@ namespace StockScreener
             this.tmrCompanies = new System.Windows.Forms.Timer(this.components);
             this.tmrTicker = new System.Windows.Forms.Timer(this.components);
             this.bgwGetCache = new System.ComponentModel.BackgroundWorker();
-            this.label35 = new System.Windows.Forms.Label();
-            this.txtAvgFcfPerShareGrowth = new System.Windows.Forms.TextBox();
-            this.label36 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabCheckCompany.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -213,6 +213,31 @@ namespace StockScreener
             this.tabCheckCompany.Text = "Check Company";
             this.tabCheckCompany.UseVisualStyleBackColor = true;
             // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(302, 630);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(21, 20);
+            this.label35.TabIndex = 58;
+            this.label35.Text = "%";
+            // 
+            // txtAvgFcfPerShareGrowth
+            // 
+            this.txtAvgFcfPerShareGrowth.Location = new System.Drawing.Point(231, 627);
+            this.txtAvgFcfPerShareGrowth.Name = "txtAvgFcfPerShareGrowth";
+            this.txtAvgFcfPerShareGrowth.Size = new System.Drawing.Size(65, 27);
+            this.txtAvgFcfPerShareGrowth.TabIndex = 57;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(36, 630);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(181, 20);
+            this.label36.TabIndex = 56;
+            this.label36.Text = "Avg FCF per Share Growth";
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.rbCompCheckMarketWatch);
@@ -226,10 +251,12 @@ namespace StockScreener
             // rbCompCheckMarketWatch
             // 
             this.rbCompCheckMarketWatch.AutoSize = true;
+            this.rbCompCheckMarketWatch.Checked = true;
             this.rbCompCheckMarketWatch.Location = new System.Drawing.Point(7, 56);
             this.rbCompCheckMarketWatch.Name = "rbCompCheckMarketWatch";
             this.rbCompCheckMarketWatch.Size = new System.Drawing.Size(117, 24);
             this.rbCompCheckMarketWatch.TabIndex = 1;
+            this.rbCompCheckMarketWatch.TabStop = true;
             this.rbCompCheckMarketWatch.Text = "MarketWatch";
             this.rbCompCheckMarketWatch.UseVisualStyleBackColor = true;
             this.rbCompCheckMarketWatch.Click += new System.EventHandler(this.rbCompCheckMarketWatch_Click);
@@ -237,12 +264,10 @@ namespace StockScreener
             // rbCompCheckRoicAi
             // 
             this.rbCompCheckRoicAi.AutoSize = true;
-            this.rbCompCheckRoicAi.Checked = true;
             this.rbCompCheckRoicAi.Location = new System.Drawing.Point(6, 22);
             this.rbCompCheckRoicAi.Name = "rbCompCheckRoicAi";
             this.rbCompCheckRoicAi.Size = new System.Drawing.Size(74, 24);
             this.rbCompCheckRoicAi.TabIndex = 0;
-            this.rbCompCheckRoicAi.TabStop = true;
             this.rbCompCheckRoicAi.Text = "Roic.ai";
             this.rbCompCheckRoicAi.UseVisualStyleBackColor = true;
             this.rbCompCheckRoicAi.Click += new System.EventHandler(this.rbCompCheckRoicAi_Click);
@@ -1054,31 +1079,6 @@ namespace StockScreener
             this.bgwGetCache.WorkerSupportsCancellation = true;
             this.bgwGetCache.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwGetCache_DoWork);
             this.bgwGetCache.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwGetCache_RunWorkerCompleted);
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(302, 630);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(21, 20);
-            this.label35.TabIndex = 58;
-            this.label35.Text = "%";
-            // 
-            // txtAvgFcfPerShareGrowth
-            // 
-            this.txtAvgFcfPerShareGrowth.Location = new System.Drawing.Point(231, 627);
-            this.txtAvgFcfPerShareGrowth.Name = "txtAvgFcfPerShareGrowth";
-            this.txtAvgFcfPerShareGrowth.Size = new System.Drawing.Size(65, 27);
-            this.txtAvgFcfPerShareGrowth.TabIndex = 57;
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(36, 630);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(181, 20);
-            this.label36.TabIndex = 56;
-            this.label36.Text = "Avg FCF per Share Growth";
             // 
             // Form1
             // 
