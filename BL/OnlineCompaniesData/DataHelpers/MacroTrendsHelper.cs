@@ -14,10 +14,10 @@ namespace BL.OnlineCompaniesData.DataHelpers
             string companyNameTrimmed = company.Name.ToLower().Replace("ltd", "").Replace(".", "");
 
             string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, "GET", null, false);
-            if (categoryLinkJsonString == "null")
+            if (categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
                 categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + companyNameTrimmed, "GET", null, false);
 
-            if (categoryLinkJsonString == "null")
+            if (categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
                 return;
 
             List<MacroTrendsCategoryLink> categoryLinks = JsonConvert.DeserializeObject<List<MacroTrendsCategoryLink>>(categoryLinkJsonString);
