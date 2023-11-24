@@ -14,10 +14,10 @@ namespace BL.OnlineCompaniesData.DataHelpers
             string companyNameTrimmed = company.Name.ToLower().Replace("ltd", "").Replace(".", "");
 
             string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, "GET", null, false);
-            if (categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
+            if (categoryLinkJsonString == null || categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
                 categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + companyNameTrimmed, "GET", null, false);
 
-            if (categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
+            if (categoryLinkJsonString == null || categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
                 return;
 
             List<MacroTrendsCategoryLink> categoryLinks = JsonConvert.DeserializeObject<List<MacroTrendsCategoryLink>>(categoryLinkJsonString);
@@ -105,6 +105,9 @@ namespace BL.OnlineCompaniesData.DataHelpers
         public static void GetCompanyAveragePriceToFCFMultiple(string ticker, Company company)
         {
             string historicalDataHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/fundamental_iframe.php?t=" + ticker + "&type=price-fcf&statement=price-ratios&freq=Q", "GET", null, false);
+
+            if (historicalDataHtml == null)
+                return;
 
             List<string> rawLines = historicalDataHtml.Split("\r\n", StringSplitOptions.RemoveEmptyEntries).ToList();
             string selectedLine = rawLines.Find(l => l.Contains("chartData"));

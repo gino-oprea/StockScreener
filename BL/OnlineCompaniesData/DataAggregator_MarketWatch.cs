@@ -102,7 +102,7 @@ namespace BL
             for (int i = 0; i < company.Financials.FreeCashFlow.Count; i++)
             {
                 decimal? fcfPerShare = null;
-                if (company.Financials.Shares[i].Value != 0)
+                if (company.Financials.Shares!=null && company.Financials.Shares[i].Value != 0)
                     fcfPerShare = company.Financials.FreeCashFlow[i].Value / company.Financials.Shares[i].Value;
 
                 YearVal yearVal = new YearVal();
