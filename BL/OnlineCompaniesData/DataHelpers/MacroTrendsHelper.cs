@@ -1,6 +1,7 @@
 ﻿using BL.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,14 @@ namespace BL.OnlineCompaniesData.DataHelpers
     {
         public static void GetCompanyDataMacrotrends(string ticker, Company company)
         {
+            Hashtable headers = new Hashtable();
+            headers.Add("Cookie", "__cf_bm=YzILsMBBHSEiSdsP9kWROxF.jJ4QSh4C3gHSn7Bsq04-1703409277-1-AYozGZFa+2FbVXVNB4o75EQ7lu90H9aUFqxTjdoZjCXy4LGA87pkvp58MLWq9VwVE8uax0OtKcBDcjmicnqO4Cs=");
+
             string companyNameTrimmed = company.Name.ToLower().Replace("ltd", "").Replace(".", "");
 
-            string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, "GET", null, false);
+            string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, "GET", null, false, headers);
             if (categoryLinkJsonString == null || categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
-                categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + companyNameTrimmed, "GET", null, false);
+                categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + companyNameTrimmed, "GET", null, false, headers);
 
             if (categoryLinkJsonString == null || categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
                 return;
@@ -36,7 +40,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 return;
             }
 
-            string sharesOutstandingHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net" + sharesOutstandingLink.url, "GET", null, false);
+            string sharesOutstandingHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net" + sharesOutstandingLink.url, "GET", null, false, headers);
 
             List<decimal> shares = new List<decimal>();
 
