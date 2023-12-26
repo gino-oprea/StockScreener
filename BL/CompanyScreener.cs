@@ -193,21 +193,21 @@ namespace BL
 
                     for (int i = 0; i < rawLines.Count; i++)
                     {
-                        if (rawLines[i].Contains("class=\"screener-link-primary\""))
+                        if (rawLines[i].Contains("<td height=\"10\" align=\"left\" data-boxover="))
                         {
                             string country = "";
-                            string[] lines = rawLines[i].Split("class=\"screener-link\">");
-                            if (lines.Length > 6)
+                            string[] lines = rawLines[i].Split(">", StringSplitOptions.RemoveEmptyEntries);
+                            if (lines.Length > 31)
                             {
-                                country = HtmlHelper.ExtractString(lines[5], "", "</a>", false);
+                                country = HtmlHelper.ExtractString(lines[31], "", "</a", false);
                             }
 
                             if (filter == null || !filter.IgnoreADRCompanies || (filter.IgnoreADRCompanies && country.ToUpper() == "USA"))
-                                companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "class=\"screener-link-primary\">", "</a>", false));
+                                companyLines.Add(HtmlHelper.ExtractString(rawLines[i], "class=\"tab-link\">", "</a>", false));
 
                         }
 
-                        if (rawLines[i].Contains("tab-link is-next"))
+                        if (rawLines[i].Contains("screener-pages is-next"))
                         {
                             nextPageFooterHTML = rawLines[i];
 
