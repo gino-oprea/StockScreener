@@ -1,6 +1,7 @@
 ﻿using BL;
 using BL.Models;
 using BL.OnlineCompaniesData;
+using BL.CompaniesData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -94,6 +95,7 @@ namespace StockScreener
                 AddRow("FCF per Share", company.Financials.FCFperShare, dt);
                 AddRow("Net Income", company.Financials.NetIncome, dt);
                 AddRow("Operating Margin %", company.Financials.OperatingMargin, dt);
+                AddRow("ROIC %", company.Financials.ROIC, dt);
                 AddRow("Retained earnings", company.Financials.RetainedEarnings, dt);
                 AddRow("Free Cash Flow", company.Financials.FreeCashFlow, dt);
                 AddRow("Capital Expenditures", company.Financials.CapitalExpenditures, dt);
@@ -113,8 +115,11 @@ namespace StockScreener
                 dr[0] = item;
                 for (int i = 0; i < values.Count; i++)
                 {
-                    if (dt.Columns[i + 1].ColumnName.Trim() == values[i].Year.ToString())
-                        dr[i + 1] = String.Format("{0:0.000}", values[i].Value) + (values[i].Growth != null ? "   (" + String.Format("{0:0.00}", values[i].Growth) + "%)" : "");
+                    for (int j = 1; j < dt.Columns.Count; j++)
+                    {
+                        if (dt.Columns[j].ColumnName.Trim() == values[i].Year.ToString())
+                            dr[j] = String.Format("{0:0.00}", values[i].Value) + (values[i].Growth != null ? "   (" + String.Format("{0:0.0}", values[i].Growth) + "%)" : "");
+                    }                    
                 }
                 dt.Rows.Add(dr);
             }
@@ -235,7 +240,10 @@ namespace StockScreener
 
         private void bgwCheckCompany_DoWork(object sender, DoWorkEventArgs e)
         {
-            company = dataAggregator_checkCompany.GetCompanyData(txtTicker.Text.Trim(), rbCacheCompCheck.Checked);
+            CompaniesDataAggregator companiesDataAggregator =new CompaniesDataAggregator();
+            company = companiesDataAggregator.GetCompany(txtTicker.Text.Trim());
+
+            //company = dataAggregator_checkCompany.GetCompanyData(txtTicker.Text.Trim(), rbCacheCompCheck.Checked);
 
             DataTable dt = BuildDataTable();
             bindingSourceKeyValues = new BindingSource();

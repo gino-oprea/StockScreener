@@ -15,7 +15,13 @@ namespace BL.OnlineCompaniesData.DataHelpers
             Hashtable headers = new Hashtable();
             headers.Add("Cookie", "__cf_bm=YzILsMBBHSEiSdsP9kWROxF.jJ4QSh4C3gHSn7Bsq04-1703409277-1-AYozGZFa+2FbVXVNB4o75EQ7lu90H9aUFqxTjdoZjCXy4LGA87pkvp58MLWq9VwVE8uax0OtKcBDcjmicnqO4Cs=");
 
-            string companyNameTrimmed = company.Name.ToLower().Replace("ltd", "").Replace(".", "");
+            string companyNameTrimmed = "";
+
+            try
+            {
+                companyNameTrimmed = company.Name.ToLower().Replace("ltd", "").Replace(".", "");
+            }
+            catch { }
 
             string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, "GET", null, false, headers);
             if (categoryLinkJsonString == null || categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)

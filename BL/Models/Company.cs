@@ -220,6 +220,8 @@ namespace BL.Models
                 default:
                     break;
             }
+
+            this.AverageROIC = this.Financials.ROIC.Select(r => r.Value).Average();
         }
 
         public void CalculateGrowthAverages()
