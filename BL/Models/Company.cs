@@ -144,7 +144,6 @@ namespace BL.Models
 
         private void CalculateCompoundAnualGrowthRate(FinancialAverageType finType)
         {
-
             List<YearVal> FinancialIndicator = null;
 
             switch (finType)
@@ -176,18 +175,24 @@ namespace BL.Models
 
             decimal? growth = null;
 
-            if (FinancialIndicator != null && FinancialIndicator.Count > 0)
+
+            FinancialIndicator.Reverse();
+            List<YearVal> last5years =  FinancialIndicator.Take(Math.Min(FinancialIndicator.Count,5)).ToList();
+            FinancialIndicator.Reverse();//put it back
+            last5years.Reverse();
+
+            if (last5years != null && last5years.Count > 0)
             {
                 //se poate calcula cresterea compusa(pentru ca sunt pozitive)
-                if (FinancialIndicator[FinancialIndicator.Count - 1].Value >= 0
-                    && FinancialIndicator[0].Value > 0
-                    && FinancialIndicator[FinancialIndicator.Count - 1].Value >= FinancialIndicator[0].Value)
-                    growth = ((decimal)Math.Pow(((double)FinancialIndicator[FinancialIndicator.Count - 1].Value / (double)FinancialIndicator[0].Value), (1 / (double)FinancialIndicator.Count)) - 1) * 100;
+                if (last5years[last5years.Count - 1].Value >= 0
+                    && last5years[0].Value > 0
+                    && last5years[last5years.Count - 1].Value >= last5years[0].Value)
+                    growth = ((decimal)Math.Pow(((double)last5years[last5years.Count - 1].Value / (double)last5years[0].Value), (1 / (double)last5years.Count)) - 1) * 100;
                 else
                 {
                     //nu se poate calcula cresterea compusa dar exista crestere si se face media
-                    if (FinancialIndicator[FinancialIndicator.Count - 1].Value >= FinancialIndicator[0].Value)
-                        growth = FinancialIndicator.Average(r => r.Growth);
+                    if (last5years[last5years.Count - 1].Value >= last5years[0].Value)
+                        growth = last5years.Average(r => r.Growth);
                     else
                         //nu exista crestere
                         growth = 0;
@@ -221,7 +226,13 @@ namespace BL.Models
                     break;
             }
 
-            this.AverageROIC = this.Financials.ROIC.Select(r => r.Value).Average();
+
+            this.Financials.ROIC.Reverse();
+            List<YearVal> last5yearsROIC = this.Financials.ROIC.Take(Math.Min(FinancialIndicator.Count, 5)).ToList();
+            this.Financials.ROIC.Reverse();//put it back
+            last5yearsROIC.Reverse();
+
+            this.AverageROIC = last5yearsROIC.Select(r => r.Value).Average();
         }
 
         public void CalculateGrowthAverages()
