@@ -43,8 +43,8 @@ namespace BL
                 var childFolders = Directory.GetDirectories(workingFolder).ToList();
 
                 int counter = 0;
-                Random rand = new Random();               
-
+                Random rand = new Random();
+                
                 foreach (var companyFolder in childFolders)
                 {
                     Company company = new Company();
@@ -94,7 +94,7 @@ namespace BL
 
 
                         //await Task.Delay(100 + rand.Next(50));
-                        Thread.Sleep(100 + rand.Next(50));
+                        Thread.Sleep(500 + rand.Next(500));
                     }
                     catch (Exception ex)
                     {

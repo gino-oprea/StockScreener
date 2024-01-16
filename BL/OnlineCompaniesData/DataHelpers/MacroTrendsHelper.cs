@@ -26,9 +26,13 @@ namespace BL.OnlineCompaniesData.DataHelpers
             }
             catch { }
 
+            Thread.Sleep(100);
             string categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, "GET", null, false, headers);
             if (categoryLinkJsonString == null || categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
+            {
+                Thread.Sleep(100);
                 categoryLinkJsonString = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + companyNameTrimmed, "GET", null, false, headers);
+            }
 
             if (categoryLinkJsonString == null || categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
                 return;
@@ -50,6 +54,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             }
 
 
+            Thread.Sleep(100);
             //shares outsanding
             string sharesOutstandingHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net" + sharesOutstandingLink.url, "GET", null, false, headers);
 
@@ -121,7 +126,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             string priceToFcfUrl = $"https://www.macrotrends.net{sharesOutstandingLink.url.Substring(0, sharesOutstandingLink.url.LastIndexOf("/"))}/price-fcf";
 
 
-            Thread.Sleep(200);
+            Thread.Sleep(100);
             GetCompanyAveragePriceToFCFMultiple(priceToFcfUrl, headers, company);
         }
 
