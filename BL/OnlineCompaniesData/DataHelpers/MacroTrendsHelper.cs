@@ -117,9 +117,9 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 }
 
             if (shares.Count > 0)
-                company.SharesOutstanding = shares[0];
-            else
-                company.SharesOutstanding = 1;
+                company.SharesOutstanding = shares[0];//if not, the share will remain the ones got from marketwatch
+            //else
+            //    company.SharesOutstanding = 1;
 
 
             //price to FCF multiple
