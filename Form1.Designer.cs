@@ -147,7 +147,7 @@ namespace StockScreener
             tabControl1.Location = new System.Drawing.Point(4, 12);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(1873, 852);
+            tabControl1.Size = new System.Drawing.Size(1728, 852);
             tabControl1.TabIndex = 0;
             // 
             // tabCheckCompany
@@ -208,7 +208,7 @@ namespace StockScreener
             tabCheckCompany.Location = new System.Drawing.Point(4, 29);
             tabCheckCompany.Name = "tabCheckCompany";
             tabCheckCompany.Padding = new System.Windows.Forms.Padding(3);
-            tabCheckCompany.Size = new System.Drawing.Size(1865, 819);
+            tabCheckCompany.Size = new System.Drawing.Size(1720, 819);
             tabCheckCompany.TabIndex = 0;
             tabCheckCompany.Text = "Check Company";
             tabCheckCompany.UseVisualStyleBackColor = true;
@@ -695,7 +695,7 @@ namespace StockScreener
             gvFinancials.Name = "gvFinancials";
             gvFinancials.RowHeadersWidth = 51;
             gvFinancials.RowTemplate.Height = 29;
-            gvFinancials.Size = new System.Drawing.Size(1859, 447);
+            gvFinancials.Size = new System.Drawing.Size(1710, 447);
             gvFinancials.TabIndex = 3;
             // 
             // btnSearch
@@ -754,7 +754,7 @@ namespace StockScreener
             tabSearchCompanies.Location = new System.Drawing.Point(4, 29);
             tabSearchCompanies.Name = "tabSearchCompanies";
             tabSearchCompanies.Padding = new System.Windows.Forms.Padding(3);
-            tabSearchCompanies.Size = new System.Drawing.Size(1865, 841);
+            tabSearchCompanies.Size = new System.Drawing.Size(1783, 819);
             tabSearchCompanies.TabIndex = 1;
             tabSearchCompanies.Text = "Search Companies";
             tabSearchCompanies.UseVisualStyleBackColor = true;
@@ -1077,7 +1077,7 @@ namespace StockScreener
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1880, 896);
+            ClientSize = new System.Drawing.Size(1731, 896);
             Controls.Add(lblErrorMessage);
             Controls.Add(tabControl1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");

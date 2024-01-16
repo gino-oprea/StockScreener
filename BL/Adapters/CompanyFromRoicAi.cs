@@ -3,12 +3,14 @@ using BL.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace BL.Adapters
 {
     public class CompanyRoicAiAdapter
-    {        
+    {
+        private static readonly int lastNoOfYears = 10;
         public static void MergeCompanyFromRoicAi(RoicAiCompany comp, Company company)
         {
             company.Financials = new Financials();
@@ -34,6 +36,16 @@ namespace BL.Adapters
             company.Financials.ROIC = GetFinancialData(comp.CompanySummary.data.returnOnInvCapital_annual, summaryYears);
         }
 
+        private static List<T> GetLastYearsData<T>(List<T> data)
+        {
+            data.Reverse();
+            List<T> lastData = data.Take(Math.Min(data.Count, lastNoOfYears)).ToList();
+            lastData.Reverse();
+            data.Reverse();
+
+            return lastData;
+        }
+
 
         private static List<int> GetYears(List<string> values)
         {
@@ -50,23 +62,27 @@ namespace BL.Adapters
 
         private static List<YearVal> GetFinancialData(List<string> values, List<int> years, int divider = 1)
         {
+            var lastFinVal = GetLastYearsData<string>(values);
+            var lastYears = GetLastYearsData<int>(years);
+
             List<YearVal> financialData = new List<YearVal>();
-                for (int i = 0; i < years.Count; i++)
+
+            for (int i = 0; i < lastYears.Count; i++)
+            {
+                YearVal yearVal = new YearVal();
+                yearVal.Year = lastYears[i];
+                yearVal.Value = ConvertFinValueToDecimal(lastFinVal[i]) / divider;
+
+                if (i > 0)
                 {
-                    YearVal yearVal = new YearVal();
-                    yearVal.Year = years[i];
-                    yearVal.Value = ConvertFinValueToDecimal(values[i])/divider;
+                    var newVal = yearVal.Value;
+                    var oldVal = ConvertFinValueToDecimal(lastFinVal[i - 1]) / divider;
+                    if (newVal != null && oldVal != null && oldVal != 0)
+                        yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
+                }
 
-                    if (i > 0)
-                    {
-                        var newVal = yearVal.Value;
-                        var oldVal = ConvertFinValueToDecimal(values[i - 1])/divider;
-                        if (newVal != null && oldVal != null && oldVal != 0)
-                            yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
-                    }
-
-                    financialData.Add(yearVal);
-                }            
+                financialData.Add(yearVal);
+            }
 
             return financialData;
         }

@@ -62,38 +62,37 @@ namespace BL.CompaniesData
             MacroTrendsHelper.GetCompanyDataMacrotrends(tickerSymbol, company);
 
             //List<YearVal> FCFperShare = calculateFCFperShare(company);
-
             //company.Financials.FCFperShare = FCFperShare;
 
             company.CalculateGrowthAverages();
         }
 
-        //private List<YearVal> calculateFCFperShare(Company company)
-        //{
-        //    List<YearVal> FCFperShare = new List<YearVal>();
+        private List<YearVal> calculateFCFperShare(Company company)
+        {
+            List<YearVal> FCFperShare = new List<YearVal>();
 
-        //    for (int i = 0; i < company.Financials.FreeCashFlow.Count; i++)
-        //    {
-        //        decimal? fcfPerShare = null;
-        //        if (company.Financials.Shares != null && company.Financials.Shares[i].Value != 0)
-        //            fcfPerShare = company.Financials.FreeCashFlow[i].Value / company.Financials.Shares[i].Value;
+            for (int i = 0; i < company.Financials.FreeCashFlow.Count; i++)
+            {
+                decimal? fcfPerShare = null;
+                if (company.Financials.Shares != null && company.Financials.Shares[i].Value != 0)
+                    fcfPerShare = company.Financials.FreeCashFlow[i].Value / company.Financials.Shares[i].Value;
 
-        //        YearVal yearVal = new YearVal();
-        //        yearVal.Year = company.Financials.FreeCashFlow[i].Year;
-        //        yearVal.Value = fcfPerShare;
+                YearVal yearVal = new YearVal();
+                yearVal.Year = company.Financials.FreeCashFlow[i].Year;
+                yearVal.Value = fcfPerShare;
 
-        //        if (i > 0)
-        //        {
-        //            var newVal = yearVal.Value;
-        //            var oldVal = FCFperShare[i - 1].Value;
-        //            if (newVal != null && oldVal != null && oldVal != 0)
-        //                yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
-        //        }
-        //        FCFperShare.Add(yearVal);
-        //    }
+                if (i > 0)
+                {
+                    var newVal = yearVal.Value;
+                    var oldVal = FCFperShare[i - 1].Value;
+                    if (newVal != null && oldVal != null && oldVal != 0)
+                        yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
+                }
+                FCFperShare.Add(yearVal);
+            }
 
-        //    return FCFperShare;
-        //}
+            return FCFperShare;
+        }
         private RoicAiCompany MapJsonToRoicAiCompany(string companyFolder, string ticker)
         {
             CompanySummary companySummary = GetJsonToModel<CompanySummary>(Path.Combine(companyFolder, $"{ticker}_Summary.json"));
