@@ -94,7 +94,7 @@ namespace BL
 
 
                         //await Task.Delay(100 + rand.Next(50));
-                        Thread.Sleep(500 + rand.Next(500));
+                        Thread.Sleep(1000 + rand.Next(500));
                     }
                     catch (Exception ex)
                     {
