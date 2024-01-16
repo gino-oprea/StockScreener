@@ -57,7 +57,7 @@ namespace BL.OnlineCompaniesData
                         string financialDetails = BL.HttpReq.GetUrlHttpWebRequest("https://roic.ai/financials/" + TickerSymbol, "GET", null, false);
 
                         RoicAiHelper.GetCompanyFinancials(financialDetails, company);
-                        MacroTrendsHelper.GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company);
+                        //MacroTrendsHelper.GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company);
 
                         company.CalculateGrowthAverages();
                     }

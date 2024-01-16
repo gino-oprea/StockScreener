@@ -38,6 +38,9 @@ namespace BL.Adapters
 
         private static List<T> GetLastYearsData<T>(List<T> data)
         {
+            if (data == null)
+                return null;
+
             data.Reverse();
             List<T> lastData = data.Take(Math.Min(data.Count, lastNoOfYears)).ToList();
             lastData.Reverse();

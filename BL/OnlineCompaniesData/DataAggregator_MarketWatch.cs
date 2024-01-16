@@ -73,10 +73,10 @@ namespace BL
                         //GetCompanyFinancials_QuickFS(financials_quickFS, company);
 
                         var task1 = Task.Run(() => MorningstarHelper.GetCompanyFinancials_Morningstar(TickerSymbol, company));
-                        var task2 = Task.Run(() => MacroTrendsHelper.GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company));
+                        //var task2 = Task.Run(() => MacroTrendsHelper.GetCompanyAveragePriceToFCFMultiple(TickerSymbol, company));
                         var task3 = Task.Run(() => MacroTrendsHelper.GetCompanyDataMacrotrends(TickerSymbol, company));
 
-                        Task.WaitAll(task1, task2, task3);
+                        Task.WaitAll(task1, task3);
 
 
                         List<YearVal> FCFperShare = calculateFCFperShare(company);

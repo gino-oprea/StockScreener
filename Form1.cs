@@ -81,7 +81,7 @@ namespace StockScreener
         {
             DataTable dt = new DataTable();
 
-            if (company.Financials!= null)
+            if (company?.Financials!= null)
             {
                 dt.Columns.Add("Item");
                 for (int i = 0; i < company.Financials.NetIncome.Count; i++)
@@ -242,6 +242,8 @@ namespace StockScreener
         {
             CompaniesDataAggregator companiesDataAggregator =new CompaniesDataAggregator();
             company = companiesDataAggregator.GetCompany(txtTicker.Text.Trim());
+            if (company == null)
+                throw new Exception("Company has no data or error occured!");
 
             //company = dataAggregator_checkCompany.GetCompanyData(txtTicker.Text.Trim(), rbCacheCompCheck.Checked);
 
@@ -254,9 +256,13 @@ namespace StockScreener
             if (!converted)
                 discount = 10;
 
-            var values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: discount,
-                terminalMultiple: company.Average_P_FCF_Multiple.Value);
-            DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(values);
+            //var values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: discount, terminalMultiple: company.Average_P_FCF_Multiple.Value);
+            DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(new List<decimal> {
+                company.IntrinsicValue.Value,
+                company.IntrinsicValue_Discounted10.Value,
+                company.IntrinsicValue_Discounted30.Value,
+                company.IntrinsicValue_Discounted50.Value });//BuildIntriniscValuesDataTable(values);
+
             bindingSourceIntrinsicValues = new BindingSource();
             bindingSourceIntrinsicValues.DataSource = dtIntrinsicValues;
         }
@@ -356,13 +362,14 @@ namespace StockScreener
 
         private void bgwSearchCompanies_DoWork(object sender, DoWorkEventArgs e)
         {
-            List<Company> cachedCompanies = null;
-            if(!companyFilter.IsFreshSearch && File.Exists("companies.json"))
-            {
-                cachedCompanies = GetCachedCompanies();
-            }
+            //List<Company> cachedCompanies = null;
+            //if (!companyFilter.IsFreshSearch && File.Exists("companies.json"))
+            //{
+            //    cachedCompanies = GetCachedCompanies();
+            //}
 
-            filteredCompanies = companyScreener.GetFilteredCompanies(Url, companyFilter, cachedCompanies, bgwSearchCompanies);
+            //filteredCompanies = companyScreener.GetFilteredCompanies(Url, companyFilter, cachedCompanies, bgwSearchCompanies);
+            filteredCompanies = companyScreener.GetFilteredCompanies(companyFilter, bgwSearchCompanies);
 
             DataTable dtFilteredCompanies = BuildFilteredCompaniesDataTable(filteredCompanies);
             bindingSourcefilteredCompanies = new BindingSource();
@@ -464,15 +471,15 @@ namespace StockScreener
 
         private void bgwGetCache_DoWork(object sender, DoWorkEventArgs e)
         {
-            //check if some companies already in cache
-            List<Company> cachedCompanies = GetCachedCompanies();
+            ////check if some companies already in cache
+            //List<Company> cachedCompanies = GetCachedCompanies();
 
-            List<Company> companies = companyScreener.GetFilteredCompanies(Url, null, null, bgwGetCache, cachedCompanies);
+            //List<Company> companies = companyScreener.GetFilteredCompanies(Url, null, null, bgwGetCache, cachedCompanies);
 
-            if (bgwGetCache.CancellationPending)
-                e.Cancel = true;
+            //if (bgwGetCache.CancellationPending)
+            //    e.Cancel = true;
 
-            companyScreener.SaveCompanies(companies);
+            //companyScreener.SaveCompanies(companies);
         }
 
         private void bgwGetCache_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

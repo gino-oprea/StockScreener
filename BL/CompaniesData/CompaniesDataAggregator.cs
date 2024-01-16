@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -23,13 +24,25 @@ namespace BL.CompaniesData
         {
             company = new Company();
         }
-        public Company GetCompany(string tickerSymbol)
+        public Company GetCompany(string tickerSymbol, int discountedInterestRate = 13)
         {
-            GetGeneralInfo(tickerSymbol);
-            GetFinancialData(tickerSymbol);
-            GetMacroTrendsData(tickerSymbol);
+            try
+            {
+                company = new Company();
+                GetGeneralInfo(tickerSymbol);                
+                GetFinancialData(tickerSymbol);
+                GetMacroTrendsData(tickerSymbol);
 
-            return company;
+                company.Ticker = tickerSymbol;
+
+                company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: discountedInterestRate, terminalMultiple: company.Average_P_FCF_Multiple.Value);
+
+                return company;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
         private void GetGeneralInfo(string tickerSymbol)
         {
@@ -52,19 +65,15 @@ namespace BL.CompaniesData
                     RoicAiCompany roicAiCompany = MapJsonToRoicAiCompany(companyFolder, ticker);        
                     //adapter for converting roicAiCompany to Company
                     CompanyRoicAiAdapter.MergeCompanyFromRoicAi(roicAiCompany, company);
+
+                    company.CalculateGrowthAverages();
                 }
             }            
         }
 
         private void GetMacroTrendsData(string tickerSymbol)
-        {
-            MacroTrendsHelper.GetCompanyAveragePriceToFCFMultiple(tickerSymbol, company);
+        {               
             MacroTrendsHelper.GetCompanyDataMacrotrends(tickerSymbol, company);
-
-            //List<YearVal> FCFperShare = calculateFCFperShare(company);
-            //company.Financials.FCFperShare = FCFperShare;
-
-            company.CalculateGrowthAverages();
         }
 
         private List<YearVal> calculateFCFperShare(Company company)

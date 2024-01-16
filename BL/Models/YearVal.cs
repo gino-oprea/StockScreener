@@ -4,6 +4,7 @@ using System.Text;
 
 namespace BL.Models
 {
+    [Serializable]
     public class YearVal
     {
         public int Year { get; set; }

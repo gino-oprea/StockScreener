@@ -4,6 +4,7 @@ using System.Text;
 
 namespace BL.Models
 {
+    [Serializable]
     public class Financials
     {        
         public List<YearVal> Revenue { get; set; }

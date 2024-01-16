@@ -3,8 +3,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
+using System.Threading;
 
 namespace BL.OnlineCompaniesData.DataHelpers
 {
@@ -46,6 +49,8 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 return;
             }
 
+
+            //shares outsanding
             string sharesOutstandingHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net" + sharesOutstandingLink.url, "GET", null, false, headers);
 
             List<decimal> shares = new List<decimal>();
@@ -110,9 +115,79 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 company.SharesOutstanding = shares[0];
             else
                 company.SharesOutstanding = 1;
+
+
+            //price to FCF multiple
+            string priceToFcfUrl = $"https://www.macrotrends.net{sharesOutstandingLink.url.Substring(0, sharesOutstandingLink.url.LastIndexOf("/"))}/price-fcf";
+
+
+            Thread.Sleep(200);
+            GetCompanyAveragePriceToFCFMultiple(priceToFcfUrl, headers, company);
         }
 
-        public static void GetCompanyAveragePriceToFCFMultiple(string ticker, Company company)
+        public static void GetCompanyAveragePriceToFCFMultiple(string priceToFcfUrl, Hashtable headers, Company company)
+        {
+            string priceToFcfHtml = BL.HttpReq.GetUrlHttpWebRequest(priceToFcfUrl, "GET", null, false, headers);
+
+            List<decimal> pFcfMultiples = new List<decimal>();
+
+            if (priceToFcfHtml != null)
+            {
+                List<string> rawLines_sharesOutstanding = priceToFcfHtml.Split("</tr>", StringSplitOptions.RemoveEmptyEntries).ToList();
+                List<string> selectedLines = HtmlHelper.GetImportantLines(rawLines_sharesOutstanding, "Price to Free Cash Flow Ratio Historical Data", "/tbody");
+
+                for (int i = 2; i < selectedLines.Count; i++)
+                {
+
+                    string[] rowlines = selectedLines[i].Split("</td>", StringSplitOptions.RemoveEmptyEntries);
+
+                    string rawVal = HtmlHelper.ExtractString(rowlines[3], "text-align:center;\">", "", false).Replace(",", "");
+                    decimal pFCF;
+                    bool converted = Decimal.TryParse(rawVal, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out pFCF);
+
+                    if (converted)
+                        pFcfMultiples.Add(pFCF);
+                    else
+                        pFcfMultiples.Add(10);
+                }
+
+
+
+                if (pFcfMultiples.Count > 0)
+                {
+                    pFcfMultiples.RemoveAll(h => h == 0);//eliminam valorile 0
+
+                    var avgPriceToFCF = pFcfMultiples.Count > 0 ? pFcfMultiples.Average() : 1;
+                    bool noOutliersFound = false;
+                    //remove outliers
+                    if (pFcfMultiples.Count > 0)
+                        while (!noOutliersFound)
+                        {
+                            noOutliersFound = true;
+                            var stdDev = Math.Sqrt(pFcfMultiples.Sum(h => Math.Pow((double)h - (double)avgPriceToFCF, 2)) / pFcfMultiples.Count);
+                            for (int i = pFcfMultiples.Count - 1; i >= 0; i--)
+                            {
+                                if (pFcfMultiples[i] - avgPriceToFCF > (decimal)1.5 * (decimal)stdDev
+                                    || avgPriceToFCF - pFcfMultiples[i] > (decimal)2.5 * (decimal)stdDev) //eliminam mai multe din deviatiile pozitive decat din cele negative 
+                                {
+                                    noOutliersFound = false;
+                                    pFcfMultiples.RemoveAt(i);
+                                }
+                            }
+                            avgPriceToFCF = pFcfMultiples.Average();
+                        }
+
+                    company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 15);//terminal multiple maximum 15
+                }
+                else
+                {
+                    company.Average_P_FCF_Multiple = null;
+                }
+            }
+           
+        }
+
+        public static void GetCompanyAveragePriceToFCFMultiple_Old(string ticker, Company company)
         {
             string historicalDataHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/fundamental_iframe.php?t=" + ticker + "&type=price-fcf&statement=price-ratios&freq=Q", "GET", null, false);
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace BL.Models
 {
@@ -15,6 +17,8 @@ namespace BL.Models
         AverageOperatingMarginGrowth,
         AverageFreeCashFlowGrowth
     }
+
+    [Serializable]
     public class Company
     {
         public string Name { get; set; }
@@ -51,11 +55,11 @@ namespace BL.Models
         public Financials Financials { get; set; }
 
 
-        public List<decimal> CalculateIntrinsicAndDiscountedValues(decimal? lastCashFlow = null, int discountedInterestRate = 12,
+        public List<decimal> CalculateIntrinsicAndDiscountedValues(decimal? lastCashFlow = null, int discountedInterestRate = 13,
             decimal? growth = null, decimal? sharesOutstanding = null, int terminalMultiple = 10)
         {
             if (this.Financials.FreeCashFlow.Count < 4)
-                return new List<decimal>() { 0, 0, 0 };
+                return new List<decimal>() { 0, 0, 0, 0 };
 
             if (lastCashFlow == null)
             {
@@ -70,7 +74,7 @@ namespace BL.Models
                     if (lastCf != null)
                         lastCashFlow = (decimal)lastCf.Value;
                     else
-                        return new List<decimal>() { 0, 0, 0 };
+                        return new List<decimal>() { 0, 0, 0, 0 };
                 }               
             }            
 
@@ -272,6 +276,17 @@ namespace BL.Models
            
 
             this.Average_P_FCF_Multiple ??= (int)Math.Floor(this.Growth.Value);
+        }
+
+        public Company DeepClone()
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(memoryStream, this);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return (Company)formatter.Deserialize(memoryStream);
+            }
         }
     }
 }

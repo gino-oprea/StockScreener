@@ -754,7 +754,7 @@ namespace StockScreener
             tabSearchCompanies.Location = new System.Drawing.Point(4, 29);
             tabSearchCompanies.Name = "tabSearchCompanies";
             tabSearchCompanies.Padding = new System.Windows.Forms.Padding(3);
-            tabSearchCompanies.Size = new System.Drawing.Size(1783, 819);
+            tabSearchCompanies.Size = new System.Drawing.Size(1720, 819);
             tabSearchCompanies.TabIndex = 1;
             tabSearchCompanies.Text = "Search Companies";
             tabSearchCompanies.UseVisualStyleBackColor = true;
@@ -1006,7 +1006,7 @@ namespace StockScreener
             gvCompanies.Location = new System.Drawing.Point(6, 158);
             gvCompanies.Name = "gvCompanies";
             gvCompanies.RowHeadersWidth = 51;
-            gvCompanies.Size = new System.Drawing.Size(1284, 627);
+            gvCompanies.Size = new System.Drawing.Size(1705, 627);
             gvCompanies.TabIndex = 3;
             // 
             // btnGo
