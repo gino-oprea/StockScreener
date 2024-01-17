@@ -35,7 +35,11 @@ namespace BL.CompaniesData
 
                 //backup in case macrotrends data is not already on disk, and save it if able to get data online
                 if (!MacrotrendsDataExists(tickerSymbol.ToUpper()))
-                    GetMacroTrendsData(tickerSymbol.ToUpper());
+                    try
+                    {
+                        GetMacroTrendsData(tickerSymbol.ToUpper());
+                    }
+                    catch (Exception ex) { }
 
                 company.Ticker = tickerSymbol;
 
@@ -77,18 +81,16 @@ namespace BL.CompaniesData
         }
 
         private void GetMacroTrendsData(string tickerSymbol)
-        {               
-            MacroTrendsHelper.GetCompanyDataMacrotrends(tickerSymbol, company);
+        {
+            MacroTrendsData macroTrendsData = MacroTrendsHelper.GetCompanyDataMacrotrends(tickerSymbol, company);
 
-            if (company.Financials.Shares?.Count > 0 && company.Average_P_FCF_Multiple != null)
+            //if (company.Financials.Shares?.Count > 0 && company.Average_P_FCF_Multiple != null)
+            if (macroTrendsData.AveragePriceToFreeCashFlowMultiple != null)
             {
-                MacroTrendsData macroTrendsData = new MacroTrendsData()
-                {
-                    SharesOutstanding = company.Financials.Shares,
-                    AveragePriceToFreeCashFlowMultiple = company.Average_P_FCF_Multiple
-                };
+                company.Average_P_FCF_Multiple = macroTrendsData.AveragePriceToFreeCashFlowMultiple;
+
                 var json = JsonConvert.SerializeObject(macroTrendsData);
-                var companyFolder = Path.Combine(workingFolder,tickerSymbol);
+                var companyFolder = Path.Combine(workingFolder, tickerSymbol);
                 SaveJsonToDisk(json, companyFolder, $"{tickerSymbol}_MacrotrendsData.json");
             }
         }

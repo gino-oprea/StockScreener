@@ -1,6 +1,7 @@
 ﻿using BL.CompaniesData.JsonModels.RoicAi;
 using BL.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace BL.Adapters
             company.Financials.Revenue = GetFinancialData(comp.IncomeStatement.data.isSalesRevenueTurnover_annual, financialYears, 1000);
             company.Financials.NetIncome = GetFinancialData(comp.IncomeStatement.data.isNetIncome_annual, financialYears, 1000);
             company.Financials.EPS = GetFinancialData(comp.IncomeStatement.data.dilutedEps_annual, financialYears);
-            company.Financials.OperatingMargin = GetFinancialData(comp.IncomeStatement.data.operMargin_annual, financialYears);
+            company.Financials.OperatingMargin = GetFinancialData(comp.IncomeStatement.data.operMargin_annual, financialYears);                        
 
             company.Financials.Cash = GetFinancialData(comp.BalanceSheet.data.bsCAndCeAndStiDetailed_annual, financialYears, 1000);
             company.Financials.ShortTermDebt = GetFinancialData(comp.BalanceSheet.data.bsStBorrow_annual, financialYears, 1000);
@@ -37,11 +38,41 @@ namespace BL.Adapters
 
             if (comp.MacroTrendsData != null)
             {
-                company.Financials.Shares = GetLastYearsData(comp.MacroTrendsData.SharesOutstanding);
+                //company.Financials.Shares = GetLastYearsData(comp.MacroTrendsData.SharesOutstanding);
                 company.Average_P_FCF_Multiple = comp.MacroTrendsData.AveragePriceToFreeCashFlowMultiple;
             }
 
+            CalculateSharesOutstanding(company);
             if (company.Financials.Shares?.Count > 0)
+                company.SharesOutstanding = company.Financials.Shares[company.Financials.Shares.Count - 1].Value;
+        }
+
+        private static void CalculateSharesOutstanding(Company company)
+        {
+            List<YearVal> shares = company.Financials.NetIncome
+            .Join(company.Financials.EPS, l1 => l1.Year, l2 => l2.Year, (l1, l2) => new YearVal
+            {
+                Year = l1.Year,
+                Value = l1.Value / l2.Value,//net income must be converted back from millions(not billions to cut the divider later) to divide correctly
+                Growth = null // Optionally include Growth from the first list
+            })
+            .ToList();
+
+            //calculate growth
+            for (int i = 0; i < shares.Count; i++)
+            {
+                if (i > 0)
+                {
+                    var newVal = shares[i].Value;
+                    var oldVal = shares[i - 1].Value;
+                    if (newVal != null && oldVal != null && oldVal != 0)
+                        shares[i].Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
+                }
+            }
+
+            company.Financials.Shares = shares;
+
+            if (company.Financials.Shares.Count > 0)
                 company.SharesOutstanding = company.Financials.Shares[company.Financials.Shares.Count - 1].Value;
         }
 

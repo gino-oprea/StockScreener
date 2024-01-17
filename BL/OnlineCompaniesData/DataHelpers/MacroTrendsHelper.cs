@@ -1,4 +1,5 @@
-﻿using BL.Models;
+﻿using BL.CompaniesData.JsonModels.RoicAi;
+using BL.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -14,7 +15,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
     public static class MacroTrendsHelper
     {
         private static Random random = new Random();
-        public static void GetCompanyDataMacrotrends(string ticker, Company company)
+        public static MacroTrendsData GetCompanyDataMacrotrends(string ticker, Company company)
         {
 
             var httpResult = BL.HttpReq.GetUrlHttpClientAsync("https://www.macrotrends.net", null, "GET", null, null, false).Result;
@@ -38,20 +39,20 @@ namespace BL.OnlineCompaniesData.DataHelpers
             }
 
             if (categoryLinkJsonString == null || categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
-                return;
+                return null;
 
             List<MacroTrendsCategoryLink> categoryLinks = JsonConvert.DeserializeObject<List<MacroTrendsCategoryLink>>(categoryLinkJsonString);
 
             if (categoryLinks == null)
             {                
-                return;
+                return null;
             }
 
             MacroTrendsCategoryLink sharesOutstandingLink = categoryLinks.Find(l => l.url.Contains("shares-outstanding"));
 
             if (sharesOutstandingLink == null)
             {                
-                return;
+                return null;
             }
 
 
@@ -85,10 +86,10 @@ namespace BL.OnlineCompaniesData.DataHelpers
             }
 
             //fill shares using revenue data years
+            List<YearVal> sharesFinancial = new List<YearVal>();
             if (shares.Count > 0)
             {
-                int index = 0;
-                List<YearVal> sharesFinancial = new List<YearVal>();
+                int index = 0;                
                 for (int i = company.Financials.Revenue.Count - 1; i >= 0; i--)
                 {
                     if (index < shares.Count)
@@ -101,38 +102,42 @@ namespace BL.OnlineCompaniesData.DataHelpers
                     }
                     index++;
                 }
-                company.Financials.Shares = sharesFinancial;
+                
             }
 
             //add shares growth
             if (shares.Count > 0)
-                for (int i = 0; i < company.Financials.Shares.Count; i++)
+                for (int i = 0; i < sharesFinancial.Count; i++)
                 {
                     if (i > 0)
                     {
-                        var yearVal = company.Financials.Shares[i];
+                        var yearVal = sharesFinancial[i];
                         var newVal = yearVal.Value;
-                        var oldVal = company.Financials.Shares[i - 1].Value;
+                        var oldVal = sharesFinancial[i - 1].Value;
                         if (newVal != null && oldVal != null && oldVal != 0)
                             yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
                     }
                 }
-
-            if (shares.Count > 0)
-                company.SharesOutstanding = shares[0];//if not, the share will remain the ones got from marketwatch
-            
-
 
             //price to FCF multiple
             string priceToFcfUrl = $"https://www.macrotrends.net{sharesOutstandingLink.url.Substring(0, sharesOutstandingLink.url.LastIndexOf("/"))}/price-fcf";
 
 
             Thread.Sleep(500 + random.Next(1000));
-            GetCompanyAveragePriceToFCFMultiple(priceToFcfUrl, cookies, company);
+            int? averagePriceToFcfMultiple = GetCompanyAveragePriceToFCFMultiple(priceToFcfUrl, cookies);
+
+            MacroTrendsData data = new MacroTrendsData()
+            {
+                SharesOutstanding = sharesFinancial,
+                AveragePriceToFreeCashFlowMultiple = averagePriceToFcfMultiple
+            };
+
+            return data;
         }
 
-        public static void GetCompanyAveragePriceToFCFMultiple(string priceToFcfUrl, string cookies, Company company)
+        public static int? GetCompanyAveragePriceToFCFMultiple(string priceToFcfUrl, string cookies)
         {
+            int? Average_P_FCF_Multiple = null;
             //string priceToFcfHtml = BL.HttpReq.GetUrlHttpWebRequest(priceToFcfUrl, "GET", null, false, headers);
             var httpResult = BL.HttpReq.GetUrlHttpClientAsync(priceToFcfUrl, cookies, "GET", null, null, false).Result;
             string priceToFcfHtml = httpResult.Result;
@@ -184,15 +189,12 @@ namespace BL.OnlineCompaniesData.DataHelpers
                             }
                             avgPriceToFCF = pFcfMultiples.Average();
                         }
-
-                    company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 15);//terminal multiple maximum 15
-                }
-                else
-                {
-                    company.Average_P_FCF_Multiple = null;
-                }
+                    
+                    Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 15);//terminal multiple maximum 15
+                }                
             }
-           
+
+            return Average_P_FCF_Multiple;           
         }        
     }
 }
