@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 
 namespace BL.CompaniesData
@@ -32,9 +33,9 @@ namespace BL.CompaniesData
                 GetGeneralInfo(tickerSymbol);                
                 GetFinancialData(tickerSymbol);
 
-                //backup in case macrotrends data is not already on disk
-                if (company.Financials.Shares == null || company.Financials.Shares.Count == 0 || company.Average_P_FCF_Multiple == null)
-                    GetMacroTrendsData(tickerSymbol);
+                //backup in case macrotrends data is not already on disk, and save it if able to get data online
+                if (!MacrotrendsDataExists(tickerSymbol.ToUpper()))
+                    GetMacroTrendsData(tickerSymbol.ToUpper());
 
                 company.Ticker = tickerSymbol;
 
@@ -47,6 +48,7 @@ namespace BL.CompaniesData
                 return null;
             }
         }
+        
         private void GetGeneralInfo(string tickerSymbol)
         {
             string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + tickerSymbol + "?mod=over_search", "GET", null, false);            
@@ -77,6 +79,27 @@ namespace BL.CompaniesData
         private void GetMacroTrendsData(string tickerSymbol)
         {               
             MacroTrendsHelper.GetCompanyDataMacrotrends(tickerSymbol, company);
+
+            if (company.Financials.Shares?.Count > 0 && company.Average_P_FCF_Multiple != null)
+            {
+                MacroTrendsData macroTrendsData = new MacroTrendsData()
+                {
+                    SharesOutstanding = company.Financials.Shares,
+                    AveragePriceToFreeCashFlowMultiple = company.Average_P_FCF_Multiple
+                };
+                var json = JsonConvert.SerializeObject(macroTrendsData);
+                var companyFolder = Path.Combine(workingFolder,tickerSymbol);
+                SaveJsonToDisk(json, companyFolder, $"{tickerSymbol}_MacrotrendsData.json");
+            }
+        }
+
+        private async Task SaveJsonToDisk(string json, string folderPath, string fileName)
+        {
+            string filePath = Path.Combine(folderPath, fileName);
+            // Ensure that the directory exists
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            // Write the JSON string to the file
+            await File.WriteAllTextAsync(filePath, json);
         }
 
         private List<YearVal> calculateFCFperShare(Company company)
@@ -123,6 +146,20 @@ namespace BL.CompaniesData
             };
 
             return roicAiCompany;
+        }
+        private bool MacrotrendsDataExists(string ticker)
+        {
+            bool exists = false;
+            var filePath = Path.Combine(workingFolder, ticker, $"{ticker}_MacrotrendsData.json");
+
+            if (File.Exists(filePath))
+            {
+                MacroTrendsData macroTrendsData = GetJsonToModel<MacroTrendsData>(filePath);
+                if (macroTrendsData?.SharesOutstanding.Count > 0 && macroTrendsData.AveragePriceToFreeCashFlowMultiple != null)
+                    exists = true;
+            }
+
+            return exists;
         }
 
         private T GetJsonToModel<T>(string jsonFile)

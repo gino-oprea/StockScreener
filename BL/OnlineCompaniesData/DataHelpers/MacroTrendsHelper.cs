@@ -13,6 +13,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
 {
     public static class MacroTrendsHelper
     {
+        private static Random random = new Random();
         public static void GetCompanyDataMacrotrends(string ticker, Company company)
         {
 
@@ -126,7 +127,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             string priceToFcfUrl = $"https://www.macrotrends.net{sharesOutstandingLink.url.Substring(0, sharesOutstandingLink.url.LastIndexOf("/"))}/price-fcf";
 
 
-            Thread.Sleep(100);
+            Thread.Sleep(500 + random.Next(1000));
             GetCompanyAveragePriceToFCFMultiple(priceToFcfUrl, cookies, company);
         }
 
@@ -192,54 +193,6 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 }
             }
            
-        }
-
-        //public static void GetCompanyAveragePriceToFCFMultiple_Old(string ticker, Company company)
-        //{
-        //    string historicalDataHtml = BL.HttpReq.GetUrlHttpWebRequest("https://www.macrotrends.net/assets/php/fundamental_iframe.php?t=" + ticker + "&type=price-fcf&statement=price-ratios&freq=Q", "GET", null, false);
-
-        //    if (historicalDataHtml == null)
-        //        return;
-
-        //    List<string> rawLines = historicalDataHtml.Split("\r\n", StringSplitOptions.RemoveEmptyEntries).ToList();
-        //    string selectedLine = rawLines.Find(l => l.Contains("chartData"));
-        //    if (selectedLine != null)
-        //    {
-        //        string json = HtmlHelper.ExtractString(selectedLine, "var chartData = ", "", false);
-
-        //        List<HistoricalPriceToFreeCashflowData> histData = JsonConvert.DeserializeObject<List<HistoricalPriceToFreeCashflowData>>(json);
-
-        //        if (histData != null && histData.Count > 0)
-        //        {
-        //            histData.RemoveAll(h => h.v3 == 0);//eliminam valorile 0
-
-        //            var avgPriceToFCF = histData.Count > 0 ? histData.Average(h => h.v3) : 1;
-        //            bool noOutliersFound = false;
-        //            //remove outliers
-        //            if (histData.Count > 0)
-        //                while (!noOutliersFound)
-        //                {
-        //                    noOutliersFound = true;
-        //                    var stdDev = Math.Sqrt(histData.Sum(h => Math.Pow(h.v3 - avgPriceToFCF, 2)) / histData.Count);
-        //                    for (int i = histData.Count - 1; i >= 0; i--)
-        //                    {
-        //                        if (histData[i].v3 - avgPriceToFCF > 1.5 * stdDev
-        //                            || avgPriceToFCF - histData[i].v3 > 2.5 * stdDev) //eliminam mai multe din deviatiile pozitive decat din cele negative 
-        //                        {
-        //                            noOutliersFound = false;
-        //                            histData.RemoveAt(i);
-        //                        }
-        //                    }
-        //                    avgPriceToFCF = histData.Average(h => h.v3);
-        //                }
-
-        //            company.Average_P_FCF_Multiple = Math.Min(Convert.ToInt32(avgPriceToFCF), 15);//terminal multiple maximum 15
-        //        }
-        //        else
-        //        {
-        //            company.Average_P_FCF_Multiple = null;
-        //        }
-        //    }
-        //}
+        }        
     }
 }
