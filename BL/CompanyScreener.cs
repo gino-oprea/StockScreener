@@ -91,10 +91,8 @@ namespace BL
 
                             currentfilteredCompanies = filteredCompanies;
                         }
-
-
-                        //await Task.Delay(100 + rand.Next(50));
-                        Thread.Sleep(3000 + rand.Next(2000));
+                        
+                        Thread.Sleep(200 + rand.Next(200));
                     }
                     catch (Exception ex)
                     {

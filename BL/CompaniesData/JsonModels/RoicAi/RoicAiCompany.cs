@@ -11,5 +11,6 @@ namespace BL.CompaniesData.JsonModels.RoicAi
         public IncomeStatement IncomeStatement { get; set; }
         public BalanceSheet BalanceSheet { get; set; }
         public CashFlowStatement CashFlowStatement { get; set; }
+        public MacroTrendsData MacroTrendsData { get; set; }
     }
 }

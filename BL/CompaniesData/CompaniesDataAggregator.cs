@@ -31,7 +31,10 @@ namespace BL.CompaniesData
                 company = new Company();
                 GetGeneralInfo(tickerSymbol);                
                 GetFinancialData(tickerSymbol);
-                GetMacroTrendsData(tickerSymbol);
+
+                //backup in case macrotrends data is not already on disk
+                if (company.Financials.Shares == null || company.Financials.Shares.Count == 0 || company.Average_P_FCF_Multiple == null)
+                    GetMacroTrendsData(tickerSymbol);
 
                 company.Ticker = tickerSymbol;
 
@@ -108,13 +111,15 @@ namespace BL.CompaniesData
             IncomeStatement incomeStatement = GetJsonToModel<IncomeStatement>(Path.Combine(companyFolder, $"{ticker}_IncomeStatement.json"));
             BalanceSheet balanceSheet = GetJsonToModel<BalanceSheet>(Path.Combine(companyFolder, $"{ticker}_BalanceSheet.json"));
             CashFlowStatement cashFlowStatement = GetJsonToModel<CashFlowStatement>(Path.Combine(companyFolder, $"{ticker}_CashFlowStatment.json"));
+            MacroTrendsData macroTrendsData = GetJsonToModel<MacroTrendsData>(Path.Combine(companyFolder, $"{ticker}_MacrotrendsData.json"));
 
             RoicAiCompany roicAiCompany = new RoicAiCompany()
             {
                 CompanySummary = companySummary,
                 IncomeStatement = incomeStatement,
                 BalanceSheet = balanceSheet,
-                CashFlowStatement = cashFlowStatement
+                CashFlowStatement = cashFlowStatement,
+                MacroTrendsData = macroTrendsData
             };
 
             return roicAiCompany;
