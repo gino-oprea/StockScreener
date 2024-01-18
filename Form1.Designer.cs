@@ -36,15 +36,9 @@ namespace StockScreener
             label35 = new System.Windows.Forms.Label();
             txtAvgFcfPerShareGrowth = new System.Windows.Forms.TextBox();
             label36 = new System.Windows.Forms.Label();
-            groupBox3 = new System.Windows.Forms.GroupBox();
-            rbCompCheckMarketWatch = new System.Windows.Forms.RadioButton();
-            rbCompCheckRoicAi = new System.Windows.Forms.RadioButton();
             label34 = new System.Windows.Forms.Label();
             txtAvgOperatingMarginGrowth = new System.Windows.Forms.TextBox();
             label32 = new System.Windows.Forms.Label();
-            groupBox2 = new System.Windows.Forms.GroupBox();
-            rbCacheCompCheck = new System.Windows.Forms.RadioButton();
-            rbFreshCompCheck = new System.Windows.Forms.RadioButton();
             label31 = new System.Windows.Forms.Label();
             label33 = new System.Windows.Forms.Label();
             txtTerminalMultiple = new System.Windows.Forms.TextBox();
@@ -91,14 +85,6 @@ namespace StockScreener
             label1 = new System.Windows.Forms.Label();
             txtTicker = new System.Windows.Forms.TextBox();
             tabSearchCompanies = new System.Windows.Forms.TabPage();
-            groupBox4 = new System.Windows.Forms.GroupBox();
-            rbCompSearchMarketWatch = new System.Windows.Forms.RadioButton();
-            rbCompSearchRoicAi = new System.Windows.Forms.RadioButton();
-            btnGetAllCompaniesInCache = new System.Windows.Forms.Button();
-            groupBox1 = new System.Windows.Forms.GroupBox();
-            rbCacheSearch = new System.Windows.Forms.RadioButton();
-            rbFreshSearch = new System.Windows.Forms.RadioButton();
-            chkIgnoreADR = new System.Windows.Forms.CheckBox();
             txtFilterAvgROIC = new System.Windows.Forms.TextBox();
             label28 = new System.Windows.Forms.Label();
             lblProgress = new System.Windows.Forms.Label();
@@ -118,24 +104,17 @@ namespace StockScreener
             pbLoadingCompanies = new System.Windows.Forms.PictureBox();
             gvCompanies = new System.Windows.Forms.DataGridView();
             btnGo = new System.Windows.Forms.Button();
-            txtURL = new System.Windows.Forms.TextBox();
-            label20 = new System.Windows.Forms.Label();
             lblErrorMessage = new System.Windows.Forms.Label();
             bgwCheckCompany = new System.ComponentModel.BackgroundWorker();
             bgwSearchCompanies = new System.ComponentModel.BackgroundWorker();
             tmrCompanies = new System.Windows.Forms.Timer(components);
             tmrTicker = new System.Windows.Forms.Timer(components);
-            bgwGetCache = new System.ComponentModel.BackgroundWorker();
             tabControl1.SuspendLayout();
             tabCheckCompany.SuspendLayout();
-            groupBox3.SuspendLayout();
-            groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gvIntrinsicVal).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbLoading).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gvFinancials).BeginInit();
             tabSearchCompanies.SuspendLayout();
-            groupBox4.SuspendLayout();
-            groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pbLoadingCompanies).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gvCompanies).BeginInit();
             SuspendLayout();
@@ -155,11 +134,9 @@ namespace StockScreener
             tabCheckCompany.Controls.Add(label35);
             tabCheckCompany.Controls.Add(txtAvgFcfPerShareGrowth);
             tabCheckCompany.Controls.Add(label36);
-            tabCheckCompany.Controls.Add(groupBox3);
             tabCheckCompany.Controls.Add(label34);
             tabCheckCompany.Controls.Add(txtAvgOperatingMarginGrowth);
             tabCheckCompany.Controls.Add(label32);
-            tabCheckCompany.Controls.Add(groupBox2);
             tabCheckCompany.Controls.Add(label31);
             tabCheckCompany.Controls.Add(label33);
             tabCheckCompany.Controls.Add(txtTerminalMultiple);
@@ -238,40 +215,6 @@ namespace StockScreener
             label36.TabIndex = 56;
             label36.Text = "Avg FCF per Share Growth";
             // 
-            // groupBox3
-            // 
-            groupBox3.Controls.Add(rbCompCheckMarketWatch);
-            groupBox3.Controls.Add(rbCompCheckRoicAi);
-            groupBox3.Location = new System.Drawing.Point(647, 0);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new System.Drawing.Size(194, 96);
-            groupBox3.TabIndex = 55;
-            groupBox3.TabStop = false;
-            // 
-            // rbCompCheckMarketWatch
-            // 
-            rbCompCheckMarketWatch.AutoSize = true;
-            rbCompCheckMarketWatch.Checked = true;
-            rbCompCheckMarketWatch.Location = new System.Drawing.Point(7, 56);
-            rbCompCheckMarketWatch.Name = "rbCompCheckMarketWatch";
-            rbCompCheckMarketWatch.Size = new System.Drawing.Size(117, 24);
-            rbCompCheckMarketWatch.TabIndex = 1;
-            rbCompCheckMarketWatch.TabStop = true;
-            rbCompCheckMarketWatch.Text = "MarketWatch";
-            rbCompCheckMarketWatch.UseVisualStyleBackColor = true;
-            rbCompCheckMarketWatch.Click += rbCompCheckMarketWatch_Click;
-            // 
-            // rbCompCheckRoicAi
-            // 
-            rbCompCheckRoicAi.AutoSize = true;
-            rbCompCheckRoicAi.Location = new System.Drawing.Point(6, 22);
-            rbCompCheckRoicAi.Name = "rbCompCheckRoicAi";
-            rbCompCheckRoicAi.Size = new System.Drawing.Size(74, 24);
-            rbCompCheckRoicAi.TabIndex = 0;
-            rbCompCheckRoicAi.Text = "Roic.ai";
-            rbCompCheckRoicAi.UseVisualStyleBackColor = true;
-            rbCompCheckRoicAi.Click += rbCompCheckRoicAi_Click;
-            // 
             // label34
             // 
             label34.AutoSize = true;
@@ -297,42 +240,10 @@ namespace StockScreener
             label32.TabIndex = 52;
             label32.Text = "Avg Operating Margin Growth";
             // 
-            // groupBox2
-            // 
-            groupBox2.Controls.Add(rbCacheCompCheck);
-            groupBox2.Controls.Add(rbFreshCompCheck);
-            groupBox2.Location = new System.Drawing.Point(497, 0);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new System.Drawing.Size(144, 96);
-            groupBox2.TabIndex = 51;
-            groupBox2.TabStop = false;
-            // 
-            // rbCacheCompCheck
-            // 
-            rbCacheCompCheck.AutoSize = true;
-            rbCacheCompCheck.Location = new System.Drawing.Point(20, 56);
-            rbCacheCompCheck.Name = "rbCacheCompCheck";
-            rbCacheCompCheck.Size = new System.Drawing.Size(116, 24);
-            rbCacheCompCheck.TabIndex = 1;
-            rbCacheCompCheck.Text = "Cache search";
-            rbCacheCompCheck.UseVisualStyleBackColor = true;
-            // 
-            // rbFreshCompCheck
-            // 
-            rbFreshCompCheck.AutoSize = true;
-            rbFreshCompCheck.Checked = true;
-            rbFreshCompCheck.Location = new System.Drawing.Point(20, 21);
-            rbFreshCompCheck.Name = "rbFreshCompCheck";
-            rbFreshCompCheck.Size = new System.Drawing.Size(110, 24);
-            rbFreshCompCheck.TabIndex = 0;
-            rbFreshCompCheck.TabStop = true;
-            rbFreshCompCheck.Text = "Fresh search";
-            rbFreshCompCheck.UseVisualStyleBackColor = true;
-            // 
             // label31
             // 
             label31.AutoSize = true;
-            label31.Location = new System.Drawing.Point(998, 748);
+            label31.Location = new System.Drawing.Point(1155, 748);
             label31.Name = "label31";
             label31.Size = new System.Drawing.Size(139, 20);
             label31.TabIndex = 50;
@@ -349,7 +260,7 @@ namespace StockScreener
             // 
             // txtTerminalMultiple
             // 
-            txtTerminalMultiple.Location = new System.Drawing.Point(926, 778);
+            txtTerminalMultiple.Location = new System.Drawing.Point(1083, 778);
             txtTerminalMultiple.Name = "txtTerminalMultiple";
             txtTerminalMultiple.Size = new System.Drawing.Size(65, 27);
             txtTerminalMultiple.TabIndex = 45;
@@ -357,7 +268,7 @@ namespace StockScreener
             // label26
             // 
             label26.AutoSize = true;
-            label26.Location = new System.Drawing.Point(789, 782);
+            label26.Location = new System.Drawing.Point(946, 782);
             label26.Name = "label26";
             label26.Size = new System.Drawing.Size(125, 20);
             label26.TabIndex = 44;
@@ -367,7 +278,7 @@ namespace StockScreener
             // 
             lblMarketCap.AutoSize = true;
             lblMarketCap.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            lblMarketCap.Location = new System.Drawing.Point(1156, 56);
+            lblMarketCap.Location = new System.Drawing.Point(987, 19);
             lblMarketCap.Name = "lblMarketCap";
             lblMarketCap.Size = new System.Drawing.Size(0, 23);
             lblMarketCap.TabIndex = 43;
@@ -376,7 +287,7 @@ namespace StockScreener
             // 
             label27.AutoSize = true;
             label27.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label27.Location = new System.Drawing.Point(1013, 56);
+            label27.Location = new System.Drawing.Point(844, 19);
             label27.Name = "label27";
             label27.Size = new System.Drawing.Size(137, 23);
             label27.TabIndex = 42;
@@ -410,7 +321,7 @@ namespace StockScreener
             // label19
             // 
             label19.AutoSize = true;
-            label19.Location = new System.Drawing.Point(997, 715);
+            label19.Location = new System.Drawing.Point(1154, 715);
             label19.Name = "label19";
             label19.Size = new System.Drawing.Size(21, 20);
             label19.TabIndex = 35;
@@ -418,7 +329,7 @@ namespace StockScreener
             // 
             // txtGrowth
             // 
-            txtGrowth.Location = new System.Drawing.Point(926, 712);
+            txtGrowth.Location = new System.Drawing.Point(1083, 712);
             txtGrowth.Name = "txtGrowth";
             txtGrowth.Size = new System.Drawing.Size(65, 27);
             txtGrowth.TabIndex = 34;
@@ -426,7 +337,7 @@ namespace StockScreener
             // label18
             // 
             label18.AutoSize = true;
-            label18.Location = new System.Drawing.Point(857, 715);
+            label18.Location = new System.Drawing.Point(1014, 715);
             label18.Name = "label18";
             label18.Size = new System.Drawing.Size(57, 20);
             label18.TabIndex = 33;
@@ -434,7 +345,7 @@ namespace StockScreener
             // 
             // txtLastFreeCashFlow
             // 
-            txtLastFreeCashFlow.Location = new System.Drawing.Point(926, 745);
+            txtLastFreeCashFlow.Location = new System.Drawing.Point(1083, 745);
             txtLastFreeCashFlow.Name = "txtLastFreeCashFlow";
             txtLastFreeCashFlow.Size = new System.Drawing.Size(65, 27);
             txtLastFreeCashFlow.TabIndex = 32;
@@ -442,7 +353,7 @@ namespace StockScreener
             // label17
             // 
             label17.AutoSize = true;
-            label17.Location = new System.Drawing.Point(754, 748);
+            label17.Location = new System.Drawing.Point(911, 748);
             label17.Name = "label17";
             label17.Size = new System.Drawing.Size(160, 20);
             label17.TabIndex = 31;
@@ -451,7 +362,7 @@ namespace StockScreener
             // label16
             // 
             label16.AutoSize = true;
-            label16.Location = new System.Drawing.Point(997, 681);
+            label16.Location = new System.Drawing.Point(1154, 681);
             label16.Name = "label16";
             label16.Size = new System.Drawing.Size(21, 20);
             label16.TabIndex = 30;
@@ -459,7 +370,7 @@ namespace StockScreener
             // 
             // txtDiscountInterestRate
             // 
-            txtDiscountInterestRate.Location = new System.Drawing.Point(926, 679);
+            txtDiscountInterestRate.Location = new System.Drawing.Point(1083, 679);
             txtDiscountInterestRate.Name = "txtDiscountInterestRate";
             txtDiscountInterestRate.Size = new System.Drawing.Size(65, 27);
             txtDiscountInterestRate.TabIndex = 29;
@@ -468,7 +379,7 @@ namespace StockScreener
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new System.Drawing.Point(760, 682);
+            label15.Location = new System.Drawing.Point(917, 682);
             label15.Name = "label15";
             label15.Size = new System.Drawing.Size(154, 20);
             label15.TabIndex = 28;
@@ -478,7 +389,7 @@ namespace StockScreener
             // 
             label14.AutoSize = true;
             label14.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label14.Location = new System.Drawing.Point(763, 559);
+            label14.Location = new System.Drawing.Point(920, 559);
             label14.Name = "label14";
             label14.Size = new System.Drawing.Size(159, 30);
             label14.TabIndex = 27;
@@ -489,7 +400,7 @@ namespace StockScreener
             gvIntrinsicVal.AllowUserToAddRows = false;
             gvIntrinsicVal.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             gvIntrinsicVal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            gvIntrinsicVal.Location = new System.Drawing.Point(763, 592);
+            gvIntrinsicVal.Location = new System.Drawing.Point(920, 592);
             gvIntrinsicVal.Name = "gvIntrinsicVal";
             gvIntrinsicVal.RowHeadersWidth = 51;
             gvIntrinsicVal.RowTemplate.Height = 29;
@@ -498,19 +409,21 @@ namespace StockScreener
             // 
             // btnCalculateIntrinsicValue
             // 
-            btnCalculateIntrinsicValue.Location = new System.Drawing.Point(1048, 677);
+            btnCalculateIntrinsicValue.BackColor = System.Drawing.Color.GreenYellow;
+            btnCalculateIntrinsicValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            btnCalculateIntrinsicValue.Location = new System.Drawing.Point(1434, 759);
             btnCalculateIntrinsicValue.Name = "btnCalculateIntrinsicValue";
-            btnCalculateIntrinsicValue.Size = new System.Drawing.Size(243, 29);
+            btnCalculateIntrinsicValue.Size = new System.Drawing.Size(280, 50);
             btnCalculateIntrinsicValue.TabIndex = 25;
-            btnCalculateIntrinsicValue.Text = "Calculate Intrinsic Value";
-            btnCalculateIntrinsicValue.UseVisualStyleBackColor = true;
+            btnCalculateIntrinsicValue.Text = "Recalculate Intrinsic Value";
+            btnCalculateIntrinsicValue.UseVisualStyleBackColor = false;
             btnCalculateIntrinsicValue.Click += btnCalculateIntrinsicValue_Click;
             // 
             // lblCurrentSharePrice
             // 
             lblCurrentSharePrice.AutoSize = true;
             lblCurrentSharePrice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            lblCurrentSharePrice.Location = new System.Drawing.Point(1156, 79);
+            lblCurrentSharePrice.Location = new System.Drawing.Point(987, 42);
             lblCurrentSharePrice.Name = "lblCurrentSharePrice";
             lblCurrentSharePrice.Size = new System.Drawing.Size(0, 23);
             lblCurrentSharePrice.TabIndex = 24;
@@ -519,7 +432,7 @@ namespace StockScreener
             // 
             label13.AutoSize = true;
             label13.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label13.Location = new System.Drawing.Point(982, 79);
+            label13.Location = new System.Drawing.Point(813, 42);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(168, 23);
             label13.TabIndex = 23;
@@ -637,15 +550,16 @@ namespace StockScreener
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(847, 9);
+            label3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            label3.Location = new System.Drawing.Point(786, 68);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(160, 20);
+            label3.Size = new System.Drawing.Size(195, 23);
             label3.TabIndex = 9;
             label3.Text = "Shares Outstanding (B)";
             // 
             // txtSharesOutstanding
             // 
-            txtSharesOutstanding.Location = new System.Drawing.Point(1013, 6);
+            txtSharesOutstanding.Location = new System.Drawing.Point(987, 67);
             txtSharesOutstanding.Name = "txtSharesOutstanding";
             txtSharesOutstanding.Size = new System.Drawing.Size(196, 27);
             txtSharesOutstanding.TabIndex = 8;
@@ -726,10 +640,6 @@ namespace StockScreener
             // 
             // tabSearchCompanies
             // 
-            tabSearchCompanies.Controls.Add(groupBox4);
-            tabSearchCompanies.Controls.Add(btnGetAllCompaniesInCache);
-            tabSearchCompanies.Controls.Add(groupBox1);
-            tabSearchCompanies.Controls.Add(chkIgnoreADR);
             tabSearchCompanies.Controls.Add(txtFilterAvgROIC);
             tabSearchCompanies.Controls.Add(label28);
             tabSearchCompanies.Controls.Add(lblProgress);
@@ -749,8 +659,6 @@ namespace StockScreener
             tabSearchCompanies.Controls.Add(pbLoadingCompanies);
             tabSearchCompanies.Controls.Add(gvCompanies);
             tabSearchCompanies.Controls.Add(btnGo);
-            tabSearchCompanies.Controls.Add(txtURL);
-            tabSearchCompanies.Controls.Add(label20);
             tabSearchCompanies.Location = new System.Drawing.Point(4, 29);
             tabSearchCompanies.Name = "tabSearchCompanies";
             tabSearchCompanies.Padding = new System.Windows.Forms.Padding(3);
@@ -759,97 +667,9 @@ namespace StockScreener
             tabSearchCompanies.Text = "Search Companies";
             tabSearchCompanies.UseVisualStyleBackColor = true;
             // 
-            // groupBox4
-            // 
-            groupBox4.Controls.Add(rbCompSearchMarketWatch);
-            groupBox4.Controls.Add(rbCompSearchRoicAi);
-            groupBox4.Location = new System.Drawing.Point(939, 6);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new System.Drawing.Size(138, 65);
-            groupBox4.TabIndex = 27;
-            groupBox4.TabStop = false;
-            // 
-            // rbCompSearchMarketWatch
-            // 
-            rbCompSearchMarketWatch.AutoSize = true;
-            rbCompSearchMarketWatch.Checked = true;
-            rbCompSearchMarketWatch.Location = new System.Drawing.Point(7, 35);
-            rbCompSearchMarketWatch.Name = "rbCompSearchMarketWatch";
-            rbCompSearchMarketWatch.Size = new System.Drawing.Size(117, 24);
-            rbCompSearchMarketWatch.TabIndex = 1;
-            rbCompSearchMarketWatch.TabStop = true;
-            rbCompSearchMarketWatch.Text = "MarketWatch";
-            rbCompSearchMarketWatch.UseVisualStyleBackColor = true;
-            rbCompSearchMarketWatch.Click += rbCompSearchMarketWatch_Click;
-            // 
-            // rbCompSearchRoicAi
-            // 
-            rbCompSearchRoicAi.AutoSize = true;
-            rbCompSearchRoicAi.Location = new System.Drawing.Point(7, 13);
-            rbCompSearchRoicAi.Name = "rbCompSearchRoicAi";
-            rbCompSearchRoicAi.Size = new System.Drawing.Size(74, 24);
-            rbCompSearchRoicAi.TabIndex = 0;
-            rbCompSearchRoicAi.Text = "Roic.ai";
-            rbCompSearchRoicAi.UseVisualStyleBackColor = true;
-            rbCompSearchRoicAi.Click += rbCompSearchRoicAi_Click;
-            // 
-            // btnGetAllCompaniesInCache
-            // 
-            btnGetAllCompaniesInCache.Location = new System.Drawing.Point(1110, 86);
-            btnGetAllCompaniesInCache.Name = "btnGetAllCompaniesInCache";
-            btnGetAllCompaniesInCache.Size = new System.Drawing.Size(151, 66);
-            btnGetAllCompaniesInCache.TabIndex = 26;
-            btnGetAllCompaniesInCache.Text = "Get all companies in cache";
-            btnGetAllCompaniesInCache.UseVisualStyleBackColor = true;
-            btnGetAllCompaniesInCache.Click += btnGetAllCompaniesInCache_Click;
-            // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(rbCacheSearch);
-            groupBox1.Controls.Add(rbFreshSearch);
-            groupBox1.Location = new System.Drawing.Point(1110, 6);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(151, 65);
-            groupBox1.TabIndex = 25;
-            groupBox1.TabStop = false;
-            // 
-            // rbCacheSearch
-            // 
-            rbCacheSearch.AutoSize = true;
-            rbCacheSearch.Checked = true;
-            rbCacheSearch.Location = new System.Drawing.Point(7, 35);
-            rbCacheSearch.Name = "rbCacheSearch";
-            rbCacheSearch.Size = new System.Drawing.Size(116, 24);
-            rbCacheSearch.TabIndex = 1;
-            rbCacheSearch.TabStop = true;
-            rbCacheSearch.Text = "Cache search";
-            rbCacheSearch.UseVisualStyleBackColor = true;
-            // 
-            // rbFreshSearch
-            // 
-            rbFreshSearch.AutoSize = true;
-            rbFreshSearch.Location = new System.Drawing.Point(7, 13);
-            rbFreshSearch.Name = "rbFreshSearch";
-            rbFreshSearch.Size = new System.Drawing.Size(110, 24);
-            rbFreshSearch.TabIndex = 0;
-            rbFreshSearch.Text = "Fresh search";
-            rbFreshSearch.UseVisualStyleBackColor = true;
-            // 
-            // chkIgnoreADR
-            // 
-            chkIgnoreADR.AutoSize = true;
-            chkIgnoreADR.Checked = true;
-            chkIgnoreADR.CheckState = System.Windows.Forms.CheckState.Checked;
-            chkIgnoreADR.Location = new System.Drawing.Point(657, 71);
-            chkIgnoreADR.Name = "chkIgnoreADR";
-            chkIgnoreADR.Size = new System.Drawing.Size(184, 24);
-            chkIgnoreADR.TabIndex = 24;
-            chkIgnoreADR.Text = "Ignore ADR companies";
-            chkIgnoreADR.UseVisualStyleBackColor = true;
-            // 
             // txtFilterAvgROIC
             // 
-            txtFilterAvgROIC.Location = new System.Drawing.Point(619, 113);
+            txtFilterAvgROIC.Location = new System.Drawing.Point(615, 48);
             txtFilterAvgROIC.Name = "txtFilterAvgROIC";
             txtFilterAvgROIC.Size = new System.Drawing.Size(32, 27);
             txtFilterAvgROIC.TabIndex = 22;
@@ -858,7 +678,7 @@ namespace StockScreener
             // label28
             // 
             label28.AutoSize = true;
-            label28.Location = new System.Drawing.Point(488, 117);
+            label28.Location = new System.Drawing.Point(484, 52);
             label28.Name = "label28";
             label28.Size = new System.Drawing.Size(124, 20);
             label28.TabIndex = 21;
@@ -868,7 +688,7 @@ namespace StockScreener
             // 
             lblProgress.AutoSize = true;
             lblProgress.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            lblProgress.Location = new System.Drawing.Point(939, 121);
+            lblProgress.Location = new System.Drawing.Point(1465, 41);
             lblProgress.Name = "lblProgress";
             lblProgress.Size = new System.Drawing.Size(70, 20);
             lblProgress.TabIndex = 20;
@@ -878,24 +698,27 @@ namespace StockScreener
             // 
             cbFilterValue.FormattingEnabled = true;
             cbFilterValue.Items.AddRange(new object[] { "Intrinsic Value", "MOS 10%", "MOS 30%", "MOS 50%", "Premium 10%", "Premium 20%", "Unlimited" });
-            cbFilterValue.Location = new System.Drawing.Point(657, 112);
+            cbFilterValue.Location = new System.Drawing.Point(657, 6);
             cbFilterValue.Name = "cbFilterValue";
             cbFilterValue.Size = new System.Drawing.Size(184, 28);
             cbFilterValue.TabIndex = 19;
             // 
             // btnStop
             // 
-            btnStop.Location = new System.Drawing.Point(847, 63);
+            btnStop.BackColor = System.Drawing.Color.Red;
+            btnStop.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            btnStop.ForeColor = System.Drawing.Color.White;
+            btnStop.Location = new System.Drawing.Point(1134, 3);
             btnStop.Name = "btnStop";
-            btnStop.Size = new System.Drawing.Size(57, 29);
+            btnStop.Size = new System.Drawing.Size(220, 73);
             btnStop.TabIndex = 18;
             btnStop.Text = "Stop";
-            btnStop.UseVisualStyleBackColor = true;
+            btnStop.UseVisualStyleBackColor = false;
             btnStop.Click += btnStop_Click;
             // 
             // txtFilterRateOfReturn
             // 
-            txtFilterRateOfReturn.Location = new System.Drawing.Point(619, 72);
+            txtFilterRateOfReturn.Location = new System.Drawing.Point(615, 7);
             txtFilterRateOfReturn.Name = "txtFilterRateOfReturn";
             txtFilterRateOfReturn.Size = new System.Drawing.Size(32, 27);
             txtFilterRateOfReturn.TabIndex = 15;
@@ -904,7 +727,7 @@ namespace StockScreener
             // label25
             // 
             label25.AutoSize = true;
-            label25.Location = new System.Drawing.Point(488, 75);
+            label25.Location = new System.Drawing.Point(484, 10);
             label25.Name = "label25";
             label25.Size = new System.Drawing.Size(125, 20);
             label25.TabIndex = 14;
@@ -912,7 +735,7 @@ namespace StockScreener
             // 
             // txtFilterAvgFcfGrowth
             // 
-            txtFilterAvgFcfGrowth.Location = new System.Drawing.Point(438, 114);
+            txtFilterAvgFcfGrowth.Location = new System.Drawing.Point(434, 49);
             txtFilterAvgFcfGrowth.Name = "txtFilterAvgFcfGrowth";
             txtFilterAvgFcfGrowth.Size = new System.Drawing.Size(34, 27);
             txtFilterAvgFcfGrowth.TabIndex = 13;
@@ -921,7 +744,7 @@ namespace StockScreener
             // label24
             // 
             label24.AutoSize = true;
-            label24.Location = new System.Drawing.Point(266, 117);
+            label24.Location = new System.Drawing.Point(262, 52);
             label24.Name = "label24";
             label24.Size = new System.Drawing.Size(165, 20);
             label24.TabIndex = 12;
@@ -929,7 +752,7 @@ namespace StockScreener
             // 
             // txtFilterAvgEPSGrowth
             // 
-            txtFilterAvgEPSGrowth.Location = new System.Drawing.Point(438, 72);
+            txtFilterAvgEPSGrowth.Location = new System.Drawing.Point(434, 7);
             txtFilterAvgEPSGrowth.Name = "txtFilterAvgEPSGrowth";
             txtFilterAvgEPSGrowth.Size = new System.Drawing.Size(34, 27);
             txtFilterAvgEPSGrowth.TabIndex = 11;
@@ -938,7 +761,7 @@ namespace StockScreener
             // label23
             // 
             label23.AutoSize = true;
-            label23.Location = new System.Drawing.Point(266, 75);
+            label23.Location = new System.Drawing.Point(262, 10);
             label23.Name = "label23";
             label23.Size = new System.Drawing.Size(166, 20);
             label23.TabIndex = 10;
@@ -946,7 +769,7 @@ namespace StockScreener
             // 
             // txtFilterAvgRevGrowth
             // 
-            txtFilterAvgRevGrowth.Location = new System.Drawing.Point(213, 114);
+            txtFilterAvgRevGrowth.Location = new System.Drawing.Point(209, 49);
             txtFilterAvgRevGrowth.Name = "txtFilterAvgRevGrowth";
             txtFilterAvgRevGrowth.Size = new System.Drawing.Size(37, 27);
             txtFilterAvgRevGrowth.TabIndex = 9;
@@ -955,7 +778,7 @@ namespace StockScreener
             // label22
             // 
             label22.AutoSize = true;
-            label22.Location = new System.Drawing.Point(13, 116);
+            label22.Location = new System.Drawing.Point(9, 51);
             label22.Name = "label22";
             label22.Size = new System.Drawing.Size(194, 20);
             label22.TabIndex = 8;
@@ -963,7 +786,7 @@ namespace StockScreener
             // 
             // txtFilterAvgEqGrowth
             // 
-            txtFilterAvgEqGrowth.Location = new System.Drawing.Point(213, 72);
+            txtFilterAvgEqGrowth.Location = new System.Drawing.Point(209, 7);
             txtFilterAvgEqGrowth.Name = "txtFilterAvgEqGrowth";
             txtFilterAvgEqGrowth.Size = new System.Drawing.Size(37, 27);
             txtFilterAvgEqGrowth.TabIndex = 7;
@@ -972,7 +795,7 @@ namespace StockScreener
             // label21
             // 
             label21.AutoSize = true;
-            label21.Location = new System.Drawing.Point(24, 75);
+            label21.Location = new System.Drawing.Point(20, 10);
             label21.Name = "label21";
             label21.Size = new System.Drawing.Size(183, 20);
             label21.TabIndex = 6;
@@ -982,7 +805,7 @@ namespace StockScreener
             // 
             lblTickerInProcess.AutoSize = true;
             lblTickerInProcess.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            lblTickerInProcess.Location = new System.Drawing.Point(967, 86);
+            lblTickerInProcess.Location = new System.Drawing.Point(1493, 6);
             lblTickerInProcess.Name = "lblTickerInProcess";
             lblTickerInProcess.Size = new System.Drawing.Size(51, 20);
             lblTickerInProcess.TabIndex = 5;
@@ -991,7 +814,7 @@ namespace StockScreener
             // pbLoadingCompanies
             // 
             pbLoadingCompanies.Image = (System.Drawing.Image)resources.GetObject("pbLoadingCompanies.Image");
-            pbLoadingCompanies.Location = new System.Drawing.Point(939, 86);
+            pbLoadingCompanies.Location = new System.Drawing.Point(1465, 6);
             pbLoadingCompanies.Name = "pbLoadingCompanies";
             pbLoadingCompanies.Size = new System.Drawing.Size(22, 20);
             pbLoadingCompanies.TabIndex = 4;
@@ -1003,38 +826,23 @@ namespace StockScreener
             gvCompanies.AllowUserToAddRows = false;
             gvCompanies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             gvCompanies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            gvCompanies.Location = new System.Drawing.Point(6, 158);
+            gvCompanies.Location = new System.Drawing.Point(6, 82);
             gvCompanies.Name = "gvCompanies";
             gvCompanies.RowHeadersWidth = 51;
-            gvCompanies.Size = new System.Drawing.Size(1705, 627);
+            gvCompanies.Size = new System.Drawing.Size(1705, 731);
             gvCompanies.TabIndex = 3;
             // 
             // btnGo
             // 
-            btnGo.Location = new System.Drawing.Point(847, 27);
+            btnGo.BackColor = System.Drawing.Color.LawnGreen;
+            btnGo.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            btnGo.Location = new System.Drawing.Point(908, 3);
             btnGo.Name = "btnGo";
-            btnGo.Size = new System.Drawing.Size(57, 29);
+            btnGo.Size = new System.Drawing.Size(220, 73);
             btnGo.TabIndex = 2;
-            btnGo.Text = "Go";
-            btnGo.UseVisualStyleBackColor = true;
+            btnGo.Text = "Start";
+            btnGo.UseVisualStyleBackColor = false;
             btnGo.Click += btnGo_Click;
-            // 
-            // txtURL
-            // 
-            txtURL.Location = new System.Drawing.Point(70, 27);
-            txtURL.Name = "txtURL";
-            txtURL.Size = new System.Drawing.Size(771, 27);
-            txtURL.TabIndex = 1;
-            txtURL.Text = "https://finviz.com/screener.ashx?v=111&f=cap_smallover";
-            // 
-            // label20
-            // 
-            label20.AutoSize = true;
-            label20.Location = new System.Drawing.Point(16, 30);
-            label20.Name = "label20";
-            label20.Size = new System.Drawing.Size(38, 20);
-            label20.TabIndex = 0;
-            label20.Text = "URL:";
             // 
             // lblErrorMessage
             // 
@@ -1067,12 +875,6 @@ namespace StockScreener
             tmrTicker.Interval = 500;
             tmrTicker.Tick += tmrTicker_Tick;
             // 
-            // bgwGetCache
-            // 
-            bgwGetCache.WorkerSupportsCancellation = true;
-            bgwGetCache.DoWork += bgwGetCache_DoWork;
-            bgwGetCache.RunWorkerCompleted += bgwGetCache_RunWorkerCompleted;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -1086,19 +888,11 @@ namespace StockScreener
             tabControl1.ResumeLayout(false);
             tabCheckCompany.ResumeLayout(false);
             tabCheckCompany.PerformLayout();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)gvIntrinsicVal).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbLoading).EndInit();
             ((System.ComponentModel.ISupportInitialize)gvFinancials).EndInit();
             tabSearchCompanies.ResumeLayout(false);
             tabSearchCompanies.PerformLayout();
-            groupBox4.ResumeLayout(false);
-            groupBox4.PerformLayout();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pbLoadingCompanies).EndInit();
             ((System.ComponentModel.ISupportInitialize)gvCompanies).EndInit();
             ResumeLayout(false);
@@ -1149,8 +943,6 @@ namespace StockScreener
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.DataGridView gvCompanies;
         private System.Windows.Forms.Button btnGo;
-        private System.Windows.Forms.TextBox txtURL;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.PictureBox pbLoadingCompanies;
         private System.ComponentModel.BackgroundWorker bgwCheckCompany;
         private System.ComponentModel.BackgroundWorker bgwSearchCompanies;
@@ -1179,26 +971,15 @@ namespace StockScreener
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox txtTerminalMultiple;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.CheckBox chkIgnoreADR;
         private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton rbCacheSearch;
-        private System.Windows.Forms.RadioButton rbFreshSearch;
-        private System.Windows.Forms.Button btnGetAllCompaniesInCache;
-        private System.ComponentModel.BackgroundWorker bgwGetCache;
+           
         private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton rbCacheCompCheck;
-        private System.Windows.Forms.RadioButton rbFreshCompCheck;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.TextBox txtAvgOperatingMarginGrowth;
         private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RadioButton rbCompCheckMarketWatch;
-        private System.Windows.Forms.RadioButton rbCompCheckRoicAi;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.RadioButton rbCompSearchMarketWatch;
-        private System.Windows.Forms.RadioButton rbCompSearchRoicAi;
+        
+        
+        
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.TextBox txtAvgFcfPerShareGrowth;
         private System.Windows.Forms.Label label36;

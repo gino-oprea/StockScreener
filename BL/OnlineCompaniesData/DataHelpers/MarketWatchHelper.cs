@@ -107,7 +107,6 @@ namespace BL.OnlineCompaniesData.DataHelpers
 
             return years;
         }
-
         private static List<YearVal> GetFinancialData(List<string> rawLines, string stringToStartRecording, string stringToStopRecording, bool leaveNumberAsIs = false)
         {
             List<int> years = GetAvailableYears(rawLines);
@@ -155,7 +154,6 @@ namespace BL.OnlineCompaniesData.DataHelpers
 
             return financialData;
         }
-
         private static decimal? ConvertStringToBillions(string value)
         {
             if (value != "-" && value != "—")

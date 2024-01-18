@@ -15,21 +15,21 @@ namespace BL.OnlineCompaniesData.DataHelpers
         public static void GetCompanyFinancials_Morningstar_Old(string ticker, Company company)
         {
 
-            string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/7191f38.js", "GET", null, false);
+            string raw_api_key_html = BL.HttpReq.GetUrlHttpClientAsync("https://www.morningstar.com/assets/7191f38.js", null, "GET", null, null, false).Result.Result;
             string api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
             Thread.Sleep(100);
             Hashtable headers = new Hashtable();
             headers.Add("x-api-key", api_key);
             headers.Add("Host", "www.morningstar.com");
             headers.Add("Accept-Encoding", "gzip, deflate, br");
-            string raw_searchResults = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/api/v1/search/entities?q=" + ticker + "&limit=6&autocomplete=true", "GET", null, false, headers);
+            string raw_searchResults = BL.HttpReq.GetUrlHttpClientAsync("https://www.morningstar.com/api/v1/search/entities?q=" + ticker + "&limit=6&autocomplete=true", null, "GET", null, null, false).Result.Result;
             MorningstarAutocomplete searchResults = JsonConvert.DeserializeObject<MorningstarAutocomplete>(raw_searchResults);
             string keyRatiosUrl = "https://financials.morningstar.com/finan/financials/getKeyStatPart.html?&t=" + searchResults.results[0].performanceId + "&region=usa&culture=en-US&cur=&order=asc";
             string financialsUrl = "https://financials.morningstar.com/finan/financials/getFinancePart.html?&t=" + searchResults.results[0].performanceId + "&region=usa&culture=en-US&cur=&order=asc";
             Thread.Sleep(100);
-            string morningstar_keyratios_html = BL.HttpReq.GetUrlHttpWebRequest(keyRatiosUrl, "GET", null, false);
+            string morningstar_keyratios_html = BL.HttpReq.GetUrlHttpClientAsync(keyRatiosUrl, null, "GET", null, null, false).Result.Result;
             Thread.Sleep(100);
-            string morningstar_financials_html = BL.HttpReq.GetUrlHttpWebRequest(financialsUrl, "GET", null, false);
+            string morningstar_financials_html = BL.HttpReq.GetUrlHttpClientAsync(financialsUrl, null, "GET", null, null, false).Result.Result;
 
             List<string> rawLines_keyRatios = morningstar_keyratios_html.Split("<", StringSplitOptions.RemoveEmptyEntries).ToList();
             List<string> rawLines_financials = morningstar_financials_html.Split("<", StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -114,7 +114,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             List<string> apiKeyUrls = new List<string>();
             
 
-            string raw_api_js_asset_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com", "GET", null, false);
+            string raw_api_js_asset_html = BL.HttpReq.GetUrlHttpClientAsync("https://www.morningstar.com", null, "GET", null, null, false).Result.Result;
             string rawLine;
             StringReader sr = new StringReader(raw_api_js_asset_html);
             List<string> rawLines = new List<string>();
@@ -160,7 +160,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 if (apiKeyUrl != "")
                 {
                     string Url = "https://www.morningstar.com" + apiKeyUrl;
-                    string raw_api_key_html = BL.HttpReq.GetUrlHttpWebRequest(Url, "GET", null, false);
+                    string raw_api_key_html = BL.HttpReq.GetUrlHttpClientAsync(Url, null, "GET", null, null, false).Result.Result;
                     try
                     {
                         api_key = HtmlHelper.ExtractString(raw_api_key_html, "[\"x-api-key\"]=\"", "\")}", false);
@@ -178,13 +178,13 @@ namespace BL.OnlineCompaniesData.DataHelpers
             headers.Add("x-api-key", api_key);
             headers.Add("Host", "www.morningstar.com");
             headers.Add("Accept-Encoding", "gzip, deflate, br");
-            string raw_searchResults = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/api/v1/search/entities?q=" + ticker + "&limit=6&autocomplete=true", "GET", null, false, headers);
+            string raw_searchResults = BL.HttpReq.GetUrlHttpClientAsync("https://www.morningstar.com/api/v1/search/entities?q=" + ticker + "&limit=6&autocomplete=true", null, "GET", null, null, false).Result.Result;
             MorningstarAutocomplete searchResults = JsonConvert.DeserializeObject<MorningstarAutocomplete>(raw_searchResults);
 
             if (searchResults.results.Count == 0)
                 return;
 
-            string raw_key_ratios_api_key_html = BL.HttpReq.GetUrlHttpWebRequest("https://www.morningstar.com/assets/quotes/2.9.0/sal-components.umd.min.51.js", "GET", null, false);
+            string raw_key_ratios_api_key_html = BL.HttpReq.GetUrlHttpClientAsync("https://www.morningstar.com/assets/quotes/2.9.0/sal-components.umd.min.51.js", null, "GET", null, null, false).Result.Result;
             string key_ratios_api_key = HtmlHelper.ExtractString(raw_key_ratios_api_key_html, "keyApigee:\"", "\",", false);
 
 
@@ -194,7 +194,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             headers_keyRatios.Add("Content-Type", "application/json; charset=utf-8");
             string keyRatiosUrl = "https://api-global.morningstar.com/sal-service/v1/stock/keyStats/OperatingAndEfficiency/" +
                 searchResults.results[0].performanceId + "?languageId=en&locale=en&clientId=undefined&component=sal-components-key-stats-oper-efficiency&version=3.71.0";
-            string morningstar_keyratios_json = BL.HttpReq.GetUrlHttpWebRequest(keyRatiosUrl, "GET", null, false, headers_keyRatios);
+            string morningstar_keyratios_json = BL.HttpReq.GetUrlHttpClientAsync(keyRatiosUrl, null, "GET", null, null, false).Result.Result;
 
             if (morningstar_keyratios_json != null)
             {

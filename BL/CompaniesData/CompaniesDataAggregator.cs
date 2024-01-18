@@ -55,7 +55,8 @@ namespace BL.CompaniesData
         
         private void GetGeneralInfo(string tickerSymbol)
         {
-            string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + tickerSymbol + "?mod=over_search", "GET", null, false);            
+            var httpRes = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + tickerSymbol + "?mod=over_search", null, "GET", null, null, false).Result;
+            string generalDetails = httpRes.Result;
             if (generalDetails != null)
                 MarketWatchHelper.GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
         }
@@ -102,34 +103,7 @@ namespace BL.CompaniesData
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             // Write the JSON string to the file
             await File.WriteAllTextAsync(filePath, json);
-        }
-
-        private List<YearVal> calculateFCFperShare(Company company)
-        {
-            List<YearVal> FCFperShare = new List<YearVal>();
-
-            for (int i = 0; i < company.Financials.FreeCashFlow.Count; i++)
-            {
-                decimal? fcfPerShare = null;
-                if (company.Financials.Shares != null && company.Financials.Shares[i].Value != 0)
-                    fcfPerShare = company.Financials.FreeCashFlow[i].Value / company.Financials.Shares[i].Value;
-
-                YearVal yearVal = new YearVal();
-                yearVal.Year = company.Financials.FreeCashFlow[i].Year;
-                yearVal.Value = fcfPerShare;
-
-                if (i > 0)
-                {
-                    var newVal = yearVal.Value;
-                    var oldVal = FCFperShare[i - 1].Value;
-                    if (newVal != null && oldVal != null && oldVal != 0)
-                        yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
-                }
-                FCFperShare.Add(yearVal);
-            }
-
-            return FCFperShare;
-        }
+        }        
         private RoicAiCompany MapJsonToRoicAiCompany(string companyFolder, string ticker)
         {
             CompanySummary companySummary = GetJsonToModel<CompanySummary>(Path.Combine(companyFolder, $"{ticker}_Summary.json"));

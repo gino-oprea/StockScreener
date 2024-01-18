@@ -22,20 +22,16 @@ namespace StockScreener
 
         Company company;
 
-        CompanyFilter companyFilter;
-        string Url;
+        CompanyFilter companyFilter;        
 
         BindingSource bindingSourceKeyValues;
         BindingSource bindingSourceIntrinsicValues;
 
         List<Company> filteredCompanies;
         BindingSource bindingSourcefilteredCompanies;
-
-        string TickerInProgess;
+        
         bool isSearchInProgress = false;
-
-        IDataAggregator dataAggregator_checkCompany;
-        IDataAggregator dataAggregator_searchCompany;
+        
         CompanyScreener companyScreener;
         
 
@@ -45,8 +41,7 @@ namespace StockScreener
 
             cbFilterValue.SelectedIndex = 2;
 
-            initDataAggregator_CheckCompany();
-            initDataAggregator_SearchCompany();
+            companyScreener = new CompanyScreener();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -140,16 +135,13 @@ namespace StockScreener
 
         private void btnGo_Click(object sender, EventArgs e)
         {
-            if (txtURL.Text.Trim() != "")
-            {
                 gvCompanies.DataSource = null;
                 gvCompanies.Rows.Clear();
 
                 lblErrorMessage.Text = "";
                 lblTickerInProcess.Text = "";
                 lblProgress.Text = "";
-
-                Url = txtURL.Text;
+                
                 companyFilter = GetFilter();
 
                 try
@@ -164,12 +156,11 @@ namespace StockScreener
                 {
                     lblErrorMessage.Text = ex.Message;
                 }
-            }
+            
         }
         private void btnStop_Click(object sender, EventArgs e)
         {
-            bgwSearchCompanies.CancelAsync();
-            bgwGetCache.CancelAsync();
+            bgwSearchCompanies.CancelAsync();            
         }
 
         private CompanyFilter GetFilter()
@@ -185,12 +176,6 @@ namespace StockScreener
             filter.MinAvgEPSGrowth = Convert.ToInt32(txtFilterAvgEPSGrowth.Text);
             filter.MinAvgFreeCashFlowGrowth = Convert.ToInt32(txtFilterAvgFcfGrowth.Text);
             filter.MinAvgROIC = Convert.ToInt32(txtFilterAvgROIC.Text);
-
-            //filter.IsAllGrowthPositive = rbAllGrowthPositive.Checked;
-            //filter.AllowOneNegativeYear = chkOneYearNegative.Checked;
-            filter.IgnoreADRCompanies = chkIgnoreADR.Checked;
-            //filter.TerminalMultiple = Convert.ToInt32(txtFilterTerminalMultiple.Text);
-            filter.IsFreshSearch = rbFreshSearch.Checked;
 
             return filter;
         }
@@ -243,9 +228,7 @@ namespace StockScreener
             CompaniesDataAggregator companiesDataAggregator =new CompaniesDataAggregator();
             company = companiesDataAggregator.GetCompany(txtTicker.Text.Trim());
             if (company == null)
-                throw new Exception("Company has no data or error occured!");
-
-            //company = dataAggregator_checkCompany.GetCompanyData(txtTicker.Text.Trim(), rbCacheCompCheck.Checked);
+                throw new Exception("Company has no data or error occured!");            
 
             DataTable dt = BuildDataTable();
             bindingSourceKeyValues = new BindingSource();
@@ -255,8 +238,7 @@ namespace StockScreener
             bool converted = int.TryParse(txtDiscountInterestRate.Text.Trim(), out discount);
             if (!converted)
                 discount = 10;
-
-            //var values = company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: discount, terminalMultiple: company.Average_P_FCF_Multiple.Value);
+            
             DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(new List<decimal> {
                 company.IntrinsicValue.Value,
                 company.IntrinsicValue_Discounted10.Value,
@@ -279,10 +261,8 @@ namespace StockScreener
                 {
                     lblCompanyName.Text = company.Name;
                     txtSharesOutstanding.Text = String.Format("{0:0.000}", company.SharesOutstanding);
-                    lblCurrentSharePrice.Text = String.Format("{0:0.00}", company.CurrentPrice);
-                    //lblCurrentSharePriceEV.Text = String.Format("{0:0.00}", company.CurrentPrice_EV);
-                    lblMarketCap.Text = String.Format("{0:0.000}", company.MarketCap);
-                    //lblEnterpriseValue.Text = String.Format("{0:0.00}", company.EnterpriseValue);
+                    lblCurrentSharePrice.Text = String.Format("{0:0.00}", company.CurrentPrice);                    
+                    lblMarketCap.Text = String.Format("{0:0.000}", company.MarketCap);                    
 
                     txtAvgRevenueGrowth.Text = String.Format("{0:0.00}", company.AverageRevenueGrowth);
 
@@ -294,15 +274,11 @@ namespace StockScreener
                     txtAvgNetIncomeGrowth.Text = String.Format("{0:0.00}", company.AverageNetIncomeGrowth);
                     txtAvgOperatingMarginGrowth.Text = String.Format("{0:0.00}", company.AverageOperatingMarginGrowth);
                     txtAvgFreeCashFlowGrowth.Text = String.Format("{0:0.00}", company.AverageFreeCashFlowGrowth);
-
-                    //txtAvgROE.Text = String.Format("{0:0.00}", company.AverageROE);
+                    
                     txtAvgROIC.Text = String.Format("{0:0.00}", company.AverageROIC);
                     txtTerminalMultiple.Text = company.Average_P_FCF_Multiple.ToString();
 
-                    var avgCf = company.Financials.FreeCashFlow.Skip(company.Financials.FreeCashFlow.Count() - 3).Select(c => c.Value).Average(); //media ultimilor 3 ani
-                    //company.Financials[0].FreeCashFlow.Average(c => c.Value);
-
-                    //var lastCf = company.Financials[0].FreeCashFlow.FindLast(c => c.Value > 0);
+                    var avgCf = company.Financials.FreeCashFlow.Skip(company.Financials.FreeCashFlow.Count() - 3).Select(c => c.Value).Average(); //media ultimilor 3 ani                    
 
                     if (avgCf > 0)
                         txtLastFreeCashFlow.Text = String.Format("{0:0.00}", (decimal)avgCf);
@@ -314,8 +290,6 @@ namespace StockScreener
                         else
                             throw new Exception("No positive cashflow found!");
                     }
-
-
 
                     gvFinancials.DataSource = bindingSourceKeyValues;
                     foreach (DataGridViewColumn col in gvFinancials.Columns)
@@ -336,39 +310,10 @@ namespace StockScreener
                 }
             }
             pbLoading.Visible = false;
-        }
-
-        private List<Company> GetCachedCompanies()
-        {
-            List<Company> cachedCompanies = null;
-
-            if (File.Exists("companies.json"))
-                using (StreamReader r = new StreamReader("companies.json"))
-                {
-                    try
-                    {
-                        string json = r.ReadToEnd();
-                        cachedCompanies = JsonConvert.DeserializeObject<List<Company>>(json);
-                    }
-                    catch (Exception ex)
-                    {
-                        lblErrorMessage.Text = "Could not read cache file";
-                    }
-                }
-
-            return cachedCompanies;
-        }
-
+        }       
 
         private void bgwSearchCompanies_DoWork(object sender, DoWorkEventArgs e)
-        {
-            //List<Company> cachedCompanies = null;
-            //if (!companyFilter.IsFreshSearch && File.Exists("companies.json"))
-            //{
-            //    cachedCompanies = GetCachedCompanies();
-            //}
-
-            //filteredCompanies = companyScreener.GetFilteredCompanies(Url, companyFilter, cachedCompanies, bgwSearchCompanies);
+        {           
             filteredCompanies = companyScreener.GetFilteredCompanies(companyFilter, bgwSearchCompanies);
 
             DataTable dtFilteredCompanies = BuildFilteredCompaniesDataTable(filteredCompanies);
@@ -443,44 +388,7 @@ namespace StockScreener
                 lblTickerInProcess.Text = companyScreener.currentTicker;
                 lblProgress.Text = companyScreener.progress;
             }
-        }
-
-        private void btnGetAllCompaniesInCache_Click(object sender, EventArgs e)
-        {
-            if (txtURL.Text.Trim() != "")
-            {
-                lblErrorMessage.Text = "";
-                lblTickerInProcess.Text = "";
-                lblProgress.Text = "";
-
-                Url = txtURL.Text;               
-
-                try
-                {
-                    tmrTicker.Start();                    
-                    pbLoadingCompanies.Visible = true;
-                    isSearchInProgress = true;
-                    bgwGetCache.RunWorkerAsync();
-                }
-                catch (Exception ex)
-                {
-                    lblErrorMessage.Text = ex.Message;
-                }
-            }
-        }
-
-        private void bgwGetCache_DoWork(object sender, DoWorkEventArgs e)
-        {
-            ////check if some companies already in cache
-            //List<Company> cachedCompanies = GetCachedCompanies();
-
-            //List<Company> companies = companyScreener.GetFilteredCompanies(Url, null, null, bgwGetCache, cachedCompanies);
-
-            //if (bgwGetCache.CancellationPending)
-            //    e.Cancel = true;
-
-            //companyScreener.SaveCompanies(companies);
-        }
+        }       
 
         private void bgwGetCache_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -500,42 +408,6 @@ namespace StockScreener
             isSearchInProgress = false;
             lblTickerInProcess.Text = "";
             lblProgress.Text = "";
-        }
-
-        private void initDataAggregator_CheckCompany()
-        {
-            if (rbCompCheckRoicAi.Checked)
-                dataAggregator_checkCompany = new DataAggregator_RoicAi();
-            else
-                dataAggregator_checkCompany = new DataAggregator_MarketWatch();           
-        }
-        private void initDataAggregator_SearchCompany()
-        {
-            if (rbCompSearchRoicAi.Checked)
-                dataAggregator_searchCompany = new DataAggregator_RoicAi();
-            else
-                dataAggregator_searchCompany = new DataAggregator_MarketWatch();
-
-            companyScreener = new CompanyScreener(dataAggregator_searchCompany);
-        }       
-
-        private void rbCompCheckRoicAi_Click(object sender, EventArgs e)
-        {
-            initDataAggregator_CheckCompany();
-        }
-
-        private void rbCompCheckMarketWatch_Click(object sender, EventArgs e)
-        {
-            initDataAggregator_CheckCompany();
-        }
-
-        private void rbCompSearchRoicAi_Click(object sender, EventArgs e)
-        {
-            initDataAggregator_SearchCompany();
-        }
-        private void rbCompSearchMarketWatch_Click(object sender, EventArgs e)
-        {
-            initDataAggregator_SearchCompany();
-        }
+        }        
     }
 }

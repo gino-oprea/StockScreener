@@ -14,15 +14,15 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    public class DataAggregator_MarketWatch : IDataAggregator
-    {        
-        public DataAggregator_MarketWatch() 
-        { 
+    public class DataAggregator_MarketWatch
+    {
+        public DataAggregator_MarketWatch()
+        {
 
         }
         public Company GetCompanyCurrentPrice(string TickerSymbol)
         {
-            string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search", "GET", null, false);
+            string generalDetails = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search",null, "GET", null, null, false).Result.Result;
 
             Company company = new Company();
             if (generalDetails != null)
@@ -42,7 +42,7 @@ namespace BL
                 company = companies.Find(c => c.Ticker.ToLower() == TickerSymbol.ToLower());
 
                 //for current price
-                string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search", "GET", null, false);
+                string generalDetails = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search", null, "GET", null, null, false).Result.Result;
                 if (generalDetails != null)
                     MarketWatchHelper.GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
             }
@@ -51,18 +51,18 @@ namespace BL
                 company.Ticker = TickerSymbol.ToUpper();
                 company.Financials = new Financials();
 
-                string generalDetails = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search", "GET", null, false);
+                string generalDetails = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "?mod=over_search", null, "GET", null, null, false).Result.Result;
 
                 if (generalDetails != null)
                     MarketWatchHelper.GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
 
 
                 Thread.Sleep(100);
-                string financials_incomeStatement = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials", "GET", null, false);
+                string financials_incomeStatement = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials", null, "GET", null, null, false).Result.Result;
                 Thread.Sleep(100);
-                string financials_balanceSheet = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/balance-sheet", "GET", null, false);
+                string financials_balanceSheet = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/balance-sheet", null, "GET", null, null, false).Result.Result;
                 Thread.Sleep(100);
-                string financials_cashFlow = BL.HttpReq.GetUrlHttpWebRequest("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/cash-flow", "GET", null, false);
+                string financials_cashFlow = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + TickerSymbol + "/financials/cash-flow", null, "GET", null, null, false).Result.Result;
                 Thread.Sleep(100);
 
                 if (financials_incomeStatement != null)
@@ -102,7 +102,7 @@ namespace BL
             for (int i = 0; i < company.Financials.FreeCashFlow.Count; i++)
             {
                 decimal? fcfPerShare = null;
-                if (company.Financials.Shares!=null && company.Financials.Shares[i].Value != 0)
+                if (company.Financials.Shares != null && company.Financials.Shares[i].Value != 0)
                     fcfPerShare = company.Financials.FreeCashFlow[i].Value / company.Financials.Shares[i].Value;
 
                 YearVal yearVal = new YearVal();
