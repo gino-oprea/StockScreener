@@ -248,7 +248,8 @@ namespace BL.Models
             if (this.MarketCap != null)
             {
                 this.EnterpriseValue = this.MarketCap + latestLongTermDebt + latestShortTermDebt - latestCash;
-                this.CurrentPrice_EV = this.EnterpriseValue.Value / this.SharesOutstanding.Value;
+                if (this.SharesOutstanding != null)
+                    this.CurrentPrice_EV = this.EnterpriseValue.Value / this.SharesOutstanding.Value;
             }
 
 
