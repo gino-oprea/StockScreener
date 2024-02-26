@@ -30,7 +30,11 @@ namespace BL.CompaniesData
             try
             {
                 company = new Company();
-                GetGeneralInfo(tickerSymbol);                
+                
+                GetGeneralInfo(tickerSymbol);
+                if (company.CurrentPrice == null && (tickerSymbol.Contains("-")))
+                    GetGeneralInfo(tickerSymbol.Replace("-", "."));//retry with different ticker
+
                 GetFinancialData(tickerSymbol);
 
                 //backup in case macrotrends data is not already on disk, and save it if able to get data online
@@ -52,7 +56,7 @@ namespace BL.CompaniesData
                 return null;
             }
         }
-        
+
         private void GetGeneralInfo(string tickerSymbol)
         {
             var httpRes = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + tickerSymbol + "?mod=over_search", null, "GET", null, null, false).Result;
