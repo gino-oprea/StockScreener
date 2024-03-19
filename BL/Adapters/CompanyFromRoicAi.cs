@@ -29,6 +29,7 @@ namespace BL.Adapters
             company.Financials.LongTermDebt = GetFinancialData(comp.BalanceSheet.data.bsLtBorrow_annual, financialYears, 1000);
             company.Financials.Equity = GetFinancialData(comp.BalanceSheet.data.bsTotalEquity_annual, financialYears, 1000);
             company.Financials.RetainedEarnings = GetFinancialData(comp.BalanceSheet.data.bsPureRetainedEarnings_annual, financialYears, 1000);
+            company.Financials.Shares = GetFinancialData(comp.BalanceSheet.data.bsShOut_annual, financialYears, 1000);
 
             company.Financials.FreeCashFlow = GetFinancialData(comp.CashFlowStatement.data.cfFreeCashFlow_annual, financialYears, 1000);
             company.Financials.CapitalExpenditures = GetFinancialData(comp.CashFlowStatement.data.cfAcquisFxdAndIntangDetailed_annual, financialYears, 1000);
@@ -42,9 +43,12 @@ namespace BL.Adapters
                 company.Average_P_FCF_Multiple = comp.MacroTrendsData.AveragePriceToFreeCashFlowMultiple;
             }
 
-            CalculateSharesOutstanding(company);
+            //CalculateSharesOutstanding(company);
             if (company.Financials.Shares?.Count > 0)
-                company.SharesOutstanding = company.Financials.Shares[company.Financials.Shares.Count - 1].Value;
+            {                
+                if (company.Financials.Shares[company.Financials.Shares.Count - 1] != null)
+                    company.SharesOutstanding = company.Financials.Shares[company.Financials.Shares.Count - 1].Value;
+            }
         }
 
         private static void CalculateSharesOutstanding(Company company)
