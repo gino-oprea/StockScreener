@@ -55,10 +55,15 @@ namespace BL.CompaniesData
         
         private void GetGeneralInfo(string tickerSymbol)
         {
-            var httpRes = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + tickerSymbol + "?mod=over_search", null, "GET", null, null, false).Result;
+            //var httpRes = BL.HttpReq.GetUrlHttpClientAsync("https://www.marketwatch.com/investing/stock/" + tickerSymbol + "?mod=over_search", null, "GET", null, null, false).Result;
+            //string generalDetails = httpRes.Result;
+            //if (generalDetails != null)
+            //    MarketWatchHelper.GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
+
+            var httpRes = BL.HttpReq.GetUrlHttpClientAsync("https://roic.ai/quote/" + tickerSymbol + ":US/financials", null, "GET", null, null, false).Result;
             string generalDetails = httpRes.Result;
             if (generalDetails != null)
-                MarketWatchHelper.GetCompanyGeneralInfo_MarketWatch(generalDetails, company);
+                RoicAiHelper.GetCompanyGeneralInfo(generalDetails, company);
         }
         private void GetFinancialData(string tickerSymbol)
         {
