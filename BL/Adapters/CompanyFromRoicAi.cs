@@ -45,9 +45,9 @@ namespace BL.Adapters
 
             //CalculateSharesOutstanding(company);
             if (company.Financials.Shares?.Count > 0)
-            {                
-                if (company.Financials.Shares[company.Financials.Shares.Count - 1] != null)
-                    company.SharesOutstanding = company.Financials.Shares[company.Financials.Shares.Count - 1].Value;
+            {
+                if (company.Financials.Shares.Last() != null)
+                    company.SharesOutstanding = company.Financials.Shares.Last().Value;
             }
         }
 

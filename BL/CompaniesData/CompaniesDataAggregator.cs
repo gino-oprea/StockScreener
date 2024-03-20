@@ -49,6 +49,9 @@ namespace BL.CompaniesData
 
                 company.CalculateIntrinsicAndDiscountedValues(discountedInterestRate: discountedInterestRate, terminalMultiple: company.Average_P_FCF_Multiple.Value);
 
+                if (company.MarketCap == null && company.SharesOutstanding != null && company.CurrentPrice != null)
+                    company.MarketCap = company.SharesOutstanding * company.CurrentPrice;
+
                 return company;
             }
             catch (Exception ex)
