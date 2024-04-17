@@ -121,7 +121,7 @@ namespace BL.CompaniesData
             CompanySummary companySummary = GetJsonToModel<CompanySummary>(Path.Combine(companyFolder, $"{ticker}_Summary.json"));
             IncomeStatement incomeStatement = GetJsonToModel<IncomeStatement>(Path.Combine(companyFolder, $"{ticker}_IncomeStatement.json"));
             BalanceSheet balanceSheet = GetJsonToModel<BalanceSheet>(Path.Combine(companyFolder, $"{ticker}_BalanceSheet.json"));
-            CashFlowStatement cashFlowStatement = GetJsonToModel<CashFlowStatement>(Path.Combine(companyFolder, $"{ticker}_CashFlowStatment.json"));
+            CashFlowStatement cashFlowStatement = GetJsonToModel<CashFlowStatement>(Path.Combine(companyFolder, $"{ticker}_CashFlowStatement.json"));
             MacroTrendsData macroTrendsData = GetJsonToModel<MacroTrendsData>(Path.Combine(companyFolder, $"{ticker}_MacrotrendsData.json"));
 
             RoicAiCompany roicAiCompany = new RoicAiCompany()
