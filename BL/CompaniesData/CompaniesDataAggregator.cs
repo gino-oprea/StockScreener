@@ -18,7 +18,7 @@ namespace BL.CompaniesData
 {
     public class CompaniesDataAggregator
     {
-        private string workingFolder = "Companies_2023";
+        private string workingFolder = "Companies_2024";
 
         private Company company;
         public CompaniesDataAggregator() 
