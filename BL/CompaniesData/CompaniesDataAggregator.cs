@@ -88,7 +88,7 @@ namespace BL.CompaniesData
                     //adapter for converting roicAiCompany to Company
                     CompanyRoicAiAdapter.MergeCompanyFromRoicAi(roicAiCompany, company);
 
-                    company.CalculateGrowthAverages();
+                    company.CalculateGrowthAverages();//also sets up the average price to FCF if it's not available from macrotrends
                 }
             }            
         }
