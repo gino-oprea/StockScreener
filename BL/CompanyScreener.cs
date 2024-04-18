@@ -19,7 +19,7 @@ namespace BL
 {
     public class CompanyScreener
     {
-        private string workingFolder = "Companies_2023";        
+        private string workingFolder = Constants.WorkingDirectory;        
 
         public string currentTicker;
         public List<Company> currentfilteredCompanies;

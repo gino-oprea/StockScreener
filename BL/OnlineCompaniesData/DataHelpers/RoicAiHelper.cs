@@ -21,10 +21,27 @@ namespace BL.OnlineCompaniesData.DataHelpers
                     rawLines.AddRange(rawLine.Trim().Split("<",StringSplitOptions.RemoveEmptyEntries));
             }
 
+            string nameLine = "";
+            string peLine = "";
             string priceLine = "";
             string marketCapLine = "";
             for (int i = 0; i < rawLines.Count; i++)
             {
+                if (rawLines[i].Contains("text-4xl font-semibold uppercase text-foreground") && nameLine == string.Empty)//get only the first occurence
+                {
+                    nameLine = rawLines[i].Trim();
+                }
+
+                if (rawLines[i].Contains("P/E") && peLine == string.Empty)
+                {
+                    List<string> rawPeLines = rawLines[i].Split("]").ToList();
+                    for (int j = 0; j < rawPeLines.Count; j++)
+                    {
+                        if (rawPeLines[j].Contains("P/E") && j > 0)
+                            peLine = rawPeLines[j - 1] + rawPeLines[j];
+                    }
+                }
+
                 if (rawLines[i].Replace("Capitalization","").Contains("Market Cap") && marketCapLine == string.Empty)
                 {                    
                     List<string> rawMarketCapLines = rawLines[i].Split("]").ToList();
@@ -33,15 +50,34 @@ namespace BL.OnlineCompaniesData.DataHelpers
                         if (rawMarketCapLines[j].Contains("Market Cap") && j > 0)
                             marketCapLine = rawMarketCapLines[j - 1] + rawMarketCapLines[j];
                     }
-                }
-                  
+                }                  
 
                 if (rawLines[i].Contains("company_header_price\">") && priceLine.Trim()==string.Empty)
                     priceLine = rawLines[i];
             }
 
+            string name = "";
+            string pe = "";
             string marketCap = "";
             string price = "";
+
+            if (nameLine != string.Empty)
+            {
+                try
+                {
+                    name = HtmlHelper.ExtractString(nameLine, ">", "", false);
+                }
+                catch (Exception ex) { }
+            }
+
+            if (peLine != string.Empty)
+            {
+                try
+                {
+                    pe = HtmlHelper.ExtractString(peLine, "flex text-lg text-foreground\\\",\\\"children\\\":\\\"", "\\\"}", false);
+                }
+                catch (Exception ex) { }
+            }
 
             if (marketCapLine != string.Empty)
             {
@@ -51,6 +87,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 }
                 catch (Exception ex) { }
             }
+
             if(priceLine!=string.Empty)
             {
                 try
@@ -60,6 +97,8 @@ namespace BL.OnlineCompaniesData.DataHelpers
                 catch (Exception ex) { }
             }
 
+            company.Name = name;
+            company.PE_Ratio = Convert.ToDecimal(pe);
             company.MarketCap = ConvertStringToBillions(marketCap);
 
             try

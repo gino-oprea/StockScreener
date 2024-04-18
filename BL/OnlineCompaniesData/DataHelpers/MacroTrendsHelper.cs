@@ -24,7 +24,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             string companyNameTrimmed = "";
             try
             {
-                companyNameTrimmed = company.Name.ToLower().Replace("ltd", "").Replace(".", "");
+                companyNameTrimmed = company.Name?.ToLower().Replace("ltd", "").Replace(".", "");
             }
             catch { }
 

@@ -18,7 +18,7 @@ namespace BL.CompaniesData
 {
     public class CompaniesDataAggregator
     {
-        private string workingFolder = "Companies_2024";
+        private string workingFolder = Constants.WorkingDirectory;
 
         private Company company;
         public CompaniesDataAggregator() 
@@ -98,7 +98,7 @@ namespace BL.CompaniesData
             MacroTrendsData macroTrendsData = MacroTrendsHelper.GetCompanyDataMacrotrends(tickerSymbol, company);
 
             //if (company.Financials.Shares?.Count > 0 && company.Average_P_FCF_Multiple != null)
-            if (macroTrendsData.AveragePriceToFreeCashFlowMultiple != null)
+            if (macroTrendsData?.AveragePriceToFreeCashFlowMultiple != null)
             {
                 company.Average_P_FCF_Multiple = macroTrendsData.AveragePriceToFreeCashFlowMultiple;
 
