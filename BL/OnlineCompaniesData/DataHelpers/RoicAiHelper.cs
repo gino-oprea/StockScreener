@@ -27,7 +27,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
             string marketCapLine = "";
             for (int i = 0; i < rawLines.Count; i++)
             {
-                if (rawLines[i].Contains("text-4xl font-semibold uppercase text-foreground") && nameLine == string.Empty)//get only the first occurence
+                if (rawLines[i].Contains("text-4xl font-semibold uppercase text-foreground sm:flex\">") && nameLine == string.Empty)//get only the first occurence
                 {
                     nameLine = rawLines[i].Trim();
                 }
