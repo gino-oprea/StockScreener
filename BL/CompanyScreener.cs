@@ -1,6 +1,6 @@
 ﻿using BL.Adapters;
 using BL.CompaniesData;
-using BL.CompaniesData.JsonModels.RoicAi;
+using BL.CompaniesData.JsonModels.RoicAi_Old;
 using BL.Models;
 using BL.OnlineCompaniesData;
 using Newtonsoft.Json;

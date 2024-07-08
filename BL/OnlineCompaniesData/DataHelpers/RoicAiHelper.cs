@@ -98,7 +98,12 @@ namespace BL.OnlineCompaniesData.DataHelpers
             }
 
             company.Name = name;
-            company.PE_Ratio = Convert.ToDecimal(pe);
+            decimal res;
+            bool parsed = Decimal.TryParse(pe, out res);
+            if (parsed)
+            {
+                company.PE_Ratio = res;
+            }            
             company.MarketCap = ConvertStringToBillions(marketCap);
 
             try

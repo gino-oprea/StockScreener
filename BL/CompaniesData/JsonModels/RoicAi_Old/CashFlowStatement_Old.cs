@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BL.OfflineCompaniesData.Models.RoicAi
+namespace BL.OfflineCompaniesData.Models.RoicAi_Old
 {
-    public class CashFlowStatement
+    public class CashFlowStatement_Old
     {
         public CashFlowStatementData data { get; set; }
         public List<CashFlowStatementView> view { get; set; }

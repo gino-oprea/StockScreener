@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BL.OfflineCompaniesData.Models.RoicAi
+namespace BL.OfflineCompaniesData.Models.RoicAi_Old
 {
-    public class IncomeStatement
+    public class IncomeStatement_Old
     {
         public IncomeStatementData data { get; set; }
         public List<IncomeStatementView> view { get; set; }

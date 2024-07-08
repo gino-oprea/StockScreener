@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BL.OfflineCompaniesData.Models.RoicAi
+namespace BL.OfflineCompaniesData.Models.RoicAi_Old
 {
-    public class CompanySummary
+    public class CompanySummary_Old
     {
         public CompanySummaryData data { get; set; }
         public List<CompanySummaryView> view { get; set; }

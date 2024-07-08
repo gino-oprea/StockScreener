@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BL.OfflineCompaniesData.Models.RoicAi
+namespace BL.OfflineCompaniesData.Models.RoicAi_Old
 {
-    public class BalanceSheet
+    public class BalanceSheet_Old
     {
         public BalanceSheetData data { get; set; }
         public List<BalanceSheetView> view { get; set; }

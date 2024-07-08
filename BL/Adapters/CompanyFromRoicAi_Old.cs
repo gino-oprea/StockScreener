@@ -1,4 +1,4 @@
-﻿using BL.CompaniesData.JsonModels.RoicAi;
+﻿using BL.CompaniesData.JsonModels.RoicAi_Old;
 using BL.Models;
 using System;
 using System.Collections;
@@ -9,10 +9,10 @@ using System.Text;
 
 namespace BL.Adapters
 {
-    public class CompanyRoicAiAdapter
+    public class CompanyRoicAiAdapter_Old
     {
         private static readonly int lastNoOfYears = 10;
-        public static void MergeCompanyFromRoicAi(RoicAiCompany comp, Company company)
+        public static void MergeCompanyFromRoicAi(RoicAiCompany_Old comp, Company company)
         {
             company.Financials = new Financials();
 

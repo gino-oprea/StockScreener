@@ -5,7 +5,7 @@ using System.Text;
 namespace BL
 {
     internal static class Constants
-    {
+    {        
         public const string WorkingDirectory = "Companies_2024";
     }
 }

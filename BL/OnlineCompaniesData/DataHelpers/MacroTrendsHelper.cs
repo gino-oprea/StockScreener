@@ -1,4 +1,4 @@
-﻿using BL.CompaniesData.JsonModels.RoicAi;
+﻿using BL.CompaniesData.JsonModels;
 using BL.Models;
 using Newtonsoft.Json;
 using System;
