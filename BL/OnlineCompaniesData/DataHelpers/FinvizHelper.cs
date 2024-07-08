@@ -44,7 +44,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
                     marketCap = decimalPrice * company.SharesOutstanding;
 
 
-                company.Name = name;
+                company.Name = name.Replace("&amp;", "&").Replace("&#x27;", "'");
                 company.CurrentPrice = decimalPrice;
                 company.MarketCap = marketCap;
 
