@@ -279,15 +279,15 @@ namespace BL.Models
             this.Average_P_FCF_Multiple ??= (int)Math.Floor(this.Growth.Value);
         }
 
-        public Company DeepClone()
-        {
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(memoryStream, this);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                return (Company)formatter.Deserialize(memoryStream);
-            }
-        }
+        //public Company DeepClone()
+        //{
+        //    using (MemoryStream memoryStream = new MemoryStream())
+        //    {
+        //        BinaryFormatter formatter = new BinaryFormatter();
+        //        formatter.Serialize(memoryStream, this);
+        //        memoryStream.Seek(0, SeekOrigin.Begin);
+        //        return (Company)formatter.Deserialize(memoryStream);
+        //    }
+        //}
     }
 }
