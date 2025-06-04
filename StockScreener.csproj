@@ -36,8 +36,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\stoks.png">
+    <None Update="Resources\stoks.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\stoks.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
