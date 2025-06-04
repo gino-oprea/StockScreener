@@ -1,5 +1,6 @@
-﻿using BL.CompaniesData.JsonModels;
-using BL.Models;
+﻿using BL.Models;
+using BL.ModelsUI;
+using BL.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -10,7 +11,7 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading;
 
-namespace BL.OnlineCompaniesData.DataHelpers
+namespace BL.OnlineDataHelpers
 {
     public static class MacroTrendsHelper
     {
@@ -18,7 +19,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
         public static MacroTrendsData GetCompanyDataMacrotrends(string ticker, Company company)
         {
 
-            var httpResult = BL.HttpReq.GetUrlHttpClientAsync("https://www.macrotrends.net", null, "GET", null, null, false).Result;
+            var httpResult = HttpReq.GetUrlHttpClientAsync("https://www.macrotrends.net", null, "GET", null, null, false).Result;
             string cookies = httpResult.UpdatedCookies;            
 
             string companyNameTrimmed = "";
@@ -29,12 +30,12 @@ namespace BL.OnlineCompaniesData.DataHelpers
             catch { }
 
             Thread.Sleep(200);
-            httpResult = BL.HttpReq.GetUrlHttpClientAsync("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, cookies, "GET", null, null, false).Result;
+            httpResult = HttpReq.GetUrlHttpClientAsync("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + ticker, cookies, "GET", null, null, false).Result;
             string categoryLinkJsonString = httpResult.Result;
             if (categoryLinkJsonString == null || categoryLinkJsonString == "null" || categoryLinkJsonString == string.Empty)
             {
                 Thread.Sleep(100);
-                httpResult = BL.HttpReq.GetUrlHttpClientAsync("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + companyNameTrimmed, cookies, "GET", null, null, false).Result;
+                httpResult = HttpReq.GetUrlHttpClientAsync("https://www.macrotrends.net/assets/php/all_pages_query.php?q=" + companyNameTrimmed, cookies, "GET", null, null, false).Result;
                 categoryLinkJsonString = httpResult?.Result;
             }
 
@@ -58,7 +59,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
 
             Thread.Sleep(100);
             //shares outsanding
-            var shOutResult = BL.HttpReq.GetUrlHttpClientAsync("https://www.macrotrends.net" + sharesOutstandingLink.url, cookies, "GET", null, null, false).Result;
+            var shOutResult = HttpReq.GetUrlHttpClientAsync("https://www.macrotrends.net" + sharesOutstandingLink.url, cookies, "GET", null, null, false).Result;
             string sharesOutstandingHtml = shOutResult.Result;
 
             List<decimal> shares = new List<decimal>();
@@ -75,7 +76,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
                         string line = selectedLines[i + 2];
                         string rawVal = HtmlHelper.ExtractString(line, "text-align:center\">", "", false).Replace(",", "");
                         int sharesOutstanding;
-                        bool converted = Int32.TryParse(rawVal, out sharesOutstanding);
+                        bool converted = int.TryParse(rawVal, out sharesOutstanding);
 
                         if (converted)
                             shares.Add((decimal)sharesOutstanding / 1000);//convert to billions
@@ -139,7 +140,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
         {
             int? Average_P_FCF_Multiple = null;
             //string priceToFcfHtml = BL.HttpReq.GetUrlHttpWebRequest(priceToFcfUrl, "GET", null, false, headers);
-            var httpResult = BL.HttpReq.GetUrlHttpClientAsync(priceToFcfUrl, cookies, "GET", null, null, false).Result;
+            var httpResult = HttpReq.GetUrlHttpClientAsync(priceToFcfUrl, cookies, "GET", null, null, false).Result;
             string priceToFcfHtml = httpResult.Result;
 
             List<decimal> pFcfMultiples = new List<decimal>();
@@ -156,7 +157,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
 
                     string rawVal = HtmlHelper.ExtractString(rowlines[3], "text-align:center;\">", "", false).Replace(",", "");
                     decimal pFCF;
-                    bool converted = Decimal.TryParse(rawVal, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out pFCF);
+                    bool converted = decimal.TryParse(rawVal, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out pFCF);
 
                     if (converted)
                         pFcfMultiples.Add(pFCF);

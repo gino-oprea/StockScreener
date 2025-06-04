@@ -1,8 +1,4 @@
 ﻿using BL.Adapters;
-using BL.CompaniesData;
-using BL.CompaniesData.JsonModels.RoicAi_Old;
-using BL.Models;
-using BL.OnlineCompaniesData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,9 +11,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace BL
+namespace BL.ModelsUI
 {
-    public class CompanyScreener
+    public class CompaniesScreener
     {
         private string workingFolder = Constants.WorkingDirectory;        
 
@@ -25,14 +21,14 @@ namespace BL
         public List<Company> currentfilteredCompanies;
         public string progress;        
 
-        public CompanyScreener()
+        public CompaniesScreener()
         {
         
         }
 
         public List<Company> GetFilteredCompanies(CompanyFilter filter, BackgroundWorker bgw)
         {
-            CompaniesDataAggregator companiesDataAggregator = new CompaniesDataAggregator();
+            CompanyDataAggregator companiesDataAggregator = new CompanyDataAggregator();
 
             List<Company> filteredCompanies = new List<Company>();           
 

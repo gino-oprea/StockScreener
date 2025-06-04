@@ -1,10 +1,6 @@
 ﻿using BL.Adapters;
-using BL.CompaniesData.JsonModels;
-using BL.CompaniesData.JsonModels.RoicAi_Old;
-using BL.CompaniesData.JsonModels.RoicAI;
-using BL.Models;
-using BL.OfflineCompaniesData.Models.RoicAi_Old;
-using BL.OnlineCompaniesData.DataHelpers;
+//using BL.CompaniesData.JsonModels.RoicAi_Old;
+//using BL.OfflineCompaniesData.Models.RoicAi_Old;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,16 +11,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using Newtonsoft.Json.Linq;
+using BL.Utils;
+using BL.OnlineDataHelpers;
+using BL.Models;
 
 
-namespace BL.CompaniesData
+namespace BL.ModelsUI
 {
-    public class CompaniesDataAggregator
+    public class CompanyDataAggregator
     {
         private string workingFolder = Constants.WorkingDirectory;
 
         private Company company;
-        public CompaniesDataAggregator() 
+        public CompanyDataAggregator() 
         {
             company = new Company();
         }
@@ -37,7 +36,7 @@ namespace BL.CompaniesData
                 GetFinancialData(tickerSymbol);
 
                 GetGeneralInfo(tickerSymbol);
-                if (company.CurrentPrice == null && (tickerSymbol.Contains("-")))
+                if (company.CurrentPrice == null && tickerSymbol.Contains("-"))
                     GetGeneralInfo(tickerSymbol.Replace("-", "."));//retry with different ticker
 
                 //backup in case macrotrends data is not already on disk, and save it if able to get data online
@@ -65,7 +64,7 @@ namespace BL.CompaniesData
 
         private void GetGeneralInfo(string tickerSymbol)
         {
-            var httpRes = BL.HttpReq.GetUrlHttpClientAsync($"https://finviz.com/quote.ashx?t={tickerSymbol}&p=d", null, "GET", null, null, false).Result;
+            var httpRes = HttpReq.GetUrlHttpClientAsync($"https://finviz.com/quote.ashx?t={tickerSymbol}&p=d", null, "GET", null, null, false).Result;
             string generalDetails = httpRes.Result;
             if (generalDetails != null)
                 FinvizHelper.GetCompanyGeneralInfo(generalDetails, company);
@@ -116,26 +115,7 @@ namespace BL.CompaniesData
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             // Write the JSON string to the file
             await File.WriteAllTextAsync(filePath, json);
-        }        
-        private RoicAiCompany_Old MapJsonToRoicAiCompany_Old(string companyFolder, string ticker)
-        {
-            CompanySummary_Old companySummary = GetJsonToModel<CompanySummary_Old>(Path.Combine(companyFolder, $"{ticker}_Summary.json"));
-            IncomeStatement_Old incomeStatement = GetJsonToModel<IncomeStatement_Old>(Path.Combine(companyFolder, $"{ticker}_IncomeStatement.json"));
-            BalanceSheet_Old balanceSheet = GetJsonToModel<BalanceSheet_Old>(Path.Combine(companyFolder, $"{ticker}_BalanceSheet.json"));
-            CashFlowStatement_Old cashFlowStatement = GetJsonToModel<CashFlowStatement_Old>(Path.Combine(companyFolder, $"{ticker}_CashFlowStatement.json"));
-            MacroTrendsData macroTrendsData = GetJsonToModel<MacroTrendsData>(Path.Combine(companyFolder, $"{ticker}_MacrotrendsData.json"));
-
-            RoicAiCompany_Old roicAiCompany = new RoicAiCompany_Old()
-            {
-                CompanySummary = companySummary,
-                IncomeStatement = incomeStatement,
-                BalanceSheet = balanceSheet,
-                CashFlowStatement = cashFlowStatement,
-                MacroTrendsData = macroTrendsData
-            };
-
-            return roicAiCompany;
-        }
+        }               
 
         private RoicAiCompany MapJsonToRoicAiCompany(string companyFolder, string ticker)
          {
@@ -160,8 +140,6 @@ namespace BL.CompaniesData
 
             return roicAiCompany;
         }
-
-
         private bool MacrotrendsDataExists(string ticker)
         {
             bool exists = false;
@@ -176,12 +154,10 @@ namespace BL.CompaniesData
 
             return exists;
         }
-
-
         private T GetJsonToModel_New<T>(string jsonFile, int jsonFinancialDataObjectIndex)
         {
             if (!File.Exists(jsonFile))
-                return default(T);
+                return default;
 
 
             using (StreamReader r = new StreamReader(jsonFile))
@@ -197,7 +173,7 @@ namespace BL.CompaniesData
         private T GetJsonToModel<T>(string jsonFile)
         {
             if (!File.Exists(jsonFile))
-                return default(T);
+                return default;
 
             
             using (StreamReader r = new StreamReader(jsonFile))

@@ -5,7 +5,7 @@ using System.Linq;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace BL.Models
+namespace BL.ModelsUI
 {
     public enum FinancialAverageType
     {
@@ -58,19 +58,19 @@ namespace BL.Models
         public List<decimal> CalculateIntrinsicAndDiscountedValues(decimal? lastCashFlow = null, int discountedInterestRate = 13,
             decimal? growth = null, decimal? sharesOutstanding = null, int terminalMultiple = 10)
         {
-            if (this.Financials.FreeCashFlow.Count < 4)
+            if (Financials.FreeCashFlow.Count < 4)
                 return new List<decimal>() { 0, 0, 0, 0 };
 
             if (lastCashFlow == null)
             {
-                var avgCf = this.Financials.FreeCashFlow.Skip(this.Financials.FreeCashFlow.Count() - 3).Select(c => c.Value).Average(); //media ultimilor 3 ani
+                var avgCf = Financials.FreeCashFlow.Skip(Financials.FreeCashFlow.Count() - 3).Select(c => c.Value).Average(); //media ultimilor 3 ani
                 //this.Financials.FreeCashFlow.Average(c => c.Value);
 
                 if (avgCf > 0)
                     lastCashFlow = (decimal)avgCf;
                 else
                 {
-                    var lastCf = this.Financials.FreeCashFlow.FindLast(c => c.Value > 0);
+                    var lastCf = Financials.FreeCashFlow.FindLast(c => c.Value > 0);
                     if (lastCf != null)
                         lastCashFlow = (decimal)lastCf.Value;
                     else
@@ -80,11 +80,11 @@ namespace BL.Models
 
             if (growth == null)
             {
-                growth = this.Growth;
+                growth = Growth;
             }
             if (sharesOutstanding == null)
             {
-                sharesOutstanding = this.SharesOutstanding;
+                sharesOutstanding = SharesOutstanding;
             }
 
 
@@ -95,21 +95,21 @@ namespace BL.Models
             for (int i = 0; i < 10; i++)
             {
                 if (futureCashFlows.Count > 0)
-                    futureCashFlows.Add(futureCashFlows[i - 1] + (Math.Abs(futureCashFlows[i - 1]) * ((decimal)growth / 100)));
+                    futureCashFlows.Add(futureCashFlows[i - 1] + Math.Abs(futureCashFlows[i - 1]) * ((decimal)growth / 100));
                 else
-                    futureCashFlows.Add((decimal)lastCashFlow + (Math.Abs((decimal)lastCashFlow) * ((decimal)growth / 100)));
+                    futureCashFlows.Add((decimal)lastCashFlow + Math.Abs((decimal)lastCashFlow) * ((decimal)growth / 100));
             }
 
             List<decimal> discountedfutureCashFlows = new List<decimal>();
             for (int i = 0; i < 10; i++)
             {
-                discountedfutureCashFlows.Add((decimal)((double)futureCashFlows[i] / Math.Pow(1 + (discountedInterestRate / 100.0), (i + 1))));
+                discountedfutureCashFlows.Add((decimal)((double)futureCashFlows[i] / Math.Pow(1 + discountedInterestRate / 100.0, i + 1)));
             }
 
             //tine cont de datorii si cash-ul curent
-            decimal latestShortTermDebt = this.Financials.ShortTermDebt.Any(d => d.Value.HasValue) ? (decimal)this.Financials.ShortTermDebt.Last(d => d.Value.HasValue).Value : 0;
-            decimal latestLongTermDebt = this.Financials.LongTermDebt.Any(d => d.Value.HasValue) ? (decimal)this.Financials.LongTermDebt.Last(d => d.Value.HasValue).Value : 0;
-            decimal latestCash = this.Financials.Cash.Any(d => d.Value.HasValue) ? (decimal)this.Financials.Cash.Last(d => d.Value.HasValue).Value : 0;
+            decimal latestShortTermDebt = Financials.ShortTermDebt.Any(d => d.Value.HasValue) ? (decimal)Financials.ShortTermDebt.Last(d => d.Value.HasValue).Value : 0;
+            decimal latestLongTermDebt = Financials.LongTermDebt.Any(d => d.Value.HasValue) ? (decimal)Financials.LongTermDebt.Last(d => d.Value.HasValue).Value : 0;
+            decimal latestCash = Financials.Cash.Any(d => d.Value.HasValue) ? (decimal)Financials.Cash.Last(d => d.Value.HasValue).Value : 0;
             ///
 
 
@@ -117,10 +117,10 @@ namespace BL.Models
             decimal totalIntrinsicValueInclDebt = totalIntrinsicValue + latestCash - latestShortTermDebt - latestLongTermDebt;
 
             //daca valoarea calculata pe baza FCF e mai mic decat book value, valoarea intrinseca este book value            
-            decimal? latestEquity = this.Financials.Equity[this.Financials.Equity.Count - 1].Value;
+            decimal? latestEquity = Financials.Equity[Financials.Equity.Count - 1].Value;
             decimal netDebt = latestLongTermDebt + latestShortTermDebt - latestCash;
-            if ((latestEquity != null && latestEquity > 0)//book value pozitiv
-                && (decimal)latestEquity.Value > totalIntrinsicValueInclDebt)
+            if (latestEquity != null && latestEquity > 0//book value pozitiv
+                && latestEquity.Value > totalIntrinsicValueInclDebt)
             {
                 totalIntrinsicValueInclDebt = (decimal)latestEquity;
             }
@@ -133,10 +133,10 @@ namespace BL.Models
             decimal intrinsicValueDiscounted30 = intrinsicValueInclDebt * (decimal)0.7;
             decimal intrinsicValueDiscounted50 = intrinsicValueInclDebt * (decimal)0.5;
 
-            this.IntrinsicValue = intrinsicValueInclDebt;
-            this.IntrinsicValue_Discounted10 = intrinsicValueDiscounted10;
-            this.IntrinsicValue_Discounted30 = intrinsicValueDiscounted30;
-            this.IntrinsicValue_Discounted50 = intrinsicValueDiscounted50;
+            IntrinsicValue = intrinsicValueInclDebt;
+            IntrinsicValue_Discounted10 = intrinsicValueDiscounted10;
+            IntrinsicValue_Discounted30 = intrinsicValueDiscounted30;
+            IntrinsicValue_Discounted50 = intrinsicValueDiscounted50;
 
             values.Add(intrinsicValueInclDebt);
             values.Add(intrinsicValueDiscounted10);
@@ -153,25 +153,25 @@ namespace BL.Models
             switch (finType)
             {
                 case FinancialAverageType.AverageRevenueGrowth:
-                    FinancialIndicator = this.Financials.Revenue;
+                    FinancialIndicator = Financials.Revenue;
                     break;
                 case FinancialAverageType.AverageEPSGrowth:
-                    FinancialIndicator = this.Financials.EPS;
+                    FinancialIndicator = Financials.EPS;
                     break;
                 case FinancialAverageType.AverageFCFperShareGrowth:
-                    FinancialIndicator = this.Financials.FCFperShare;
+                    FinancialIndicator = Financials.FCFperShare;
                     break;
                 case FinancialAverageType.AverageEquityGrowth:
-                    FinancialIndicator = this.Financials.Equity;
+                    FinancialIndicator = Financials.Equity;
                     break;
                 case FinancialAverageType.AverageNetIncomeGrowth:
-                    FinancialIndicator = this.Financials.NetIncome;
+                    FinancialIndicator = Financials.NetIncome;
                     break;
                 case FinancialAverageType.AverageOperatingMarginGrowth:
-                    FinancialIndicator = this.Financials.OperatingMargin;
+                    FinancialIndicator = Financials.OperatingMargin;
                     break;
                 case FinancialAverageType.AverageFreeCashFlowGrowth:
-                    FinancialIndicator = this.Financials.FreeCashFlow;
+                    FinancialIndicator = Financials.FreeCashFlow;
                     break;
                 default:
                     break;
@@ -191,7 +191,7 @@ namespace BL.Models
                 if (last5years[last5years.Count - 1].Value >= 0
                     && last5years[0].Value > 0
                     && last5years[last5years.Count - 1].Value >= last5years[0].Value)
-                    growth = ((decimal)Math.Pow(((double)last5years[last5years.Count - 1].Value / (double)last5years[0].Value), (1 / (double)last5years.Count)) - 1) * 100;
+                    growth = ((decimal)Math.Pow((double)last5years[last5years.Count - 1].Value / (double)last5years[0].Value, 1 / (double)last5years.Count) - 1) * 100;
                 else
                 {
                     //nu se poate calcula cresterea compusa dar exista crestere si se face media
@@ -206,77 +206,77 @@ namespace BL.Models
             switch (finType)
             {
                 case FinancialAverageType.AverageRevenueGrowth:
-                    this.AverageRevenueGrowth = growth;
+                    AverageRevenueGrowth = growth;
                     break;
                 case FinancialAverageType.AverageEPSGrowth:
-                    this.AverageEPSGrowth = growth;
+                    AverageEPSGrowth = growth;
                     break;
                 case FinancialAverageType.AverageFCFperShareGrowth:
-                    this.AverageFCFperShareGrowth = growth;
+                    AverageFCFperShareGrowth = growth;
                     break;
                 case FinancialAverageType.AverageEquityGrowth:
-                    this.AverageEquityGrowth = growth;
+                    AverageEquityGrowth = growth;
                     break;
                 case FinancialAverageType.AverageNetIncomeGrowth:
-                    this.AverageNetIncomeGrowth = growth;
+                    AverageNetIncomeGrowth = growth;
                     break;
                 case FinancialAverageType.AverageOperatingMarginGrowth:
-                    this.AverageOperatingMarginGrowth = growth;
+                    AverageOperatingMarginGrowth = growth;
                     break;
                 case FinancialAverageType.AverageFreeCashFlowGrowth:
-                    this.AverageFreeCashFlowGrowth = growth;
+                    AverageFreeCashFlowGrowth = growth;
                     break;
                 default:
                     break;
             }
 
 
-            this.Financials.ROIC.Reverse();
-            List<YearVal> last5yearsROIC = this.Financials.ROIC.Take(Math.Min(FinancialIndicator.Count, 5)).ToList();
-            this.Financials.ROIC.Reverse();//put it back
+            Financials.ROIC.Reverse();
+            List<YearVal> last5yearsROIC = Financials.ROIC.Take(Math.Min(FinancialIndicator.Count, 5)).ToList();
+            Financials.ROIC.Reverse();//put it back
             last5yearsROIC.Reverse();
 
-            this.AverageROIC = last5yearsROIC.Select(r => r.Value).Average();
+            AverageROIC = last5yearsROIC.Select(r => r.Value).Average();
         }
 
         public void CalculateGrowthAverages()
         {
-            decimal latestShortTermDebt = this.Financials.ShortTermDebt[this.Financials.ShortTermDebt.Count - 1].Value ?? 0;
-            decimal latestLongTermDebt = this.Financials.LongTermDebt[this.Financials.LongTermDebt.Count - 1].Value ?? 0;
-            decimal latestCash = this.Financials.Cash.Count > 0 ? (this.Financials.Cash[this.Financials.Cash.Count - 1].Value ?? 0) : 0;
+            decimal latestShortTermDebt = Financials.ShortTermDebt[Financials.ShortTermDebt.Count - 1].Value ?? 0;
+            decimal latestLongTermDebt = Financials.LongTermDebt[Financials.LongTermDebt.Count - 1].Value ?? 0;
+            decimal latestCash = Financials.Cash.Count > 0 ? Financials.Cash[Financials.Cash.Count - 1].Value ?? 0 : 0;
 
-            if (this.MarketCap != null)
+            if (MarketCap != null)
             {
-                this.EnterpriseValue = this.MarketCap + latestLongTermDebt + latestShortTermDebt - latestCash;
-                if (this.SharesOutstanding != null)
-                    this.CurrentPrice_EV = this.EnterpriseValue.Value / this.SharesOutstanding.Value;
+                EnterpriseValue = MarketCap + latestLongTermDebt + latestShortTermDebt - latestCash;
+                if (SharesOutstanding != null)
+                    CurrentPrice_EV = EnterpriseValue.Value / SharesOutstanding.Value;
             }
 
 
-            this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageRevenueGrowth);
-            this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageEPSGrowth);
-            this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageFCFperShareGrowth);
-            this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageEquityGrowth);
-            this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageNetIncomeGrowth);
-            this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageOperatingMarginGrowth);
-            this.CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageFreeCashFlowGrowth);
+            CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageRevenueGrowth);
+            CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageEPSGrowth);
+            CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageFCFperShareGrowth);
+            CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageEquityGrowth);
+            CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageNetIncomeGrowth);
+            CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageOperatingMarginGrowth);
+            CalculateCompoundAnualGrowthRate(FinancialAverageType.AverageFreeCashFlowGrowth);
 
 
 
-            List<decimal?> allGrowthValues = new List<decimal?>() { this.AverageRevenueGrowth,
-                this.AverageEPSGrowth ,
-                this.AverageFCFperShareGrowth,
-                this.AverageEquityGrowth ,
-                this.AverageNetIncomeGrowth,
-            this.AverageFreeCashFlowGrowth,
-            this.AverageROIC};
+            List<decimal?> allGrowthValues = new List<decimal?>() { AverageRevenueGrowth,
+                AverageEPSGrowth ,
+                AverageFCFperShareGrowth,
+                AverageEquityGrowth ,
+                AverageNetIncomeGrowth,
+            AverageFreeCashFlowGrowth,
+            AverageROIC};
 
             decimal avgGrowth = (decimal)allGrowthValues.FindAll(g => g != null).Average();
-            this.Growth = Math.Min(13, avgGrowth);
+            Growth = Math.Min(13, avgGrowth);
 
-           
 
-            this.Average_P_FCF_Multiple ??= (int)Math.Floor(this.Growth.Value);
+
+            Average_P_FCF_Multiple ??= (int)Math.Floor(Growth.Value);
         }
 
         //public Company DeepClone()

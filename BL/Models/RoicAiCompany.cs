@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace BL.CompaniesData.JsonModels.RoicAI
+namespace BL.Models
 {
     public class RoicAiCompany
     {

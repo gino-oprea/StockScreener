@@ -7,8 +7,7 @@
   <ItemGroup>
     <Compile Remove="Models\MorningstarKeyRatios.cs" />
     <Compile Remove="Models\MorningstarSearchResults.cs" />
-    <Compile Remove="OnlineCompaniesData\DataAggregator_MarketWatch.cs" />
-    <Compile Remove="OnlineCompaniesData\DataHelpers\MorningstarHelper.cs" />
+    <Compile Remove="OnlineDataHelpers\MorningstarHelper.cs" />
   </ItemGroup>
 
   <ItemGroup>

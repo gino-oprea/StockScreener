@@ -1,11 +1,12 @@
-﻿using BL.Models;
+﻿using BL.ModelsUI;
+using BL.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace BL.OnlineCompaniesData.DataHelpers
+namespace BL.OnlineDataHelpers
 {
     public static class FinvizHelper
     {
@@ -37,7 +38,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
 
 
                 decimal decimalPrice;
-                bool priceParsed = Decimal.TryParse(currentPrice, out decimalPrice);
+                bool priceParsed = decimal.TryParse(currentPrice, out decimalPrice);
 
                 decimal? marketCap = null;
                 if (priceParsed)

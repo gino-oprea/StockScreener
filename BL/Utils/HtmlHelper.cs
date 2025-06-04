@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace BL
+namespace BL.Utils
 {
     public static class HtmlHelper
     {

@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace BL.Utils
 {
     public class HttpReq
     {
@@ -16,7 +16,7 @@ namespace BL
             public string UpdatedCookies { get; set; }
         }       
 
-        public static async Task<HttpResult> GetUrlHttpClientAsync(string url, string? cookies, string method, string postData, string linkReferrer, bool allowRedirect)
+        public static async Task<HttpResult> GetUrlHttpClientAsync(string url, string cookies, string method, string postData, string linkReferrer, bool allowRedirect)
         {
             var handler = new HttpClientHandler
             {

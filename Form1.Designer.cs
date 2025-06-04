@@ -431,7 +431,7 @@ namespace StockScreener
             gvIntrinsicVal.Name = "gvIntrinsicVal";
             gvIntrinsicVal.RowHeadersWidth = 51;
             gvIntrinsicVal.RowTemplate.Height = 29;
-            gvIntrinsicVal.Size = new System.Drawing.Size(660, 113);
+            gvIntrinsicVal.Size = new System.Drawing.Size(660, 91);
             gvIntrinsicVal.TabIndex = 26;
             // 
             // btnCalculateIntrinsicValue

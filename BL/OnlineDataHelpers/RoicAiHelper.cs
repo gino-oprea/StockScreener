@@ -1,4 +1,5 @@
-﻿using BL.Models;
+﻿using BL.ModelsUI;
+using BL.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace BL.OnlineCompaniesData.DataHelpers
+namespace BL.OnlineDataHelpers
 {
     public static class RoicAiHelper
     {
@@ -99,7 +100,7 @@ namespace BL.OnlineCompaniesData.DataHelpers
 
             company.Name = name;
             decimal res;
-            bool parsed = Decimal.TryParse(pe, out res);
+            bool parsed = decimal.TryParse(pe, out res);
             if (parsed)
             {
                 company.PE_Ratio = res;

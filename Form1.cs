@@ -1,8 +1,4 @@
-﻿using BL;
-using BL.Models;
-using BL.OnlineCompaniesData;
-using BL.CompaniesData;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BL.ModelsUI;
 
 namespace StockScreener
 {
@@ -32,7 +29,7 @@ namespace StockScreener
         
         bool isSearchInProgress = false;
         
-        CompanyScreener companyScreener;
+        CompaniesScreener companyScreener;
         
 
         public Form1()
@@ -41,7 +38,7 @@ namespace StockScreener
 
             cbFilterValue.SelectedIndex = 2;
 
-            companyScreener = new CompanyScreener();
+            companyScreener = new CompaniesScreener();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -225,7 +222,7 @@ namespace StockScreener
 
         private void bgwCheckCompany_DoWork(object sender, DoWorkEventArgs e)
         {
-            CompaniesDataAggregator companiesDataAggregator =new CompaniesDataAggregator();
+            CompanyDataAggregator companiesDataAggregator =new CompanyDataAggregator();
             company = companiesDataAggregator.GetCompany(txtTicker.Text.Trim());
             if (company == null)
                 throw new Exception("Company has no data or error occured!");            

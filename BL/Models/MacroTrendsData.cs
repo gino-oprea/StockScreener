@@ -1,9 +1,9 @@
-﻿using BL.Models;
+﻿using BL.ModelsUI;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BL.CompaniesData.JsonModels
+namespace BL.Models
 {
     public class MacroTrendsData
     {

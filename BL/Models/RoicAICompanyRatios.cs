@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BL.CompaniesData.JsonModels.RoicAI
+namespace BL.Models
 {
     public class RoicAICompanyRatios
     {
