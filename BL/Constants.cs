@@ -6,6 +6,6 @@ namespace BL
 {
     internal static class Constants
     {        
-        public const string WorkingDirectory = "Companies_2024";
+        public const string WorkingDirectory = "Companies_2025";
     }
 }
