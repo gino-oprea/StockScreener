@@ -38,7 +38,7 @@ namespace BL.Adapters
             company.Financials.ROIC = GetFinancialData(comp.ProfitabilityRatios.Select(r => r.ReturnOnInvCapital).ToList(), ratiosYears);
 
             List<decimal?> priceFCFMultiples = comp.ValuationMultiples.Select(r => r.PrToFreeCashFlow).ToList();
-            company.Average_P_FCF_Multiple = GetMedian(priceFCFMultiples);
+            company.Average_P_FCF_Multiple = Math.Min(15, (int)GetMedian(priceFCFMultiples));
 
             if (company.Financials.Shares?.Count > 0)
             {
