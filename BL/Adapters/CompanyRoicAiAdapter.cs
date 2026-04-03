@@ -46,7 +46,7 @@ namespace BL.Adapters
                     company.SharesOutstanding = company.Financials.Shares.Last().Value;
             }
 
-            company.FinancialDataCurrency = comp.Profile.StockCurrency;
+            company.FinancialDataCurrency = comp.IncomeStatements.FirstOrDefault()?.Currency;
         }
 
         private static decimal? ToDecimal<T>(T value)

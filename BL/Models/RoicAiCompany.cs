@@ -144,6 +144,9 @@ namespace BL.Models
         [JsonProperty("fiscal_year")]
         public int FiscalYear { get; set; }
 
+        [JsonProperty("currency")]
+        public string Currency { get; set; }
+
         [JsonProperty("is_sales_revenue_turnover")]
         public long? IsSalesRevenueTurnover { get; set; }
 
@@ -299,6 +302,8 @@ namespace BL.Models
         [JsonProperty("fiscal_year")]
         public int FiscalYear { get; set; }
 
+        [JsonProperty("currency")]
+        public string StockCurrency { get; set; }
         // Assets
         [JsonProperty("bs_c_and_ce_and_sti_detailed")]
         public long? BsCAndCeAndStiDetailed { get; set; }
@@ -562,6 +567,9 @@ namespace BL.Models
 
         [JsonProperty("fiscal_year")]
         public int FiscalYear { get; set; }
+
+        [JsonProperty("currency")]
+        public string StockCurrency { get; set; }
 
         // Operating Activities
         [JsonProperty("cf_net_inc")]

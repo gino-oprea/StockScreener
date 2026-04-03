@@ -183,9 +183,8 @@ namespace BL.ModelsUI
             decimal? growth = null;
 
             //take last because was already reversed to have the most recent year at the end of the list, if there are less than 5 years, take all
-            List<YearVal> last5years =  FinancialIndicator.TakeLast(Math.Min(FinancialIndicator.Count,5)).ToList();
-            //FinancialIndicator.Reverse();//put it back
-            //last5years.Reverse();
+            List<YearVal> last5years = FinancialIndicator.Where(y => y.Value.HasValue).TakeLast(Math.Min(FinancialIndicator.Count, 5)).ToList();
+            
 
             if (last5years != null && last5years.Count > 0)
             {
@@ -234,9 +233,7 @@ namespace BL.ModelsUI
 
 
             
-            List<YearVal> last5yearsROIC = Financials.ROIC.TakeLast(Math.Min(FinancialIndicator.Count, 5)).ToList();
-            //Financials.ROIC.Reverse();//put it back
-            //last5yearsROIC.Reverse();
+            List<YearVal> last5yearsROIC = Financials.ROIC.TakeLast(Math.Min(FinancialIndicator.Count, 5)).ToList();            
 
             AverageROIC = last5yearsROIC.Select(r => r.Value).Average();
         }
@@ -274,11 +271,14 @@ namespace BL.ModelsUI
             AverageROIC};
 
             decimal avgGrowth = (decimal)allGrowthValues.FindAll(g => g != null).Average();
-            Growth = Math.Min(13, avgGrowth);
+            Growth = Math.Min(15, avgGrowth);
 
 
-
-            Average_P_FCF_Multiple ??= (int)Math.Floor(Growth.Value);
+            int floorGrowth = (int)Math.Floor(Growth.Value);
+            //in case growth is bigger than the average historical P/FCF multiple, we use the growth as a multiple, otherwise we use the average historical P/FCF multiple
+            Average_P_FCF_Multiple = Average_P_FCF_Multiple.HasValue
+                ? Math.Max(Average_P_FCF_Multiple.Value, floorGrowth)
+                : floorGrowth;
         }
 
         //public Company DeepClone()
