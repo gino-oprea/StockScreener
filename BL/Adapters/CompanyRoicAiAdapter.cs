@@ -11,88 +11,86 @@ namespace BL.Adapters
     public class CompanyRoicAiAdapter
     {
         private static readonly int lastNoOfYears = 10;
+        private static readonly int finDataDivider = 1000000000;//billions
         public static void MergeCompanyFromRoicAi(RoicAiCompany comp, Company company)
         {
             company.Financials = new Financials();
 
-            List<int> financialYears = comp.IncomeStatements.Select(i => Convert.ToInt32(i.fiscal_year)).ToList();
-            List<int> ratiosYears = comp.FinancialRatios.ProfitabilityFinancialRatios.Select(r => Convert.ToInt32(r.fiscal_year)).ToList();
+            List<int> financialYears = comp.IncomeStatements.Select(i => i.FiscalYear).ToList();
+            List<int> ratiosYears = comp.ProfitabilityRatios.Select(r => r.FiscalYear).ToList();
 
-            company.Financials.Revenue = GetFinancialData(comp.IncomeStatements.Select(i => i.is_sales_revenue_turnover).ToList(), financialYears, 1000);
-            company.Financials.NetIncome = GetFinancialData(comp.IncomeStatements.Select(i => i.is_net_income).ToList(), financialYears, 1000);
-            company.Financials.EPS = GetFinancialData(comp.IncomeStatements.Select(i => i.diluted_eps).ToList(), financialYears);
-            company.Financials.OperatingMargin = GetFinancialData(comp.IncomeStatements.Select(i => i.oper_margin).ToList(), financialYears);
+            company.Financials.Revenue = GetFinancialData(comp.IncomeStatements.Select(i => i.IsSalesRevenueTurnover).ToList(), financialYears, finDataDivider);
+            company.Financials.NetIncome = GetFinancialData(comp.IncomeStatements.Select(i => i.IsNetIncome).ToList(), financialYears, finDataDivider);
+            company.Financials.EPS = GetFinancialData(comp.IncomeStatements.Select(i => i.DilutedEps).ToList(), financialYears);
+            company.Financials.OperatingMargin = GetFinancialData(comp.IncomeStatements.Select(i => i.OperMargin).ToList(), financialYears);
 
-            company.Financials.Cash = GetFinancialData(comp.BalanceSheets.Select(b => b.bs_c_and_ce_and_sti_detailed).ToList(), financialYears, 1000);
-            company.Financials.ShortTermDebt = GetFinancialData(comp.BalanceSheets.Select(b => b.bs_st_borrow).ToList(), financialYears, 1000);
-            company.Financials.LongTermDebt = GetFinancialData(comp.BalanceSheets.Select(b => b.bs_lt_borrow).ToList(), financialYears, 1000);
-            company.Financials.Equity = GetFinancialData(comp.BalanceSheets.Select(b => b.bs_total_equity).ToList(), financialYears, 1000);
-            company.Financials.RetainedEarnings = GetFinancialData(comp.BalanceSheets.Select(b => b.bs_pure_retained_earnings).ToList(), financialYears, 1000);
-            company.Financials.Shares = GetFinancialData(comp.BalanceSheets.Select(b => b.bs_sh_out).ToList(), financialYears, 1000);
+            company.Financials.Cash = GetFinancialData(comp.BalanceSheets.Select(b => b.BsCAndCeAndStiDetailed).ToList(), financialYears, finDataDivider);
+            company.Financials.ShortTermDebt = GetFinancialData(comp.BalanceSheets.Select(b => b.BsStBorrow).ToList(), financialYears, finDataDivider);
+            company.Financials.LongTermDebt = GetFinancialData(comp.BalanceSheets.Select(b => b.BsLtBorrow).ToList(), financialYears, finDataDivider);
+            company.Financials.Equity = GetFinancialData(comp.BalanceSheets.Select(b => b.BsTotalEquity).ToList(), financialYears, finDataDivider);
+            company.Financials.RetainedEarnings = GetFinancialData(comp.BalanceSheets.Select(b => b.BsPureRetainedEarnings).ToList(), financialYears, finDataDivider);
+            company.Financials.Shares = GetFinancialData(comp.BalanceSheets.Select(b => b.BsShOut).ToList(), financialYears, finDataDivider);
 
-            company.Financials.FreeCashFlow = GetFinancialData(comp.CashFlowStatements.Select(c => c.cf_free_cash_flow).ToList(), financialYears, 1000);
-            company.Financials.CapitalExpenditures = GetFinancialData(comp.CashFlowStatements.Select(c => c.cf_cap_expenditures).ToList(), financialYears, 1000);
+            company.Financials.FreeCashFlow = GetFinancialData(comp.CashFlowStatements.Select(c => c.CfFreeCashFlow).ToList(), financialYears, finDataDivider);
+            company.Financials.CapitalExpenditures = GetFinancialData(comp.CashFlowStatements.Select(c => c.CfCapExpenditures).ToList(), financialYears, finDataDivider);
 
-            company.Financials.FCFperShare = GetFinancialData(comp.FinancialRatios.PerShareDataItemsFinancialRatios.Select(r => r.free_cash_flow_per_sh).ToList(), ratiosYears);
-            company.Financials.ROIC = GetFinancialData(comp.FinancialRatios.ProfitabilityFinancialRatios.Select(r => r.return_on_inv_capital).ToList(), ratiosYears);
+            company.Financials.FCFperShare = GetFinancialData(comp.PerShareData.Select(r => r.FreeCashFlowPerSh).ToList(), ratiosYears);
+            company.Financials.ROIC = GetFinancialData(comp.ProfitabilityRatios.Select(r => r.ReturnOnInvCapital).ToList(), ratiosYears);
 
-            List<decimal?> priceFCFMultiples = comp.FinancialRatios.MultiplesFinancialRatios.Select(r => ConvertFinValueToDecimal(r.pr_to_free_cash_flow)).ToList();
-            
-
-            if (comp.MacroTrendsData != null)
-            {
-                company.Average_P_FCF_Multiple = comp.MacroTrendsData.AveragePriceToFreeCashFlowMultiple;
-            }
+            List<decimal?> priceFCFMultiples = comp.ValuationMultiples.Select(r => r.PrToFreeCashFlow).ToList();
+            company.Average_P_FCF_Multiple = GetMedian(priceFCFMultiples);
 
             if (company.Financials.Shares?.Count > 0)
             {
                 if (company.Financials.Shares.Last() != null)
                     company.SharesOutstanding = company.Financials.Shares.Last().Value;
             }
+
+            company.FinancialDataCurrency = comp.Profile.StockCurrency;
         }
-        //private static void CalculateSharesOutstanding(Company company)
-        //{
-        //    List<YearVal> shares = company.Financials.NetIncome
-        //    .Join(company.Financials.EPS, l1 => l1.Year, l2 => l2.Year, (l1, l2) => new YearVal
-        //    {
-        //        Year = l1.Year,
-        //        Value = l1.Value / l2.Value,//net income must be converted back from millions(not billions to cut the divider later) to divide correctly
-        //        Growth = null // Optionally include Growth from the first list
-        //    })
-        //    .ToList();
 
-        //    //calculate growth
-        //    for (int i = 0; i < shares.Count; i++)
-        //    {
-        //        if (i > 0)
-        //        {
-        //            var newVal = shares[i].Value;
-        //            var oldVal = shares[i - 1].Value;
-        //            if (newVal != null && oldVal != null && oldVal != 0)
-        //                shares[i].Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
-        //        }
-        //    }
+        private static decimal? ToDecimal<T>(T value)
+        {
+            if (value is null) return null;
+            return Convert.ToDecimal(value);
+        }
 
-        //    company.Financials.Shares = shares;
+        private static int? GetMedian(List<decimal?> values)
+        {
+            if (values == null) return null;
 
-        //    if (company.Financials.Shares.Count > 0)
-        //        company.SharesOutstanding = company.Financials.Shares[company.Financials.Shares.Count - 1].Value;
-        //}
+            List<decimal> sorted = values
+                .Where(v => v != null)
+                .Select(v => v!.Value)
+                .Order()
+                .ToList();
+
+            if (sorted.Count == 0) return null;
+
+            int mid = sorted.Count / 2;
+            return sorted.Count % 2 != 0
+                ? (int?)sorted[mid]
+                : (int?)((sorted[mid - 1] + sorted[mid]) / 2m);
+        }
+
         private static List<T> GetLastYearsData<T>(List<T> data)
         {
             if (data == null)
                 return null;
 
-            data.Reverse();
-            List<T> lastData = data.Take(Math.Min(data.Count, lastNoOfYears)).ToList();
-            lastData.Reverse();
-            data.Reverse();
+            //data.Reverse();
+            //List<T> lastData = data.Take(Math.Min(data.Count, lastNoOfYears)).ToList();
+            //lastData.Reverse();
+            //data.Reverse();
 
-            return lastData;
+            //return lastData;
+
+            return data.Take(Math.Min(data.Count, lastNoOfYears)).Reverse().ToList();
         }
-        private static List<YearVal> GetFinancialData(List<string> values, List<int> years, int divider = 1)
+
+        private static List<YearVal> GetFinancialData<T>(List<T> values, List<int> years, int divider = 1)
         {
-            var lastFinVal = GetLastYearsData<string>(values);
+            var lastFinVal = GetLastYearsData<T>(values);
             var lastYears = GetLastYearsData<int>(years);
 
             List<YearVal> financialData = new List<YearVal>();
@@ -101,12 +99,12 @@ namespace BL.Adapters
             {
                 YearVal yearVal = new YearVal();
                 yearVal.Year = lastYears[i];
-                yearVal.Value = ConvertFinValueToDecimal(lastFinVal[i]) / divider;
+                yearVal.Value = ToDecimal(lastFinVal[i]) / divider;
 
                 if (i > 0)
                 {
                     var newVal = yearVal.Value;
-                    var oldVal = ConvertFinValueToDecimal(lastFinVal[i - 1]) / divider;
+                    var oldVal = ToDecimal(lastFinVal[i - 1]) / divider;
                     if (newVal != null && oldVal != null && oldVal != 0)
                         yearVal.Growth = ((decimal)newVal - (decimal)oldVal) / Math.Abs((decimal)oldVal) * 100;
                 }
@@ -115,14 +113,6 @@ namespace BL.Adapters
             }
 
             return financialData;
-        }
-        private static decimal? ConvertFinValueToDecimal(string val)
-        {
-            bool converted = Decimal.TryParse(val, NumberStyles.Any, new CultureInfo("en-US"), out var decimalVal);
-            if (converted)
-                return decimalVal;
-            else
-                return null;
         }
     }
 }

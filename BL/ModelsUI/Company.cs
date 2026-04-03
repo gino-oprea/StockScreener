@@ -29,6 +29,9 @@ namespace BL.ModelsUI
         public decimal? EnterpriseValue { get; set; }
         public decimal? SharesOutstanding { get; set; }
         public decimal? PE_Ratio { get; set; }
+        
+        public string PriceCurrency { get; set; }
+        public string FinancialDataCurrency { get; set; }
 
         public decimal? AverageEquityGrowth { get; set; }
         public decimal? AverageRevenueGrowth { get; set; }
@@ -179,11 +182,10 @@ namespace BL.ModelsUI
 
             decimal? growth = null;
 
-
-            FinancialIndicator.Reverse();
-            List<YearVal> last5years =  FinancialIndicator.Take(Math.Min(FinancialIndicator.Count,5)).ToList();
-            FinancialIndicator.Reverse();//put it back
-            last5years.Reverse();
+            //take last because was already reversed to have the most recent year at the end of the list, if there are less than 5 years, take all
+            List<YearVal> last5years =  FinancialIndicator.TakeLast(Math.Min(FinancialIndicator.Count,5)).ToList();
+            //FinancialIndicator.Reverse();//put it back
+            //last5years.Reverse();
 
             if (last5years != null && last5years.Count > 0)
             {
@@ -231,10 +233,10 @@ namespace BL.ModelsUI
             }
 
 
-            Financials.ROIC.Reverse();
-            List<YearVal> last5yearsROIC = Financials.ROIC.Take(Math.Min(FinancialIndicator.Count, 5)).ToList();
-            Financials.ROIC.Reverse();//put it back
-            last5yearsROIC.Reverse();
+            
+            List<YearVal> last5yearsROIC = Financials.ROIC.TakeLast(Math.Min(FinancialIndicator.Count, 5)).ToList();
+            //Financials.ROIC.Reverse();//put it back
+            //last5yearsROIC.Reverse();
 
             AverageROIC = last5yearsROIC.Select(r => r.Value).Average();
         }

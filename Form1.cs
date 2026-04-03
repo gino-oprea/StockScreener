@@ -19,18 +19,18 @@ namespace StockScreener
 
         Company company;
 
-        CompanyFilter companyFilter;        
+        CompanyFilter companyFilter;
 
         BindingSource bindingSourceKeyValues;
         BindingSource bindingSourceIntrinsicValues;
 
         List<Company> filteredCompanies;
         BindingSource bindingSourcefilteredCompanies;
-        
+
         bool isSearchInProgress = false;
-        
+
         CompaniesScreener companyScreener;
-        
+
 
         public Form1()
         {
@@ -58,7 +58,7 @@ namespace StockScreener
 
             dt.Columns.Add("Intrinsic Value");
             dt.Columns.Add("Intrinsic Value (-30%)");
-            dt.Columns.Add("Intrinsic Value (-50%)");            
+            dt.Columns.Add("Intrinsic Value (-50%)");
 
             DataRow dr = dt.NewRow();
             dr[0] = String.Format("{0:0.00}", values[0]);
@@ -73,7 +73,7 @@ namespace StockScreener
         {
             DataTable dt = new DataTable();
 
-            if (company?.Financials!= null)
+            if (company?.Financials != null)
             {
                 dt.Columns.Add("Item");
                 for (int i = 0; i < company.Financials.NetIncome.Count; i++)
@@ -94,14 +94,14 @@ namespace StockScreener
                 AddRow("Short Term Debt", company.Financials.ShortTermDebt, dt);
                 AddRow("Long Term Debt", company.Financials.LongTermDebt, dt);
                 AddRow("Cash and Equivalents", company.Financials.Cash, dt);
-                AddRow("Shares Outstanding", company.Financials.Shares, dt);                
+                AddRow("Shares Outstanding", company.Financials.Shares, dt);
             }
             return dt;
         }
 
         private void AddRow(string item, List<YearVal> values, DataTable dt)
         {
-            if (values!=null && values.Count > 0)
+            if (values != null && values.Count > 0)
             {
                 DataRow dr = dt.NewRow();
                 dr[0] = item;
@@ -111,7 +111,7 @@ namespace StockScreener
                     {
                         if (dt.Columns[j].ColumnName.Trim() == values[i].Year.ToString())
                             dr[j] = String.Format("{0:0.00}", values[i].Value) + (values[i].Growth != null ? "   (" + String.Format("{0:0.0}", values[i].Growth) + "%)" : "");
-                    }                    
+                    }
                 }
                 dt.Rows.Add(dr);
             }
@@ -132,32 +132,32 @@ namespace StockScreener
 
         private void btnGo_Click(object sender, EventArgs e)
         {
-                gvCompanies.DataSource = null;
-                gvCompanies.Rows.Clear();
+            gvCompanies.DataSource = null;
+            gvCompanies.Rows.Clear();
 
-                lblErrorMessage.Text = "";
-                lblTickerInProcess.Text = "";
-                lblProgress.Text = "";
-                
-                companyFilter = GetFilter();
+            lblErrorMessage.Text = "";
+            lblTickerInProcess.Text = "";
+            lblProgress.Text = "";
 
-                try
-                {
-                    tmrTicker.Start();
-                    tmrCompanies.Start();
-                    pbLoadingCompanies.Visible = true;
-                    isSearchInProgress = true;
-                    bgwSearchCompanies.RunWorkerAsync();
-                }
-                catch(Exception ex)
-                {
-                    lblErrorMessage.Text = ex.Message;
-                }
-            
+            companyFilter = GetFilter();
+
+            try
+            {
+                tmrTicker.Start();
+                tmrCompanies.Start();
+                pbLoadingCompanies.Visible = true;
+                isSearchInProgress = true;
+                bgwSearchCompanies.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                lblErrorMessage.Text = ex.Message;
+            }
+
         }
         private void btnStop_Click(object sender, EventArgs e)
         {
-            bgwSearchCompanies.CancelAsync();            
+            bgwSearchCompanies.CancelAsync();
         }
 
         private CompanyFilter GetFilter()
@@ -209,23 +209,23 @@ namespace StockScreener
                 //dr[5] = String.Format("{0:0.00}", company.IntrinsicValue_Discounted30);
                 dr[5] = String.Format("{0:0.00}", company.IntrinsicValue_Discounted50);
 
-                dr[6] = String.Format("{0:0.00}", ((decimal)company.CurrentPrice/company.IntrinsicValue - 1) * 100);
+                dr[6] = String.Format("{0:0.00}", ((decimal)company.CurrentPrice / company.IntrinsicValue - 1) * 100);
 
                 dr[7] = String.Format("{0:0.00}", company.AverageROIC);
                 dr[8] = String.Format("{0:0.00}", company.Growth);
                 dr[9] = String.Format("{0:0}", company.Average_P_FCF_Multiple);
                 dt.Rows.Add(dr);
-            }           
+            }
 
             return dt;
         }
 
         private void bgwCheckCompany_DoWork(object sender, DoWorkEventArgs e)
         {
-            CompanyDataAggregator companiesDataAggregator =new CompanyDataAggregator();
+            CompanyDataAggregator companiesDataAggregator = new CompanyDataAggregator();
             company = companiesDataAggregator.GetCompany(txtTicker.Text.Trim());
             if (company == null)
-                throw new Exception("Company has no data or error occured!");            
+                throw new Exception("Company has no data or error occured!");
 
             DataTable dt = BuildDataTable();
             bindingSourceKeyValues = new BindingSource();
@@ -235,7 +235,7 @@ namespace StockScreener
             bool converted = int.TryParse(txtDiscountInterestRate.Text.Trim(), out discount);
             if (!converted)
                 discount = 10;
-            
+
             DataTable dtIntrinsicValues = BuildIntriniscValuesDataTable(new List<decimal> {
                 company.IntrinsicValue.Value,
                 company.IntrinsicValue_Discounted10.Value,
@@ -258,8 +258,8 @@ namespace StockScreener
                 {
                     lblCompanyName.Text = company.Name;
                     txtSharesOutstanding.Text = String.Format("{0:0.000}", company.SharesOutstanding);
-                    lblCurrentSharePrice.Text = String.Format("{0:0.00}", company.CurrentPrice);                    
-                    lblMarketCap.Text = String.Format("{0:0.000}", company.MarketCap);                    
+                    lblCurrentSharePrice.Text = String.Format("{0:0.00}", company.CurrentPrice);
+                    lblMarketCap.Text = String.Format("{0:0.000}", company.MarketCap);
 
                     txtAvgRevenueGrowth.Text = String.Format("{0:0.00}", company.AverageRevenueGrowth);
 
@@ -271,9 +271,11 @@ namespace StockScreener
                     txtAvgNetIncomeGrowth.Text = String.Format("{0:0.00}", company.AverageNetIncomeGrowth);
                     txtAvgOperatingMarginGrowth.Text = String.Format("{0:0.00}", company.AverageOperatingMarginGrowth);
                     txtAvgFreeCashFlowGrowth.Text = String.Format("{0:0.00}", company.AverageFreeCashFlowGrowth);
-                    
+
                     txtAvgROIC.Text = String.Format("{0:0.00}", company.AverageROIC);
                     txtTerminalMultiple.Text = company.Average_P_FCF_Multiple.ToString();
+
+                    lblFinancialDataCurrency.Text = company.FinancialDataCurrency;
 
                     var avgCf = company.Financials.FreeCashFlow.Skip(company.Financials.FreeCashFlow.Count() - 3).Select(c => c.Value).Average(); //media ultimilor 3 ani                    
 
@@ -307,10 +309,10 @@ namespace StockScreener
                 }
             }
             pbLoading.Visible = false;
-        }       
+        }
 
         private void bgwSearchCompanies_DoWork(object sender, DoWorkEventArgs e)
-        {           
+        {
             filteredCompanies = companyScreener.GetFilteredCompanies(companyFilter, bgwSearchCompanies);
 
             DataTable dtFilteredCompanies = BuildFilteredCompaniesDataTable(filteredCompanies);
@@ -360,7 +362,7 @@ namespace StockScreener
 
         private void tmrCompanies_Tick(object sender, EventArgs e)
         {
-            if(isSearchInProgress)
+            if (isSearchInProgress)
             {
                 if (companyScreener.currentfilteredCompanies != null && companyScreener.currentfilteredCompanies.Count > 0)
                 {
@@ -385,7 +387,7 @@ namespace StockScreener
                 lblTickerInProcess.Text = companyScreener.currentTicker;
                 lblProgress.Text = companyScreener.progress;
             }
-        }       
+        }
 
         private void bgwGetCache_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -398,13 +400,15 @@ namespace StockScreener
                 lblTickerInProcess.Text = "";
                 lblProgress.Text = "";
                 lblErrorMessage.Text = "Cancelled";
-            }           
+            }
 
-            tmrTicker.Stop();            
+            tmrTicker.Stop();
             pbLoadingCompanies.Visible = false;
             isSearchInProgress = false;
             lblTickerInProcess.Text = "";
             lblProgress.Text = "";
-        }        
+        }
+
+        
     }
 }
