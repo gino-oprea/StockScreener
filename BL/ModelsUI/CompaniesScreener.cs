@@ -99,11 +99,11 @@ namespace BL.ModelsUI
             return filteredCompanies;
         }
         
-        public async Task SaveCompanies(List<Company> companies)
-        {
-            string json = JsonConvert.SerializeObject(companies);
-            await File.WriteAllTextAsync("companies.json", json);
-        }
+        //public async Task SaveCompanies(List<Company> companies)
+        //{
+        //    string json = JsonConvert.SerializeObject(companies);
+        //    await File.WriteAllTextAsync("companies.json", json);
+        //}
         private decimal GetRefPrice(Company company, CompanyFilter filter)
         {
             var refPrice = company.IntrinsicValue;
