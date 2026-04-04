@@ -267,8 +267,8 @@ namespace BL.ModelsUI
                 AverageFCFperShareGrowth,
                 AverageEquityGrowth ,
                 AverageNetIncomeGrowth,
-            AverageFreeCashFlowGrowth,
-            AverageROIC};
+            AverageFreeCashFlowGrowth };
+            //AverageROIC};//exclude ROIC because it is not a growth rate, it is a profitability ratio
 
             decimal avgGrowth = (decimal)allGrowthValues.FindAll(g => g != null).Average();
             Growth = Math.Min(15, avgGrowth);
