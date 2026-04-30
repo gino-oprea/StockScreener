@@ -50,7 +50,7 @@ namespace BL.ModelsUI
 
         private void GetGeneralInfo(string tickerSymbol)
         {
-            var httpRes = HttpReq.GetUrlHttpClientAsync($"https://finviz.com/quote.ashx?t={tickerSymbol}&p=d", null, "GET", null, null, false).Result;
+            var httpRes = HttpReq.GetUrlHttpClientAsync($"https://finviz.com/quote?t={tickerSymbol}&p=d", null, "GET", null, null, false).Result;
             string generalDetails = httpRes.Result;
             if (generalDetails != null)
                 FinvizHelper.GetCompanyGeneralInfo(generalDetails, company);
