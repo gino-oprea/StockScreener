@@ -24,10 +24,10 @@ namespace BL.OnlineDataHelpers
             List<string> selectedLines = new List<string>();
             for (int i = 0; i < rawLines.Count; i++)
             {
-                if (rawLines[i].Contains("quote-header_ticker-wrapper_company text-xl"))
+                if (rawLines[i].Contains("quote-header_ticker-wrapper_company text-lg"))
                     selectedLines.Add(rawLines[i + 2]);
 
-                if (rawLines[i].Contains("quote-price_wrapper_price"))
+                if (rawLines[i].Contains("quote-price_price"))
                     selectedLines.Add(rawLines[i]);
             }
 
