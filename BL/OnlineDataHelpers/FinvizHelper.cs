@@ -31,7 +31,7 @@ namespace BL.OnlineDataHelpers
                     selectedLines.Add(rawLines[i]);
             }
 
-            if (selectedLines.Count == 2)
+            if (selectedLines.Count >= 2)
             {
                 string name = selectedLines[0];
                 string currentPrice = HtmlHelper.ExtractString(selectedLines[1], ">", "</", false);
